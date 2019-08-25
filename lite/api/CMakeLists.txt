@@ -234,3 +234,5 @@ endif()
 lite_cc_binary(model_optimize_tool SRCS model_optimize_tool.cc
     DEPS paddle_api_full gflags
     CL_DEPS ${opencl_kernels})
+
+cc_library(paddle_lite_static SRCS DEPS paddle_api_full cxx_api paddle_api light_api ${ops})
