@@ -287,6 +287,7 @@ struct CBlas<double> {
 
 template <>
 struct CBlas<lite::fluid::float16> {
+  /*
   static void GEMM(...) { PADDLE_THROW("float16 GEMM not supported on CPU"); }
   static void SMM_GEMM(...) {
     PADDLE_THROW("float16 SMM_GEMM not supported on CPU");
@@ -300,10 +301,13 @@ struct CBlas<lite::fluid::float16> {
   static void DOT(...) { PADDLE_THROW("float16 DOT not supported on CPU"); };
   static void SCAL(...) { PADDLE_THROW("float16 SCAL not supported on CPU"); };
   static void ASUM(...) { PADDLE_THROW("float16 ASUM not supported on CPU"); };
+  */
 #ifdef PADDLE_WITH_MKLML
+  /*
   static void GEMM_BATCH(...) {
     PADDLE_THROW("float16 GEMM_BATCH not supported on CPU");
   }
+  */
 #endif
 };
 
