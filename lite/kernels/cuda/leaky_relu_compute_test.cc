@@ -35,7 +35,7 @@ TEST(leaky_relu, normal) {
   x_cpu.Resize({h, w});
   y_cpu.Resize({h, w});
 
-  auto* x_data = x.mutable_data<float>(TARGET(kCUDA));
+  // auto* x_data = x.mutable_data<float>(TARGET(kCUDA));
   auto* y_data = y.mutable_data<float>(TARGET(kCUDA));
   float* x_cpu_data = x_cpu.mutable_data<float>();
   float* y_cpu_data = x_cpu.mutable_data<float>();
