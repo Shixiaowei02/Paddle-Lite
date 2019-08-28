@@ -162,7 +162,7 @@ class Context<TargetType::kCUDA> {
   void Init(int dev_id, int exec_stream_id = 0, int io_stream_id = 0) {
     CHECK_GT(devs.size(), 0)
         << "Env is not initialized or current target is not exit!";
-    if (dev_id >= devs.size()) {
+    if (dev_id >= static_cast<int>(devs.size())) {
       LOG(WARNING) << "device index exceeds the number of devices, set to "
                       "default device(0)!";
       device_id_ = 0;
