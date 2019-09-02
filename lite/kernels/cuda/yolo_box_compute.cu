@@ -179,7 +179,7 @@ void YoloBoxCompute::Run() {
   const int an_num = anchors.size() / 2;
   int input_size = downsample_ratio * h;
 
-  anchors_.Resize(static_cast<int>({anchors.size()}));
+  anchors_.Resize({static_cast<int>(anchors.size())});
   int* d_anchors = anchors_.mutable_data<int>(TARGET(kCUDA));
   CopySync<TARGET(kCUDA)>(d_anchors,
                           anchors.data(),
