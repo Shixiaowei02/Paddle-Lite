@@ -161,7 +161,7 @@ struct PMNode {
       if (x && x->IsStmt()) {
         auto* op_info = x->stmt()->op_info();
         bool cond = (op_info->HasAttr(attr_name) &&
-               op_info->GetAttr<T>(attr_name) == attr);
+                     op_info->GetAttr<T>(attr_name) == attr);
         return cond;
       }
       return false;
