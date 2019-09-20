@@ -30,5 +30,11 @@ if(LITE_WITH_NPU)
   endif()
 endif()
 
+if(1)
+  lite_cc_library(xpu_pass SRCS generate_xpu_program_pass.cc
+      DEPS mir_pass types context ${mir_fusers} graph_op subgraph_pass)
+
+endif()
+
 set(subgraph_passes ${subgraph_passes} CACHE INTERNAL "subgraph_passes")
 message(STATUS "----> subgraph_passes: ${subgraph_passes}")
