@@ -15,6 +15,7 @@
 #pragma once
 #include <cuda.h>
 #include <cuda_runtime.h>
+#include "lite/backends/cuda/cuda_utils.h"
 #include "lite/core/target_wrapper.h"
 
 namespace paddle {
@@ -36,20 +37,34 @@ class TargetWrapper<TARGET(kCUDA)> {
     cudaGetDevice(&dev_id);
     return dev_id;
   }
-  static void CreateStream(stream_t* stream) {}
-  static void DestroyStream(const stream_t& stream) {}
-
-  static void CreateEvent(event_t* event) {}
-  static void DestroyEvent(const event_t& event) {}
-
-  static void RecordEvent(const event_t& event) {}
-  static void SyncEvent(const event_t& event) {}
-
-  static void StreamSync(const stream_t& stream) {}
+  static void CreateStream(stream_t* stream) {
+    CUDA_CALL(cudaStreamCreate(stream));
+  }
+  static void DestroyStream(const stream_t& stream) {
+    CUDA_CALL(cudaStreamDestroy(stream));
+  }
+  static void CreateEvent(event_t* event, bool flag) {
+    if (flag) {
+      CUDA_CALL(cudaEventCreateWithFlags(event, cudaEventDefault));
+    } else {
+      CUDA_CALL(cudaEventCreateWithFlags(event, cudaEventDisableTiming));
+    }
+  }
+  static void DestroyEvent(const event_t& event) {
+    CUDA_CALL(cudaEventDestroy(event));
+  }
+  static void RecordEvent(const event_t& event, const stream_t& stream) {
+    CUDA_CALL(cudaEventRecord(event, stream));
+  }
+  static void SyncEvent(const event_t& event) {
+    CUDA_CALL(cudaEventSynchronize(event));
+  }
+  static void StreamSync(const stream_t& stream) {
+    CUDA_CALL(cudaStreamSynchronize(stream));
+  }
 
   static void* Malloc(size_t size);
   static void Free(void* ptr);
-
   static void MemcpySync(void* dst,
                          const void* src,
                          size_t size,
