@@ -17,6 +17,7 @@
 #include <memory>
 #include <utility>
 #include <vector>
+#include <random>
 
 namespace paddle {
 namespace lite {
