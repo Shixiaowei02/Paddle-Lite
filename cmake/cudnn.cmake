@@ -69,9 +69,9 @@ if(CUDNN_FOUND)
     file(READ ${CUDNN_INCLUDE_DIR}/cudnn.h CUDNN_VERSION_FILE_CONTENTS)
 
     get_filename_component(CUDNN_LIB_PATH ${CUDNN_LIBRARY} DIRECTORY)
-    add_library(cudnn_static STATIC IMPORTED GLOBAL)
-    set_property(TARGET cudnn_static PROPERTY IMPORTED_LOCATION
-               "${CUDNN_LIB_PATH}/libcudnn_static.a")
+    add_library(cudnn SHARED IMPORTED GLOBAL)
+    set_property(TARGET cudnn PROPERTY IMPORTED_LOCATION
+               "${CUDNN_LIB_PATH}/libcudnn.so")
 
     string(REGEX MATCH "define CUDNN_VERSION +([0-9]+)"
         CUDNN_VERSION "${CUDNN_VERSION_FILE_CONTENTS}")
