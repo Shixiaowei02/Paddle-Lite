@@ -1,0 +1,199 @@
+// Generated from framework.proto
+
+namespace paddle.lite.fbs;
+
+enum AttrType : int {
+  INT = 0,
+  FLOAT = 1,
+  STRING = 2,
+  INTS = 3,
+  FLOATS = 4,
+  STRINGS = 5,
+  BOOLEAN = 6,
+  BOOLEANS = 7,
+  BLOCK = 8,
+  LONG = 9,
+  BLOCKS = 10,
+  LONGS = 11,
+}
+
+namespace paddle.lite.fbs.VarType_;
+
+enum Type : int {
+  BOOL = 0,
+  INT16 = 1,
+  INT32 = 2,
+  INT64 = 3,
+  FP16 = 4,
+  FP32 = 5,
+  FP64 = 6,
+  LOD_TENSOR = 7,
+  SELECTED_ROWS = 8,
+  FEED_MINIBATCH = 9,
+  FETCH_LIST = 10,
+  STEP_SCOPES = 11,
+  LOD_RANK_TABLE = 12,
+  LOD_TENSOR_ARRAY = 13,
+  PLACE_LIST = 14,
+  READER = 15,
+  RAW = 17,
+  TUPLE = 18,
+  SIZE_T = 19,
+  UINT8 = 20,
+  INT8 = 21,
+}
+
+namespace paddle.lite.fbs.CompatibleInfo_;
+
+enum Type : int {
+  COMPATIBLE = 0,
+  DEFINITELY_NOT = 1,
+  POSSIBLE = 2,
+  BUG_FIX = 3,
+  PRECISION_CHANGE = 4,
+}
+
+namespace paddle.lite.fbs;
+
+table Version {
+  version:long;
+}
+
+table OpDesc {
+  type:string (required);
+  inputs:[paddle.lite.fbs.OpDesc_.Var];
+  outputs:[paddle.lite.fbs.OpDesc_.Var];
+  attrs:[paddle.lite.fbs.OpDesc_.Attr];
+  is_target:bool;
+}
+
+namespace paddle.lite.fbs.OpDesc_;
+
+table Attr {
+  name:string (required);
+  type:paddle.lite.fbs.AttrType;
+  i:int;
+  f:float;
+  s:string;
+  ints:[int];
+  floats:[float];
+  strings:[string];
+  b:bool;
+  bools:[bool];
+  block_idx:int;
+  l:long;
+  blocks_idx:[int];
+  longs:[long];
+}
+
+table Var {
+  parameter:string (required);
+  arguments:[string];
+}
+
+namespace paddle.lite.fbs;
+
+table OpProto {
+  type:string (required);
+  inputs:[paddle.lite.fbs.OpProto_.Var];
+  outputs:[paddle.lite.fbs.OpProto_.Var];
+  attrs:[paddle.lite.fbs.OpProto_.Attr];
+  comment:string (required);
+}
+
+namespace paddle.lite.fbs.OpProto_;
+
+table Var {
+  name:string (required);
+  comment:string (required);
+  duplicable:bool;
+  intermediate:bool;
+  dispensable:bool;
+}
+
+table Attr {
+  name:string (required);
+  type:paddle.lite.fbs.AttrType;
+  comment:string (required);
+  generated:bool;
+}
+
+namespace paddle.lite.fbs;
+
+table VarType {
+  type:paddle.lite.fbs.VarType_.Type;
+  selected_rows:paddle.lite.fbs.VarType_.TensorDesc;
+  lod_tensor:paddle.lite.fbs.VarType_.LoDTensorDesc;
+  tensor_array:paddle.lite.fbs.VarType_.LoDTensorArrayDesc;
+  reader:paddle.lite.fbs.VarType_.ReaderDesc;
+  tuple:paddle.lite.fbs.VarType_.Tuple;
+}
+
+namespace paddle.lite.fbs.VarType_;
+
+table TensorDesc {
+  data_type:paddle.lite.fbs.VarType_.Type;
+  dims:[long];
+}
+
+table LoDTensorDesc {
+  tensor:paddle.lite.fbs.VarType_.TensorDesc (required);
+  lod_level:int;
+}
+
+table LoDTensorArrayDesc {
+  tensor:paddle.lite.fbs.VarType_.TensorDesc (required);
+  lod_level:int;
+}
+
+table ReaderDesc {
+  lod_tensor:[paddle.lite.fbs.VarType_.LoDTensorDesc];
+}
+
+table Tuple {
+  element_type:[paddle.lite.fbs.VarType_.Type];
+}
+
+namespace paddle.lite.fbs;
+
+table VarDesc {
+  name:string (required);
+  type:paddle.lite.fbs.VarType (required);
+  persistable:bool;
+  need_check_feed:bool;
+}
+
+table BlockDesc {
+  idx:int;
+  parent_idx:int;
+  vars:[paddle.lite.fbs.VarDesc];
+  ops:[paddle.lite.fbs.OpDesc];
+  forward_block_idx:int = -1;
+}
+
+table CompatibleInfo {
+  version:string (required);
+  type:paddle.lite.fbs.CompatibleInfo_.Type;
+}
+
+table OpCompatibleMap {
+  pair:[paddle.lite.fbs.OpCompatibleMap_.OpCompatiblePair];
+  default_required_version:string;
+}
+
+namespace paddle.lite.fbs.OpCompatibleMap_;
+
+table OpCompatiblePair {
+  op_name:string (required);
+  compatible_info:paddle.lite.fbs.CompatibleInfo (required);
+}
+
+namespace paddle.lite.fbs;
+
+table ProgramDesc {
+  blocks:[paddle.lite.fbs.BlockDesc];
+  version:paddle.lite.fbs.Version;
+  op_compatible_map:paddle.lite.fbs.OpCompatibleMap;
+}
+
+root_type paddle.lite.fbs.ProgramDesc;
