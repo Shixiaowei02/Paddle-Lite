@@ -70,7 +70,7 @@ table OpDesc {
 namespace paddle.lite.fbs.OpDesc_;
 
 table Attr {
-  name:string (required);
+  name:string (required, key);
   type:paddle.lite.fbs.AttrType;
   i:int;
   f:float;
@@ -87,35 +87,8 @@ table Attr {
 }
 
 table Var {
-  parameter:string (required);
+  parameter:string (required, key);
   arguments:[string];
-}
-
-namespace paddle.lite.fbs;
-
-table OpProto {
-  type:string (required);
-  inputs:[paddle.lite.fbs.OpProto_.Var];
-  outputs:[paddle.lite.fbs.OpProto_.Var];
-  attrs:[paddle.lite.fbs.OpProto_.Attr];
-  comment:string (required);
-}
-
-namespace paddle.lite.fbs.OpProto_;
-
-table Var {
-  name:string (required);
-  comment:string (required);
-  duplicable:bool;
-  intermediate:bool;
-  dispensable:bool;
-}
-
-table Attr {
-  name:string (required);
-  type:paddle.lite.fbs.AttrType;
-  comment:string (required);
-  generated:bool;
 }
 
 namespace paddle.lite.fbs;

@@ -15,14 +15,3 @@
 // This file contains model format related operations, such as load a model,
 // parse an operator definitions and so on.
 
-#include "lite/model_parser/flatbuffers/io.h"
-
-namespace paddle {
-namespace lite {
-namespace fbs {
-
-  
-
-}  // namespace fbs
-}  // namespace lite
-}  // namespace paddle

@@ -26,19 +26,6 @@ struct VarBuilder;
 
 }  // namespace OpDesc_
 
-struct OpProto;
-struct OpProtoBuilder;
-
-namespace OpProto_ {
-
-struct Var;
-struct VarBuilder;
-
-struct Attr;
-struct AttrBuilder;
-
-}  // namespace OpProto_
-
 struct VarType;
 struct VarTypeBuilder;
 
@@ -411,14 +398,14 @@ inline flatbuffers::Offset<OpDesc> CreateOpDesc(
 inline flatbuffers::Offset<OpDesc> CreateOpDescDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const char *type = nullptr,
-    const std::vector<flatbuffers::Offset<paddle::lite::fbs::OpDesc_::Var>> *inputs = nullptr,
-    const std::vector<flatbuffers::Offset<paddle::lite::fbs::OpDesc_::Var>> *outputs = nullptr,
-    const std::vector<flatbuffers::Offset<paddle::lite::fbs::OpDesc_::Attr>> *attrs = nullptr,
+    std::vector<flatbuffers::Offset<paddle::lite::fbs::OpDesc_::Var>> *inputs = nullptr,
+    std::vector<flatbuffers::Offset<paddle::lite::fbs::OpDesc_::Var>> *outputs = nullptr,
+    std::vector<flatbuffers::Offset<paddle::lite::fbs::OpDesc_::Attr>> *attrs = nullptr,
     bool is_target = false) {
   auto type__ = type ? _fbb.CreateString(type) : 0;
-  auto inputs__ = inputs ? _fbb.CreateVector<flatbuffers::Offset<paddle::lite::fbs::OpDesc_::Var>>(*inputs) : 0;
-  auto outputs__ = outputs ? _fbb.CreateVector<flatbuffers::Offset<paddle::lite::fbs::OpDesc_::Var>>(*outputs) : 0;
-  auto attrs__ = attrs ? _fbb.CreateVector<flatbuffers::Offset<paddle::lite::fbs::OpDesc_::Attr>>(*attrs) : 0;
+  auto inputs__ = inputs ? _fbb.CreateVectorOfSortedTables<paddle::lite::fbs::OpDesc_::Var>(inputs) : 0;
+  auto outputs__ = outputs ? _fbb.CreateVectorOfSortedTables<paddle::lite::fbs::OpDesc_::Var>(outputs) : 0;
+  auto attrs__ = attrs ? _fbb.CreateVectorOfSortedTables<paddle::lite::fbs::OpDesc_::Attr>(attrs) : 0;
   return paddle::lite::fbs::CreateOpDesc(
       _fbb,
       type__,
@@ -450,6 +437,12 @@ struct Attr FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   };
   const flatbuffers::String *name() const {
     return GetPointer<const flatbuffers::String *>(VT_NAME);
+  }
+  bool KeyCompareLessThan(const Attr *o) const {
+    return *name() < *o->name();
+  }
+  int KeyCompareWithValue(const char *val) const {
+    return strcmp(name()->c_str(), val);
   }
   paddle::lite::fbs::AttrType type() const {
     return static_cast<paddle::lite::fbs::AttrType>(GetField<int32_t>(VT_TYPE, 0));
@@ -662,6 +655,12 @@ struct Var FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *parameter() const {
     return GetPointer<const flatbuffers::String *>(VT_PARAMETER);
   }
+  bool KeyCompareLessThan(const Var *o) const {
+    return *parameter() < *o->parameter();
+  }
+  int KeyCompareWithValue(const char *val) const {
+    return strcmp(parameter()->c_str(), val);
+  }
   const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *arguments() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_ARGUMENTS);
   }
@@ -721,316 +720,6 @@ inline flatbuffers::Offset<Var> CreateVarDirect(
 }
 
 }  // namespace OpDesc_
-
-struct OpProto FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef OpProtoBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_TYPE = 4,
-    VT_INPUTS = 6,
-    VT_OUTPUTS = 8,
-    VT_ATTRS = 10,
-    VT_COMMENT = 12
-  };
-  const flatbuffers::String *type() const {
-    return GetPointer<const flatbuffers::String *>(VT_TYPE);
-  }
-  const flatbuffers::Vector<flatbuffers::Offset<paddle::lite::fbs::OpProto_::Var>> *inputs() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<paddle::lite::fbs::OpProto_::Var>> *>(VT_INPUTS);
-  }
-  const flatbuffers::Vector<flatbuffers::Offset<paddle::lite::fbs::OpProto_::Var>> *outputs() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<paddle::lite::fbs::OpProto_::Var>> *>(VT_OUTPUTS);
-  }
-  const flatbuffers::Vector<flatbuffers::Offset<paddle::lite::fbs::OpProto_::Attr>> *attrs() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<paddle::lite::fbs::OpProto_::Attr>> *>(VT_ATTRS);
-  }
-  const flatbuffers::String *comment() const {
-    return GetPointer<const flatbuffers::String *>(VT_COMMENT);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffsetRequired(verifier, VT_TYPE) &&
-           verifier.VerifyString(type()) &&
-           VerifyOffset(verifier, VT_INPUTS) &&
-           verifier.VerifyVector(inputs()) &&
-           verifier.VerifyVectorOfTables(inputs()) &&
-           VerifyOffset(verifier, VT_OUTPUTS) &&
-           verifier.VerifyVector(outputs()) &&
-           verifier.VerifyVectorOfTables(outputs()) &&
-           VerifyOffset(verifier, VT_ATTRS) &&
-           verifier.VerifyVector(attrs()) &&
-           verifier.VerifyVectorOfTables(attrs()) &&
-           VerifyOffsetRequired(verifier, VT_COMMENT) &&
-           verifier.VerifyString(comment()) &&
-           verifier.EndTable();
-  }
-};
-
-struct OpProtoBuilder {
-  typedef OpProto Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_type(flatbuffers::Offset<flatbuffers::String> type) {
-    fbb_.AddOffset(OpProto::VT_TYPE, type);
-  }
-  void add_inputs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<paddle::lite::fbs::OpProto_::Var>>> inputs) {
-    fbb_.AddOffset(OpProto::VT_INPUTS, inputs);
-  }
-  void add_outputs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<paddle::lite::fbs::OpProto_::Var>>> outputs) {
-    fbb_.AddOffset(OpProto::VT_OUTPUTS, outputs);
-  }
-  void add_attrs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<paddle::lite::fbs::OpProto_::Attr>>> attrs) {
-    fbb_.AddOffset(OpProto::VT_ATTRS, attrs);
-  }
-  void add_comment(flatbuffers::Offset<flatbuffers::String> comment) {
-    fbb_.AddOffset(OpProto::VT_COMMENT, comment);
-  }
-  explicit OpProtoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<OpProto> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<OpProto>(end);
-    fbb_.Required(o, OpProto::VT_TYPE);
-    fbb_.Required(o, OpProto::VT_COMMENT);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<OpProto> CreateOpProto(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> type = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<paddle::lite::fbs::OpProto_::Var>>> inputs = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<paddle::lite::fbs::OpProto_::Var>>> outputs = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<paddle::lite::fbs::OpProto_::Attr>>> attrs = 0,
-    flatbuffers::Offset<flatbuffers::String> comment = 0) {
-  OpProtoBuilder builder_(_fbb);
-  builder_.add_comment(comment);
-  builder_.add_attrs(attrs);
-  builder_.add_outputs(outputs);
-  builder_.add_inputs(inputs);
-  builder_.add_type(type);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<OpProto> CreateOpProtoDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    const char *type = nullptr,
-    const std::vector<flatbuffers::Offset<paddle::lite::fbs::OpProto_::Var>> *inputs = nullptr,
-    const std::vector<flatbuffers::Offset<paddle::lite::fbs::OpProto_::Var>> *outputs = nullptr,
-    const std::vector<flatbuffers::Offset<paddle::lite::fbs::OpProto_::Attr>> *attrs = nullptr,
-    const char *comment = nullptr) {
-  auto type__ = type ? _fbb.CreateString(type) : 0;
-  auto inputs__ = inputs ? _fbb.CreateVector<flatbuffers::Offset<paddle::lite::fbs::OpProto_::Var>>(*inputs) : 0;
-  auto outputs__ = outputs ? _fbb.CreateVector<flatbuffers::Offset<paddle::lite::fbs::OpProto_::Var>>(*outputs) : 0;
-  auto attrs__ = attrs ? _fbb.CreateVector<flatbuffers::Offset<paddle::lite::fbs::OpProto_::Attr>>(*attrs) : 0;
-  auto comment__ = comment ? _fbb.CreateString(comment) : 0;
-  return paddle::lite::fbs::CreateOpProto(
-      _fbb,
-      type__,
-      inputs__,
-      outputs__,
-      attrs__,
-      comment__);
-}
-
-namespace OpProto_ {
-
-struct Var FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef VarBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_NAME = 4,
-    VT_COMMENT = 6,
-    VT_DUPLICABLE = 8,
-    VT_INTERMEDIATE = 10,
-    VT_DISPENSABLE = 12
-  };
-  const flatbuffers::String *name() const {
-    return GetPointer<const flatbuffers::String *>(VT_NAME);
-  }
-  const flatbuffers::String *comment() const {
-    return GetPointer<const flatbuffers::String *>(VT_COMMENT);
-  }
-  bool duplicable() const {
-    return GetField<uint8_t>(VT_DUPLICABLE, 0) != 0;
-  }
-  bool intermediate() const {
-    return GetField<uint8_t>(VT_INTERMEDIATE, 0) != 0;
-  }
-  bool dispensable() const {
-    return GetField<uint8_t>(VT_DISPENSABLE, 0) != 0;
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffsetRequired(verifier, VT_NAME) &&
-           verifier.VerifyString(name()) &&
-           VerifyOffsetRequired(verifier, VT_COMMENT) &&
-           verifier.VerifyString(comment()) &&
-           VerifyField<uint8_t>(verifier, VT_DUPLICABLE) &&
-           VerifyField<uint8_t>(verifier, VT_INTERMEDIATE) &&
-           VerifyField<uint8_t>(verifier, VT_DISPENSABLE) &&
-           verifier.EndTable();
-  }
-};
-
-struct VarBuilder {
-  typedef Var Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
-    fbb_.AddOffset(Var::VT_NAME, name);
-  }
-  void add_comment(flatbuffers::Offset<flatbuffers::String> comment) {
-    fbb_.AddOffset(Var::VT_COMMENT, comment);
-  }
-  void add_duplicable(bool duplicable) {
-    fbb_.AddElement<uint8_t>(Var::VT_DUPLICABLE, static_cast<uint8_t>(duplicable), 0);
-  }
-  void add_intermediate(bool intermediate) {
-    fbb_.AddElement<uint8_t>(Var::VT_INTERMEDIATE, static_cast<uint8_t>(intermediate), 0);
-  }
-  void add_dispensable(bool dispensable) {
-    fbb_.AddElement<uint8_t>(Var::VT_DISPENSABLE, static_cast<uint8_t>(dispensable), 0);
-  }
-  explicit VarBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<Var> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<Var>(end);
-    fbb_.Required(o, Var::VT_NAME);
-    fbb_.Required(o, Var::VT_COMMENT);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<Var> CreateVar(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> name = 0,
-    flatbuffers::Offset<flatbuffers::String> comment = 0,
-    bool duplicable = false,
-    bool intermediate = false,
-    bool dispensable = false) {
-  VarBuilder builder_(_fbb);
-  builder_.add_comment(comment);
-  builder_.add_name(name);
-  builder_.add_dispensable(dispensable);
-  builder_.add_intermediate(intermediate);
-  builder_.add_duplicable(duplicable);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<Var> CreateVarDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    const char *name = nullptr,
-    const char *comment = nullptr,
-    bool duplicable = false,
-    bool intermediate = false,
-    bool dispensable = false) {
-  auto name__ = name ? _fbb.CreateString(name) : 0;
-  auto comment__ = comment ? _fbb.CreateString(comment) : 0;
-  return paddle::lite::fbs::OpProto_::CreateVar(
-      _fbb,
-      name__,
-      comment__,
-      duplicable,
-      intermediate,
-      dispensable);
-}
-
-struct Attr FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef AttrBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_NAME = 4,
-    VT_TYPE = 6,
-    VT_COMMENT = 8,
-    VT_GENERATED = 10
-  };
-  const flatbuffers::String *name() const {
-    return GetPointer<const flatbuffers::String *>(VT_NAME);
-  }
-  paddle::lite::fbs::AttrType type() const {
-    return static_cast<paddle::lite::fbs::AttrType>(GetField<int32_t>(VT_TYPE, 0));
-  }
-  const flatbuffers::String *comment() const {
-    return GetPointer<const flatbuffers::String *>(VT_COMMENT);
-  }
-  bool generated() const {
-    return GetField<uint8_t>(VT_GENERATED, 0) != 0;
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffsetRequired(verifier, VT_NAME) &&
-           verifier.VerifyString(name()) &&
-           VerifyField<int32_t>(verifier, VT_TYPE) &&
-           VerifyOffsetRequired(verifier, VT_COMMENT) &&
-           verifier.VerifyString(comment()) &&
-           VerifyField<uint8_t>(verifier, VT_GENERATED) &&
-           verifier.EndTable();
-  }
-};
-
-struct AttrBuilder {
-  typedef Attr Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
-    fbb_.AddOffset(Attr::VT_NAME, name);
-  }
-  void add_type(paddle::lite::fbs::AttrType type) {
-    fbb_.AddElement<int32_t>(Attr::VT_TYPE, static_cast<int32_t>(type), 0);
-  }
-  void add_comment(flatbuffers::Offset<flatbuffers::String> comment) {
-    fbb_.AddOffset(Attr::VT_COMMENT, comment);
-  }
-  void add_generated(bool generated) {
-    fbb_.AddElement<uint8_t>(Attr::VT_GENERATED, static_cast<uint8_t>(generated), 0);
-  }
-  explicit AttrBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<Attr> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<Attr>(end);
-    fbb_.Required(o, Attr::VT_NAME);
-    fbb_.Required(o, Attr::VT_COMMENT);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<Attr> CreateAttr(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> name = 0,
-    paddle::lite::fbs::AttrType type = paddle::lite::fbs::AttrType_INT,
-    flatbuffers::Offset<flatbuffers::String> comment = 0,
-    bool generated = false) {
-  AttrBuilder builder_(_fbb);
-  builder_.add_comment(comment);
-  builder_.add_type(type);
-  builder_.add_name(name);
-  builder_.add_generated(generated);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<Attr> CreateAttrDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    const char *name = nullptr,
-    paddle::lite::fbs::AttrType type = paddle::lite::fbs::AttrType_INT,
-    const char *comment = nullptr,
-    bool generated = false) {
-  auto name__ = name ? _fbb.CreateString(name) : 0;
-  auto comment__ = comment ? _fbb.CreateString(comment) : 0;
-  return paddle::lite::fbs::OpProto_::CreateAttr(
-      _fbb,
-      name__,
-      type,
-      comment__,
-      generated);
-}
-
-}  // namespace OpProto_
 
 struct VarType FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef VarTypeBuilder Builder;
@@ -1878,10 +1567,6 @@ inline flatbuffers::Offset<ProgramDesc> CreateProgramDescDirect(
 namespace OpDesc_ {
 
 }  // namespace OpDesc_
-
-namespace OpProto_ {
-
-}  // namespace OpProto_
 
 namespace VarType_ {
 
