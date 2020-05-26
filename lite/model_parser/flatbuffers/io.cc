@@ -12,16 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// This file contains model format related operations, such as load a model,
-// parse an operator definitions and so on.
-
+#include <fstream>
 #include "lite/model_parser/flatbuffers/io.h"
 
 namespace paddle {
 namespace lite {
 namespace fbs {
 
-  
+void LoadModel(const std::string& path,
+               cpp::ProgramDesc *cpp_prog) {
+  std::ifstream infile;
+  infile.open(path, std::ios::binary | std::ios::in);
+  infile.seekg(0,std::ios::end);
+  int length = infile.tellg();
+  infile.seekg(0,std::ios::beg);
+  char *data = new char[length];
+  infile.read(data, length);
+  infile.close();
+  auto fbs_prog = paddle::lite::fbs::proto::GetProgramDesc(data);
+  TransformProgramDescAnyToCpp(fbs_prog, cpp_prog);
+}
 
 }  // namespace fbs
 }  // namespace lite

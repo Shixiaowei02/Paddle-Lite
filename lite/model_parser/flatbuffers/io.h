@@ -12,18 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// This file contains model format related operations, such as load a model,
-// parse an operator definitions and so on.
-
 #include "lite/model_parser/flatbuffers/framework_generated.h"
 
 namespace paddle {
 namespace lite {
 namespace fbs {
 
-void LoadModel(const std::string& path) {
-  
-}
+void LoadModel(const std::string& path,
+               cpp::ProgramDesc *cpp_prog);
 
 }  // namespace fbs
 }  // namespace lite
