@@ -24,9 +24,8 @@ class OpDesc : public OpDescAPI {
  public:
   OpDesc() = delete;
 
-  explicit OpDesc(proto::OpDesc *desc) {
+  explicit OpDesc(proto::OpDesc *desc) : desc_(desc) {
     CHECK(desc_);
-    desc_.reset(desc);
   }
 
   std::string Type() const override { return desc_->type()->str(); }
@@ -115,7 +114,7 @@ class OpDesc : public OpDescAPI {
   T GetAttr(const std::string &name) const;
 
  private:
-  std::unique_ptr<proto::OpDesc> desc_;
+  std::shared_ptr<proto::OpDesc> desc_;
 };
 
 }  // namespace fbs

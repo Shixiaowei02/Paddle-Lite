@@ -24,9 +24,7 @@ class VarDesc : public VarDescAPI {
  public:
   VarDesc() = default;
 
-  explicit VarDesc(proto::VarDesc* desc) {
-    desc_.reset(desc);
-  }
+  explicit VarDesc(proto::VarDesc* desc) : desc_(desc) {}
 
   std::string Name() const override {
     return desc_->name()->str();
@@ -56,6 +54,8 @@ class VarDesc : public VarDescAPI {
     LOG(FATAL) << "Feature not yet supported.";
   }
 
+  void SetDataType(Type data_type) { LOG(FATAL) << "Feature not yet supported."; }
+
   std::vector<int64_t> GetShape() const override {
     CHECK(GetType() == VarDescAPI::Type::LOD_TENSOR);
     const auto& dims = desc_->type()->lod_tensor()->tensor()->dims();
@@ -68,7 +68,7 @@ class VarDesc : public VarDescAPI {
   }
 
  private:
-  std::unique_ptr<proto::VarDesc> desc_;
+  proto::VarDesc* desc_;
 };
 
 }  // namespace fbs

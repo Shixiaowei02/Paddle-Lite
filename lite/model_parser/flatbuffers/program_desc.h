@@ -24,9 +24,8 @@ class ProgramDesc : public ProgramDescAPI {
  public:
   ProgramDesc() = delete;
 
-  explicit ProgramDesc(proto::ProgramDesc *desc) {
+  explicit ProgramDesc(proto::ProgramDesc *desc) : desc_(desc) {
     CHECK(desc);
-    desc_.reset(desc);
   }
 
   size_t BlocksSize() const override { return desc_->blocks()->size(); }
@@ -50,7 +49,7 @@ class ProgramDesc : public ProgramDescAPI {
   }
 
  private:
-  std::unique_ptr<proto::ProgramDesc> desc_; // not_own
+  proto::ProgramDesc* desc_; // not_own
 };
 
 }  // namespace fbs

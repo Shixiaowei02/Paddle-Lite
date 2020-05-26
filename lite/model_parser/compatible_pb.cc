@@ -15,6 +15,10 @@
 #include "lite/model_parser/compatible_pb.h"
 #include <string>
 #include <vector>
+#include "lite/model_parser/flatbuffers/block_desc.h"
+#include "lite/model_parser/flatbuffers/op_desc.h"
+#include "lite/model_parser/flatbuffers/program_desc.h"
+#include "lite/model_parser/flatbuffers/var_desc.h"
 #include "lite/model_parser/naive_buffer/block_desc.h"
 #include "lite/model_parser/naive_buffer/op_desc.h"
 #include "lite/model_parser/naive_buffer/program_desc.h"
@@ -295,6 +299,11 @@ TRANS_VAR_ANY_WITH_CPP_IMPL(naive_buffer::VarDesc);
 TRANS_OP_ANY_WITH_CPP_IMPL(naive_buffer::OpDesc);
 TRANS_BLOCK_ANY_WITH_CPP_IMPL(BlockDesc, naive_buffer, naive_buffer);
 TRANS_PROGRAM_ANY_WITH_CPP_IMPL(ProgramDesc, naive_buffer, naive_buffer);
+
+TRANS_VAR_ANY_WITH_CPP_IMPL(fbs::VarDesc);
+TRANS_OP_ANY_WITH_CPP_IMPL(fbs::OpDesc);
+TRANS_BLOCK_ANY_WITH_CPP_IMPL(BlockDesc, fbs, fbs);
+TRANS_PROGRAM_ANY_WITH_CPP_IMPL(ProgramDesc, fbs, fbs);
 
 #ifndef LITE_ON_TINY_PUBLISH
 TRANS_VAR_ANY_WITH_CPP_IMPL(pb::VarDesc);

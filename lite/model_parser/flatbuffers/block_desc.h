@@ -24,9 +24,8 @@ class BlockDesc : public BlockDescAPI {
  public:
   BlockDesc() = delete;
 
-  explicit BlockDesc(proto::BlockDesc* desc) {
+  explicit BlockDesc(proto::BlockDesc* desc): desc_(desc) {
     CHECK(desc_);
-    desc_.reset(desc);
   }
 
   int32_t Idx() const override { return desc_->idx(); }
@@ -70,7 +69,7 @@ class BlockDesc : public BlockDescAPI {
   }
 
  private:
-  std::unique_ptr<proto::BlockDesc> desc_;  // not_own
+  proto::BlockDesc* desc_;  // not_own
 };
 
 }  // namespace fbs
