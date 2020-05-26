@@ -18,12 +18,6 @@ namespace paddle {
 namespace lite {
 namespace fbs {
 
-template <>
-BlockDesc* ProgramDesc::GetBlock<BlockDesc>(
-    int32_t idx) {
-  CHECK_LT(idx, BlocksSize()) << "idx >= blocks.size()";
-  return raw_->blocks()[idx];
-}
 
 }  // namespace fbs
 }  // namespace lite

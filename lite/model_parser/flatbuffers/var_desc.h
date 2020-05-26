@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <unique_ptr>
 #include "lite/model_parser/flatbuffers/framework_generated.h"
 
 namespace paddle {
@@ -22,21 +23,29 @@ class VarDesc : public VarDescAPI {
  public:
   VarDesc() = default;
 
-  explicit VarDesc(std::string name) : name_(name) {}
+  explicit VarDesc(internal::VarDesc* raw_desc) {
+    raw_.reset(raw_desc);
+  }
 
-  std::string Name() const override { return name_; }
+  std::string Name() const override {
+    return raw_->name()->str();
+  }
 
   void SetName(std::string name) override {
     LOG(FATAL) << "Feature not yet supported.";
   }
 
-  Type GetType() const override { return type_; }
+  VarDescAPI::Type GetType() const override {
+    return raw_->type()->type();
+  }
 
-  void SetType(Type type) override {
+  void SetType(VarDescAPI::Type type) override {
     LOG(FATAL) << "Feature not yet supported.";
   }
 
-  bool Persistable() const override { return persistable_; }
+  bool Persistable() const override {
+    return raw_->persistable();
+  }
 
   void SetPersistable(bool persistable) override {
     LOG(FATAL) << "Feature not yet supported.";
@@ -46,10 +55,19 @@ class VarDesc : public VarDescAPI {
     LOG(FATAL) << "Feature not yet supported.";
   }
 
-  std::vector<int64_t> GetShape() const override { return shape_; }
+  std::vector<int64_t> GetShape() const override {
+    CHECK_EQ(type->type(), internal::VarType_::Type_LOD_TENSOR);
+    const auto& dims = type->lod_tensor()->tensor()->dims();
+    std::vector<int64_t> dims_vec;
+    dims_vec.reserve(dims.size());
+    for (const auto& dim: dims) {
+      dims_vec.push_back(dim);
+    }
+    return dims_vec;
+  }
 
  private:
-  
+  std::unique_ptr<internal::VarDesc> raw_;
 };
 
 }  // namespace fbs

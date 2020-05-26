@@ -18,7 +18,38 @@ namespace paddle {
 namespace lite {
 namespace fbs {
 
-  
+class ProgramDesc : public ProgramDescAPI {
+ public:
+  ProgramDesc() = delete;
+
+  explicit ProgramDesc(internal::ProgramDesc *raw_desc) {
+    CHECK(raw_desc);
+    raw_.reset(raw_desc);
+  }
+
+  size_t BlocksSize() const override { return desc_->blocks()->size(); }
+
+  void ClearBlocks() override { LOG(FATAL) << "Feature not yet supported."; }
+
+  template <typename T>
+  T *GetBlock(int32_t idx);
+
+  template <typename T>
+  T *AddBlock() {
+    LOG(FATAL) << "Feature not yet supported.";
+  }
+
+  bool HasVersion() const override { return desc_->version() == nullptr; }
+
+  int64_t Version() const override { return desc_->version()->version(); }
+
+  void SetVersion(int64_t version) override {
+    LOG(FATAL) << "Feature not yet supported.";
+  }
+
+ private:
+  std::unique_ptr<internal::ProgramDesc> raw_;
+};
 
 }  // namespace fbs
 }  // namespace lite
