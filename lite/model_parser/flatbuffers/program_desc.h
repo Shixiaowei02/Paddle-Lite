@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <unique_ptr>
 #include "lite/model_parser/flatbuffers/framework_generated.h"
 
 namespace paddle {
@@ -22,9 +23,9 @@ class ProgramDesc : public ProgramDescAPI {
  public:
   ProgramDesc() = delete;
 
-  explicit ProgramDesc(internal::ProgramDesc *raw_desc) {
-    CHECK(raw_desc);
-    raw_.reset(raw_desc);
+  explicit ProgramDesc(proto::ProgramDesc *desc) {
+    CHECK(desc);
+    desc_.reset(desc);
   }
 
   size_t BlocksSize() const override { return desc_->blocks()->size(); }
@@ -48,7 +49,7 @@ class ProgramDesc : public ProgramDescAPI {
   }
 
  private:
-  std::vector<fbs::BlockDesc> blocks_;
+  std::unique_ptr<proto::ProgramDesc> desc_; // not_own
 };
 
 }  // namespace fbs

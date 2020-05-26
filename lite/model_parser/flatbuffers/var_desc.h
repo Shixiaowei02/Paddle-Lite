@@ -23,12 +23,12 @@ class VarDesc : public VarDescAPI {
  public:
   VarDesc() = default;
 
-  explicit VarDesc(internal::VarDesc* raw_desc) {
-    raw_.reset(raw_desc);
+  explicit VarDesc(internal::VarDesc* desc) {
+    desc_.reset(desc);
   }
 
   std::string Name() const override {
-    return raw_->name()->str();
+    return desc_->name()->str();
   }
 
   void SetName(std::string name) override {
@@ -36,7 +36,7 @@ class VarDesc : public VarDescAPI {
   }
 
   VarDescAPI::Type GetType() const override {
-    return raw_->type()->type();
+    return desc_->type()->type();
   }
 
   void SetType(VarDescAPI::Type type) override {
@@ -44,7 +44,7 @@ class VarDesc : public VarDescAPI {
   }
 
   bool Persistable() const override {
-    return raw_->persistable();
+    return desc_->persistable();
   }
 
   void SetPersistable(bool persistable) override {
@@ -56,7 +56,7 @@ class VarDesc : public VarDescAPI {
   }
 
   std::vector<int64_t> GetShape() const override {
-    CHECK_EQ(type->type(), internal::VarType_::Type_LOD_TENSOR);
+    CHECK_EQ(type->type(), proto::VarType_::Type_LOD_TENSOR);
     const auto& dims = type->lod_tensor()->tensor()->dims();
     std::vector<int64_t> dims_vec;
     dims_vec.reserve(dims.size());
@@ -67,7 +67,7 @@ class VarDesc : public VarDescAPI {
   }
 
  private:
-  std::unique_ptr<internal::VarDesc> raw_;
+  std::unique_ptr<proto::VarDesc> desc_;
 };
 
 }  // namespace fbs
