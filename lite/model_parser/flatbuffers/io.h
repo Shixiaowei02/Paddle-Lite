@@ -18,8 +18,7 @@ namespace paddle {
 namespace lite {
 namespace fbs {
 
-void LoadModel(const std::string& path,
-               cpp::ProgramDesc *cpp_prog);
+
 
 }  // namespace fbs
 }  // namespace lite

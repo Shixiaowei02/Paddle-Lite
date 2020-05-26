@@ -332,6 +332,20 @@ void SaveCombinedParamsPb(const std::string &path,
   file.close();
 }
 
+void LoadModelFbs(const std::string& path,
+               cpp::ProgramDesc *cpp_prog) {
+  std::ifstream infile;
+  infile.open(path, std::ios::binary | std::ios::in);
+  infile.seekg(0,std::ios::end);
+  int length = infile.tellg();
+  infile.seekg(0,std::ios::beg);
+  char *data = new char[length];
+  infile.read(data, length);
+  infile.close();
+  auto fbs_prog = paddle::lite::fbs::proto::GetProgramDesc(data);
+  TransformProgramDescAnyToCpp(fbs_prog, cpp_prog);
+}
+
 void TensorToStream(std::ostream &os, const lite::Tensor &tensor) {
   // the 1st field, uint32_t version
   constexpr uint32_t version = 0;

@@ -19,7 +19,7 @@ namespace paddle {
 namespace lite {
 namespace fbs {
 
-void LoadModel(const std::string& path,
+void LoadModelFbs(const std::string& path,
                cpp::ProgramDesc *cpp_prog) {
   std::ifstream infile;
   infile.open(path, std::ios::binary | std::ios::in);

@@ -65,6 +65,9 @@ void SaveCombinedParamsPb(const std::string& path,
                           const lite::Scope& exec_scope,
                           const cpp::ProgramDesc& prog);
 
+void LoadModel(const std::string& path,
+               cpp::ProgramDesc *cpp_prog);
+
 // Serialize tensors to ostream.
 void SerializeTensor(std::ostream& os,
                      const lite::Scope& scope,
