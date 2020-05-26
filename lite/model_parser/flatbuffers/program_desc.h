@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <memory>
+#include "lite/model_parser/desc_apis.h"
 #include "lite/model_parser/flatbuffers/framework_generated.h"
 
 namespace paddle {

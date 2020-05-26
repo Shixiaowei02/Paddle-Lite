@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <memory>
+#include "lite/model_parser/desc_apis.h"
 #include "lite/model_parser/flatbuffers/framework_generated.h"
 
 namespace paddle {
@@ -23,7 +24,7 @@ class OpDesc : public OpDescAPI {
  public:
   OpDesc() = delete;
 
-  explicit OpDesc(framework::proto::OpDesc *desc) : desc_(desc) {
+  explicit OpDesc(proto::OpDesc *desc) {
     CHECK(desc_);
     desc_.reset(desc);
   }
@@ -36,20 +37,20 @@ class OpDesc : public OpDescAPI {
 
   // Get the arguments of parameter called `param`
   std::vector<std::string> Input(const std::string &param) const override {
-    const auto& input = desc_->inputs()->LookupByKey(param);
-    std::vector<std::string> input_vec;
-    input_vec.reserve(input.size());
-    for (const auto& in: input) {
-      input_vec.push_back(in->str());
+    const auto& var = desc_->inputs()->LookupByKey(param.c_str());
+    std::vector<std::string> args_vec;
+    args_vec.reserve(var->arguments()->size());
+    for (const auto& in: *var->arguments()) {
+      args_vec.push_back(in->str());
     }
-    return input_vec;
+    return args_vec;
   }
 
   std::vector<std::string> InputArgumentNames() const override {
-    const auto& inputs = desc_->inputs();
+    const auto& vars = desc_->inputs();
     std::vector<std::string> input_names_vec;
-    input_names_vec.reserve(inputs.size());
-    for (const auto& in: inputs) {
+    input_names_vec.reserve(vars->size());
+    for (const auto& in: *vars) {
       input_names_vec.push_back(in->parameter()->str());
     }
     return input_names_vec;
@@ -61,20 +62,20 @@ class OpDesc : public OpDescAPI {
   }
 
   std::vector<std::string> Output(const std::string &param) const override {
-    const auto& output = desc_->outputs()->LookupByKey(param);
-    std::vector<std::string> output_vec;
-    output_vec.reserve(output.size());
-    for (const auto& out: output) {
-      output_vec.push_back(out->str());
+    const auto& var = desc_->outputs()->LookupByKey(param.c_str());
+    std::vector<std::string> args_vec;
+    args_vec.reserve(var->arguments()->size());
+    for (const auto& out: *var->arguments()) {
+      args_vec.push_back(out->str());
     }
-    return output_vec;
+    return args_vec;
   }
 
   std::vector<std::string> OutputArgumentNames() const override {
-    const auto& outputs = desc_->outputs();
+    const auto& vars = desc_->outputs();
     std::vector<std::string> output_names_vec;
-    output_names_vec.reserve(outputs.size());
-    for (const auto& out: outputs) {
+    output_names_vec.reserve(vars->size());
+    for (const auto& out: *vars) {
       output_names_vec.push_back(out->parameter()->str());
     }
     return output_names_vec;
@@ -86,20 +87,20 @@ class OpDesc : public OpDescAPI {
   }
 
   bool HasAttr(const std::string &name) const override {
-    return desc_->attrs()->LookupByKey(name) == nullptr;
+    return desc_->attrs()->LookupByKey(name.c_str()) == nullptr;
   }
 
-  AttrType GetAttrType(const std::string &name) const override {
-    const auto& attr = desc_->attrs()->LookupByKey(name);
+  OpDescAPI::AttrType GetAttrType(const std::string &name) const override {
+    const auto& attr = desc_->attrs()->LookupByKey(name.c_str());
     CHECK(attr);
-    return attr->type();
+    return static_cast<OpDescAPI::AttrType>(attr->type());
   }
 
   std::vector<std::string> AttrNames() const override {
     const auto& attrs = desc_->attrs();
     std::vector<std::string> attr_names_vec;
-    attr_names_vec.reserve(attrs.size());
-    for (const auto& attr: attrs) {
+    attr_names_vec.reserve(attrs->size());
+    for (const auto& attr: *attrs) {
       attr_names_vec.push_back(attr->name()->str());
     }
     return attr_names_vec;

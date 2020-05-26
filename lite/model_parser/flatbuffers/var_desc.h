@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <memory>
+#include "lite/model_parser/desc_apis.h"
 #include "lite/model_parser/flatbuffers/framework_generated.h"
 
 namespace paddle {
@@ -23,7 +24,7 @@ class VarDesc : public VarDescAPI {
  public:
   VarDesc() = default;
 
-  explicit VarDesc(internal::VarDesc* desc) {
+  explicit VarDesc(proto::VarDesc* desc) {
     desc_.reset(desc);
   }
 
@@ -36,7 +37,7 @@ class VarDesc : public VarDescAPI {
   }
 
   VarDescAPI::Type GetType() const override {
-    return desc_->type()->type();
+    return static_cast<VarDescAPI::Type>(desc_->type()->type());
   }
 
   void SetType(VarDescAPI::Type type) override {
@@ -56,11 +57,11 @@ class VarDesc : public VarDescAPI {
   }
 
   std::vector<int64_t> GetShape() const override {
-    CHECK_EQ(type->type(), proto::VarType_::Type_LOD_TENSOR);
-    const auto& dims = type->lod_tensor()->tensor()->dims();
+    CHECK(GetType() == VarDescAPI::Type::LOD_TENSOR);
+    const auto& dims = desc_->type()->lod_tensor()->tensor()->dims();
     std::vector<int64_t> dims_vec;
-    dims_vec.reserve(dims.size());
-    for (const auto& dim: dims) {
+    dims_vec.reserve(dims->size());
+    for (const auto& dim: *dims) {
       dims_vec.push_back(dim);
     }
     return dims_vec;

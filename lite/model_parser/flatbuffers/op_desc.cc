@@ -20,36 +20,36 @@ namespace fbs {
 
 template <>
 std::string OpDesc::GetAttr<std::string>(const std::string &name) const {
-  const auto& it = desc_->attrs()->LookupByKey(name);
+  const auto& it = desc_->attrs()->LookupByKey(name.c_str());
   return it->s()->str();
 }
 
 template <>
 std::vector<std::string> OpDesc::GetAttr<std::vector<std::string>>(const std::string &name) const {
-  const auto& it = desc_->attrs()->LookupByKey(name);
+  const auto& it = desc_->attrs()->LookupByKey(name.c_str());
   std::vector<std::string> res;
-  for (const auto &v : it->strings()) {
+  for (const auto &v : *it->strings()) {
     res.push_back(v->str());
   }
   return res;
 }
 
-#define GET_ATTR_IMPL(T, fb_f__)                        \
-  template <>                                           \
-  T OpDesc::GetAttr<T>(const std::string &name) const { \
-    const auto& it = desc_->attrs()->LookupByKey(name); \
-    return it->fb_f__();                                \
+#define GET_ATTR_IMPL(T, fb_f__)                                \
+  template <>                                                   \
+  T OpDesc::GetAttr<T>(const std::string &name) const {         \
+    const auto& it = desc_->attrs()->LookupByKey(name.c_str()); \
+    return it->fb_f__();                                        \
   }
 
-#define GET_ATTRS_IMPL(T, fb_f__)                       \
-  template <>                                           \
-  T OpDesc::GetAttr<T>(const std::string &name) const { \
-    const auto& it = desc_->attrs()->LookupByKey(name); \
-    T res;                                              \
-    for (const auto &v : it->fb_f__()) {                \
-      res.push_back(v);                                 \
-    }                                                   \
-    return res;                                         \
+#define GET_ATTRS_IMPL(T, fb_f__)                               \
+  template <>                                                   \
+  T OpDesc::GetAttr<T>(const std::string &name) const {         \
+    const auto& it = desc_->attrs()->LookupByKey(name.c_str()); \
+    T res;                                                      \
+    for (const auto &v : *it->fb_f__()) {                       \
+      res.push_back(v);                                         \
+    }                                                           \
+    return res;                                                 \
   }
 
 GET_ATTR_IMPL(int32_t, i);

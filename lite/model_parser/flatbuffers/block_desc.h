@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <memory>
+#include "lite/model_parser/desc_apis.h"
 #include "lite/model_parser/flatbuffers/framework_generated.h"
 
 namespace paddle {
@@ -23,7 +24,7 @@ class BlockDesc : public BlockDescAPI {
  public:
   BlockDesc() = delete;
 
-  explicit BlockDesc(framework::proto::BlockDesc* desc) {
+  explicit BlockDesc(proto::BlockDesc* desc) {
     CHECK(desc_);
     desc_.reset(desc);
   }
