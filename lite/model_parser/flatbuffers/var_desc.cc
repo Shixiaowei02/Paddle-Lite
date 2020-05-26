@@ -13,13 +13,3 @@
 // limitations under the License.
 
 #include "lite/model_parser/flatbuffers/var_desc.h"
-
-namespace paddle {
-namespace lite {
-namespace fbs {
-
-  
-
-}  // namespace fbs
-}  // namespace lite
-}  // namespace paddle

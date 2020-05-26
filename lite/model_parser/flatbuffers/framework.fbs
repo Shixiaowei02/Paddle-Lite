@@ -1,6 +1,6 @@
 // Generated from framework.proto
 
-namespace paddle.lite.fbs.internal;
+namespace paddle.lite.fbs.proto;
 
 enum AttrType : int {
   INT = 0,
@@ -17,7 +17,7 @@ enum AttrType : int {
   LONGS = 11,
 }
 
-namespace paddle.lite.fbs.internal.VarType_;
+namespace paddle.lite.fbs.proto.VarType_;
 
 enum Type : int {
   BOOL = 0,
@@ -43,7 +43,7 @@ enum Type : int {
   INT8 = 21,
 }
 
-namespace paddle.lite.fbs.internal.CompatibleInfo_;
+namespace paddle.lite.fbs.proto.CompatibleInfo_;
 
 enum Type : int {
   COMPATIBLE = 0,
@@ -53,7 +53,7 @@ enum Type : int {
   PRECISION_CHANGE = 4,
 }
 
-namespace paddle.lite.fbs.internal;
+namespace paddle.lite.fbs.proto;
 
 table Version {
   version:long;
@@ -61,17 +61,17 @@ table Version {
 
 table OpDesc {
   type:string (required);
-  inputs:[paddle.lite.fbs.internal.OpDesc_.Var];
-  outputs:[paddle.lite.fbs.internal.OpDesc_.Var];
-  attrs:[paddle.lite.fbs.internal.OpDesc_.Attr];
+  inputs:[paddle.lite.fbs.proto.OpDesc_.Var];
+  outputs:[paddle.lite.fbs.proto.OpDesc_.Var];
+  attrs:[paddle.lite.fbs.proto.OpDesc_.Attr];
   is_target:bool;
 }
 
-namespace paddle.lite.fbs.internal.OpDesc_;
+namespace paddle.lite.fbs.proto.OpDesc_;
 
 table Attr {
   name:string (required, key);
-  type:paddle.lite.fbs.internal.AttrType;
+  type:paddle.lite.fbs.proto.AttrType;
   i:int;
   f:float;
   s:string;
@@ -91,47 +91,47 @@ table Var {
   arguments:[string];
 }
 
-namespace paddle.lite.fbs.internal;
+namespace paddle.lite.fbs.proto;
 
 table VarType {
-  type:paddle.lite.fbs.internal.VarType_.Type;
-  selected_rows:paddle.lite.fbs.internal.VarType_.TensorDesc;
-  lod_tensor:paddle.lite.fbs.internal.VarType_.LoDTensorDesc;
-  tensor_array:paddle.lite.fbs.internal.VarType_.LoDTensorArrayDesc;
-  reader:paddle.lite.fbs.internal.VarType_.ReaderDesc;
-  tuple:paddle.lite.fbs.internal.VarType_.Tuple;
+  type:paddle.lite.fbs.proto.VarType_.Type;
+  selected_rows:paddle.lite.fbs.proto.VarType_.TensorDesc;
+  lod_tensor:paddle.lite.fbs.proto.VarType_.LoDTensorDesc;
+  tensor_array:paddle.lite.fbs.proto.VarType_.LoDTensorArrayDesc;
+  reader:paddle.lite.fbs.proto.VarType_.ReaderDesc;
+  tuple:paddle.lite.fbs.proto.VarType_.Tuple;
 }
 
-namespace paddle.lite.fbs.internal.VarType_;
+namespace paddle.lite.fbs.proto.VarType_;
 
 table TensorDesc {
-  data_type:paddle.lite.fbs.internal.VarType_.Type;
+  data_type:paddle.lite.fbs.proto.VarType_.Type;
   dims:[long];
 }
 
 table LoDTensorDesc {
-  tensor:paddle.lite.fbs.internal.VarType_.TensorDesc (required);
+  tensor:paddle.lite.fbs.proto.VarType_.TensorDesc (required);
   lod_level:int;
 }
 
 table LoDTensorArrayDesc {
-  tensor:paddle.lite.fbs.internal.VarType_.TensorDesc (required);
+  tensor:paddle.lite.fbs.proto.VarType_.TensorDesc (required);
   lod_level:int;
 }
 
 table ReaderDesc {
-  lod_tensor:[paddle.lite.fbs.internal.VarType_.LoDTensorDesc];
+  lod_tensor:[paddle.lite.fbs.proto.VarType_.LoDTensorDesc];
 }
 
 table Tuple {
-  element_type:[paddle.lite.fbs.internal.VarType_.Type];
+  element_type:[paddle.lite.fbs.proto.VarType_.Type];
 }
 
-namespace paddle.lite.fbs.internal;
+namespace paddle.lite.fbs.proto;
 
 table VarDesc {
   name:string (required, key);
-  type:paddle.lite.fbs.internal.VarType (required);
+  type:paddle.lite.fbs.proto.VarType (required);
   persistable:bool;
   need_check_feed:bool;
 }
@@ -139,34 +139,34 @@ table VarDesc {
 table BlockDesc {
   idx:int;
   parent_idx:int;
-  vars:[paddle.lite.fbs.internal.VarDesc];
-  ops:[paddle.lite.fbs.internal.OpDesc];
+  vars:[paddle.lite.fbs.proto.VarDesc];
+  ops:[paddle.lite.fbs.proto.OpDesc];
   forward_block_idx:int = -1;
 }
 
 table CompatibleInfo {
   version:string (required);
-  type:paddle.lite.fbs.internal.CompatibleInfo_.Type;
+  type:paddle.lite.fbs.proto.CompatibleInfo_.Type;
 }
 
 table OpCompatibleMap {
-  pair:[paddle.lite.fbs.internal.OpCompatibleMap_.OpCompatiblePair];
+  pair:[paddle.lite.fbs.proto.OpCompatibleMap_.OpCompatiblePair];
   default_required_version:string;
 }
 
-namespace paddle.lite.fbs.internal.OpCompatibleMap_;
+namespace paddle.lite.fbs.proto.OpCompatibleMap_;
 
 table OpCompatiblePair {
   op_name:string (required, key);
-  compatible_info:paddle.lite.fbs.internal.CompatibleInfo (required);
+  compatible_info:paddle.lite.fbs.proto.CompatibleInfo (required);
 }
 
-namespace paddle.lite.fbs.internal;
+namespace paddle.lite.fbs.proto;
 
 table ProgramDesc {
-  blocks:[paddle.lite.fbs.internal.BlockDesc];
-  version:paddle.lite.fbs.internal.Version;
-  op_compatible_map:paddle.lite.fbs.internal.OpCompatibleMap;
+  blocks:[paddle.lite.fbs.proto.BlockDesc];
+  version:paddle.lite.fbs.proto.Version;
+  op_compatible_map:paddle.lite.fbs.proto.OpCompatibleMap;
 }
 
-root_type paddle.lite.fbs.internal.ProgramDesc;
+root_type paddle.lite.fbs.proto.ProgramDesc;

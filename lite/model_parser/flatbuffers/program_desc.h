@@ -48,7 +48,7 @@ class ProgramDesc : public ProgramDescAPI {
   }
 
  private:
-  std::unique_ptr<internal::ProgramDesc> raw_;
+  std::vector<fbs::BlockDesc> blocks_;
 };
 
 }  // namespace fbs
