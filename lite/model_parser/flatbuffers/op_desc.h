@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <unique_ptr>
+#include <memory>
 #include "lite/model_parser/flatbuffers/framework_generated.h"
 
 namespace paddle {
