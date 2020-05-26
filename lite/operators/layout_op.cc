@@ -30,7 +30,7 @@ bool LayoutOp::InferShapeImpl() const {
   return true;
 }
 bool LayoutOp::Run() { return OpLite::Run(); }
-bool LayoutOp::AttachImpl(const cpp::OpDesc &opdesc,
+bool LayoutOp::AttachImpl(const lite::OpDescAPI &opdesc,
                           paddle::lite::Scope *scope) {
   auto x = opdesc.Input("Input").front();
   auto out = opdesc.Output("Out").front();

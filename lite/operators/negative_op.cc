@@ -34,7 +34,7 @@ bool NegativeOpLite::InferShapeImpl() const {
 }
 
 // TODO(Superjomn) replace framework::OpDesc with a lite one.
-bool NegativeOpLite::AttachImpl(const cpp::OpDesc &op_desc,
+bool NegativeOpLite::AttachImpl(const lite::OpDescAPI &op_desc,
                                 lite::Scope *scope) {
   auto inputs = op_desc.Input("X").front();
   auto out = op_desc.Output("Out").front();

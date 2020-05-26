@@ -64,7 +64,7 @@ class RoiAlignComputeTester : public arena::TestCase {
     reader.close();
   }
 
-  void PrepareOpDesc(cpp::OpDesc* op_desc) {
+  void PrepareOpDesc(lite::OpDescAPI * op_desc) {
     op_desc->SetType("roi_align");
 
     op_desc->SetInput("X", {x_});

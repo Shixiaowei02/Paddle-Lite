@@ -68,7 +68,7 @@ bool GRUUnitOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool GRUUnitOpLite::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
+bool GRUUnitOpLite::AttachImpl(const lite::OpDescAPI &op_desc, lite::Scope *scope) {
   auto input = op_desc.Input("Input").front();
   auto hidden_prev = op_desc.Input("HiddenPrev").front();
   auto weight = op_desc.Input("Weight").front();

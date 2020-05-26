@@ -42,7 +42,7 @@ bool CtcAlignOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool CtcAlignOpLite::AttachImpl(const cpp::OpDesc& op_desc,
+bool CtcAlignOpLite::AttachImpl(const lite::OpDescAPI & op_desc,
                                 lite::Scope* scope) {
   AttachInput(op_desc, scope, "Input", false, &param_.input);
   AttachInput(op_desc, scope, "InputLength", true, &param_.input_length);

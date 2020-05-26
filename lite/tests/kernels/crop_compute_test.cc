@@ -88,7 +88,7 @@ class CropComputeTester : public arena::TestCase {
     LOG(INFO) << "get out of runbase";
   }
 
-  void PrepareOpDesc(cpp::OpDesc* op_desc) {
+  void PrepareOpDesc(lite::OpDescAPI * op_desc) {
     op_desc->SetType("crop");
     op_desc->SetInput("X", {input_});
     op_desc->SetOutput("Out", {output_});

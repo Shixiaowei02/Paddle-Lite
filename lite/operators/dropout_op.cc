@@ -38,7 +38,7 @@ bool DropoutOp::InferShapeImpl() const {
 }
 
 // TODO(Superjomn) replace framework::OpDesc with a lite one.
-bool DropoutOp::AttachImpl(const cpp::OpDesc& op_desc, lite::Scope* scope) {
+bool DropoutOp::AttachImpl(const lite::OpDescAPI & op_desc, lite::Scope* scope) {
   auto input = op_desc.Input("X").front();
   auto out = op_desc.Output("Out").front();
   auto Mask = op_desc.Output("Mask").front();

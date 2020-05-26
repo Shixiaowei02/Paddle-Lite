@@ -68,7 +68,7 @@ bool GRUOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool GRUOpLite::AttachImpl(const cpp::OpDesc& op_desc, lite::Scope* scope) {
+bool GRUOpLite::AttachImpl(const lite::OpDescAPI & op_desc, lite::Scope* scope) {
   auto input = op_desc.Input("Input").front();
   auto weight = op_desc.Input("Weight").front();
   auto batch_gate = op_desc.Output("BatchGate").front();

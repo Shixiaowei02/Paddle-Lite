@@ -29,7 +29,7 @@ class ElementwiseOp : public OpLite {
 
   bool InferShapeImpl() const override;
 
-  bool AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) override;
+  bool AttachImpl(const lite::OpDescAPI & opdesc, lite::Scope* scope) override;
 
   void AttachKernel(KernelBase* kernel) override { kernel->SetParam(param_); }
 
@@ -49,7 +49,7 @@ class ElementwiseOp : public OpLite {
 
 //   bool InferShapeImpl() const override;
 
-//   bool AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) override;
+//   bool AttachImpl(const lite::OpDescAPI & opdesc, lite::Scope* scope) override;
 
 //   void AttachKernel(KernelBase* kernel) override { kernel->SetParam(param_);
 //   }

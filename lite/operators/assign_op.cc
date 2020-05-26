@@ -38,7 +38,7 @@ bool AssignOpLite::InferShapeImpl() const {
 }
 
 // TODO(Superjomn) replace framework::OpDesc with a lite one.
-bool AssignOpLite::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
+bool AssignOpLite::AttachImpl(const lite::OpDescAPI &op_desc, lite::Scope *scope) {
   auto x_name = op_desc.Input("X").front();
   auto out_name = op_desc.Output("Out").front();
 

@@ -33,7 +33,7 @@ bool CastOp::InferShapeImpl() const {
   return true;
 }
 
-bool CastOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
+bool CastOp::AttachImpl(const lite::OpDescAPI &opdesc, lite::Scope *scope) {
   param_.X =
       scope->FindVar(opdesc.Input("X").front())->GetMutable<lite::Tensor>();
   param_.Out =

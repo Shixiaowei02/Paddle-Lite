@@ -293,7 +293,7 @@ class ReduceMaxComputeTester : public arena::TestCase {
     }
   }
 
-  void PrepareOpDesc(cpp::OpDesc* op_desc) {
+  void PrepareOpDesc(lite::OpDescAPI * op_desc) {
     op_desc->SetType("reduce_max");
     op_desc->SetInput("X", {input_});
     op_desc->SetOutput("Out", {output_});

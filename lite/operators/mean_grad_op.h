@@ -29,7 +29,7 @@ class MeanGradOp : public OpLite {
 
   bool InferShapeImpl() const override;
 
-  bool AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) override;
+  bool AttachImpl(const lite::OpDescAPI &op_desc, lite::Scope *scope) override;
 
   void AttachKernel(KernelBase *kernel) override { kernel->SetParam(param_); }
 

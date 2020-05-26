@@ -47,7 +47,7 @@ bool MulticlassNmsOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool MulticlassNmsOpLite::AttachImpl(const cpp::OpDesc& opdesc,
+bool MulticlassNmsOpLite::AttachImpl(const lite::OpDescAPI & opdesc,
                                      lite::Scope* scope) {
   auto bboxes_name = opdesc.Input("BBoxes").front();
   auto scores_name = opdesc.Input("Scores").front();

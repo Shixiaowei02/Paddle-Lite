@@ -41,7 +41,7 @@ bool DistributeFpnProposalsOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool DistributeFpnProposalsOpLite::AttachImpl(const cpp::OpDesc &op_desc,
+bool DistributeFpnProposalsOpLite::AttachImpl(const lite::OpDescAPI &op_desc,
                                               lite::Scope *scope) {
   auto fpn_rois = op_desc.Input("FpnRois").front();
   param_.fpn_rois = scope->FindVar(fpn_rois)->GetMutable<lite::Tensor>();

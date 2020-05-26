@@ -72,7 +72,7 @@ bool ReduceOp::InferShapeImpl() const {
   return true;
 }
 
-bool ReduceOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
+bool ReduceOp::AttachImpl(const lite::OpDescAPI &opdesc, lite::Scope *scope) {
   param_.x =
       scope->FindVar(opdesc.Input("X").front())->GetMutable<lite::Tensor>();
   param_.output =

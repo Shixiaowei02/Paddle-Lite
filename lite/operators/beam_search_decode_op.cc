@@ -30,7 +30,7 @@ bool BeamSearchDecodeOpLite::CheckShape() const {
 
 bool BeamSearchDecodeOpLite::InferShapeImpl() const { return true; }
 
-bool BeamSearchDecodeOpLite::AttachImpl(const cpp::OpDesc &op_desc,
+bool BeamSearchDecodeOpLite::AttachImpl(const lite::OpDescAPI &op_desc,
                                         lite::Scope *scope) {
   auto ids = op_desc.Input("Ids").front();
   auto scores = op_desc.Input("Scores").front();

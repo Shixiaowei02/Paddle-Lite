@@ -32,7 +32,7 @@ bool PowerOp::InferShapeImpl() const {
   return true;
 }
 
-bool PowerOp::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
+bool PowerOp::AttachImpl(const lite::OpDescAPI &op_desc, lite::Scope *scope) {
   auto X = op_desc.Input("X").front();
   auto Out = op_desc.Output("Out").front();
   param_.X = scope->FindVar(X)->GetMutable<lite::Tensor>();

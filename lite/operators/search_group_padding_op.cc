@@ -40,7 +40,7 @@ bool SearchGroupPaddingOp::InferShapeImpl() const {
   return true;
 }
 
-bool SearchGroupPaddingOp::AttachImpl(const cpp::OpDesc &op_desc,
+bool SearchGroupPaddingOp::AttachImpl(const lite::OpDescAPI &op_desc,
                                       lite::Scope *scope) {
   auto x = op_desc.Input("X").front();
   auto out_emb_padding = op_desc.Output("Out_emb_padding").front();

@@ -40,7 +40,7 @@ bool FillConstantBatchSizeLikeOp::InferShapeImpl() const {
   return true;
 }
 
-bool FillConstantBatchSizeLikeOp::AttachImpl(const cpp::OpDesc& opdesc,
+bool FillConstantBatchSizeLikeOp::AttachImpl(const lite::OpDescAPI & opdesc,
                                              lite::Scope* scope) {
   auto out_name = opdesc.Output("Out").front();
   auto input_name = opdesc.Input("Input").front();

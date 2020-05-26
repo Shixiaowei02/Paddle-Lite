@@ -78,7 +78,7 @@ class GenerateProposalsComputeTester : public arena::TestCase {
     reader.close();
   }
 
-  void PrepareOpDesc(cpp::OpDesc* op_desc) {
+  void PrepareOpDesc(lite::OpDescAPI * op_desc) {
     op_desc->SetType("generate_proposals");
 
     op_desc->SetInput("Scores", {Scores_});

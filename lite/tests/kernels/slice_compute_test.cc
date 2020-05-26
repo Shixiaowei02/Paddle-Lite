@@ -156,7 +156,7 @@ class SliceComputeTester : public arena::TestCase {
     slice_ref(input_data, in_dims.data(), axes_, starts_, ends_, out_data);
   }
 
-  void PrepareOpDesc(cpp::OpDesc* op_desc) {
+  void PrepareOpDesc(lite::OpDescAPI * op_desc) {
     op_desc->SetType("slice");
     op_desc->SetInput("Input", {input_});
 

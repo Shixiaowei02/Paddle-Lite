@@ -28,7 +28,7 @@ bool ReadFromArrayOp::CheckShape() const {
 
 bool ReadFromArrayOp::InferShapeImpl() const { return true; }
 
-bool ReadFromArrayOp::AttachImpl(const cpp::OpDesc &opdesc,
+bool ReadFromArrayOp::AttachImpl(const lite::OpDescAPI &opdesc,
                                  lite::Scope *scope) {
   auto in = opdesc.Input("X").front();
   param_.X = scope->FindVar(in)->GetMutable<std::vector<lite::Tensor>>();

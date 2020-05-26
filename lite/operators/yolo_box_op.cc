@@ -59,7 +59,7 @@ bool YoloBoxOp::InferShapeImpl() const {
   return true;
 }
 
-bool YoloBoxOp::AttachImpl(const cpp::OpDesc& op_desc, lite::Scope* scope) {
+bool YoloBoxOp::AttachImpl(const lite::OpDescAPI & op_desc, lite::Scope* scope) {
   auto X = op_desc.Input("X").front();
   auto ImgSize = op_desc.Input("ImgSize").front();
   auto Boxes = op_desc.Output("Boxes").front();

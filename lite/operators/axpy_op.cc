@@ -42,7 +42,7 @@ bool AxpyOpLite::InferShapeImpl() const {
   return true;
 }
 // TODO(Superjomn) replace framework::OpDesc with a lite one.
-bool AxpyOpLite::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
+bool AxpyOpLite::AttachImpl(const lite::OpDescAPI &op_desc, lite::Scope *scope) {
   auto scale = op_desc.Input("Scale").front();
   auto x = op_desc.Input("X").front();
   auto bias = op_desc.Input("Bias").front();

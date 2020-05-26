@@ -34,7 +34,7 @@ bool DecodeBboxesOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool DecodeBboxesOpLite::AttachImpl(const cpp::OpDesc& opdesc,
+bool DecodeBboxesOpLite::AttachImpl(const lite::OpDescAPI & opdesc,
                                     lite::Scope* scope) {
   auto Loc_name = opdesc.Input("Loc").front();
   auto Prior_name = opdesc.Input("Prior").front();

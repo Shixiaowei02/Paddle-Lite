@@ -48,7 +48,7 @@ bool FlattenOp::InferShapeImpl() const {
   return true;
 }
 
-bool FlattenOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
+bool FlattenOp::AttachImpl(const lite::OpDescAPI &opdesc, lite::Scope *scope) {
   auto x_var = scope->FindVar(opdesc.Input("X").front());
   auto output_var = scope->FindVar(opdesc.Output("Out").front());
   CHECK(x_var);
@@ -82,7 +82,7 @@ bool Flatten2Op::InferShapeImpl() const {
   return true;
 }
 
-bool Flatten2Op::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
+bool Flatten2Op::AttachImpl(const lite::OpDescAPI &opdesc, lite::Scope *scope) {
   FlattenOp::AttachImpl(opdesc, scope);
   auto xshape_var = scope->FindVar(opdesc.Output("XShape").front());
   CHECK(xshape_var);

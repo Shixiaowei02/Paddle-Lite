@@ -32,7 +32,7 @@ bool ActivationOp::InferShapeImpl() const {
   return true;
 }
 
-bool ActivationOp::AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) {
+bool ActivationOp::AttachImpl(const lite::OpDescAPI & opdesc, lite::Scope* scope) {
   auto x_name = opdesc.Input("X").front();
   auto out_name = opdesc.Output("Out").front();
   param_.X = scope->FindVar(x_name)->GetMutable<lite::Tensor>();

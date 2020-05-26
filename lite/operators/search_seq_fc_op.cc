@@ -52,7 +52,7 @@ bool SearchSeqFcOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool SearchSeqFcOpLite::AttachImpl(const cpp::OpDesc& op_desc,
+bool SearchSeqFcOpLite::AttachImpl(const lite::OpDescAPI & op_desc,
                                    lite::Scope* scope) {
   CHECK(!op_desc.Input("X").empty());
   CHECK(!op_desc.Input("W").empty());

@@ -48,7 +48,7 @@ bool FillConstantOp::InferShapeImpl() const {
   return true;
 }
 
-bool FillConstantOp::AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) {
+bool FillConstantOp::AttachImpl(const lite::OpDescAPI & opdesc, lite::Scope* scope) {
   auto out_name = opdesc.Output("Out").front();
 
   param_.out = GetMutableVar<lite::Tensor>(scope, out_name);

@@ -38,7 +38,7 @@ class FakeChannelWiseDequantizeMaxAbsOpLite : public OpLite {
 
   bool InferShapeImpl() const override { return true; }
 
-  bool AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) override {
+  bool AttachImpl(const lite::OpDescAPI &op_desc, lite::Scope *scope) override {
     auto x = op_desc.Input("X").front();
     param_.x = scope->FindVar(x)->GetMutable<lite::Tensor>();
 

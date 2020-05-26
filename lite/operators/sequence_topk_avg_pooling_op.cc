@@ -58,7 +58,7 @@ bool SequenceTopkAvgPoolingOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool SequenceTopkAvgPoolingOpLite::AttachImpl(const cpp::OpDesc &op_desc,
+bool SequenceTopkAvgPoolingOpLite::AttachImpl(const lite::OpDescAPI &op_desc,
                                               lite::Scope *scope) {
   auto X = op_desc.Input("X").front();
   auto ROW = op_desc.Input("ROW").front();

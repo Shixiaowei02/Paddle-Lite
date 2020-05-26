@@ -33,7 +33,7 @@ class FetchOp : public OpLite {
   void AttachKernel(KernelBase* kernel) override { kernel->SetParam(param_); }
 
  protected:
-  bool AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) override {
+  bool AttachImpl(const lite::OpDescAPI & opdesc, lite::Scope* scope) override {
     auto _x = opdesc.Input("X").front();
     auto* x = scope->FindVar(_x);
     CHECK(x);

@@ -67,7 +67,7 @@ bool SequenceExpandOp::InferShapeImpl() const {
   return true;
 }
 
-bool SequenceExpandOp::AttachImpl(const cpp::OpDesc &opdesc,
+bool SequenceExpandOp::AttachImpl(const lite::OpDescAPI &opdesc,
                                   lite::Scope *scope) {
   param_.X = const_cast<lite::Tensor *>(
       &scope->FindVar(opdesc.Input("X").front())->Get<lite::Tensor>());

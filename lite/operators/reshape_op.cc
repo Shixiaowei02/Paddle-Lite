@@ -55,7 +55,7 @@ bool ReshapeOp::InferShapeImpl() const {
   return true;
 }
 
-bool ReshapeOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
+bool ReshapeOp::AttachImpl(const lite::OpDescAPI &opdesc, lite::Scope *scope) {
   AttachParam(&param_);
   param_.x =
       scope->FindVar(opdesc.Input("X").front())->GetMutable<lite::Tensor>();
@@ -112,7 +112,7 @@ bool Reshape2Op::InferShapeImpl() const {
   return true;
 }
 
-bool Reshape2Op::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
+bool Reshape2Op::AttachImpl(const lite::OpDescAPI &opdesc, lite::Scope *scope) {
   ReshapeOp::AttachImpl(opdesc, scope);
   auto xshape_var = scope->FindVar(opdesc.Output("XShape").front());
   param_.xshape = xshape_var->GetMutable<lite::Tensor>();

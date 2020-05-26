@@ -30,7 +30,7 @@ bool IoCopyOp::InferShapeImpl() const {
   return true;
 }
 bool IoCopyOp::Run() { return OpLite::Run(); }
-bool IoCopyOp::AttachImpl(const cpp::OpDesc &opdesc,
+bool IoCopyOp::AttachImpl(const lite::OpDescAPI &opdesc,
                           paddle::lite::Scope *scope) {
   auto x = opdesc.Input("Input").front();
   auto out = opdesc.Output("Out").front();

@@ -48,7 +48,7 @@ bool GridSamplerOp::InferShapeImpl() const {
   return true;
 }
 
-bool GridSamplerOp::AttachImpl(const cpp::OpDesc& op_desc, lite::Scope* scope) {
+bool GridSamplerOp::AttachImpl(const lite::OpDescAPI & op_desc, lite::Scope* scope) {
   param_.x = scope->FindVar(op_desc.Input("X").front())->GetMutable<Tensor>();
   param_.grid =
       scope->FindVar(op_desc.Input("Grid").front())->GetMutable<Tensor>();

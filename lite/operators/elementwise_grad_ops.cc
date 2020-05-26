@@ -38,7 +38,7 @@ bool ElementwiseGradOp::InferShapeImpl() const {
   return true;
 }
 
-bool ElementwiseGradOp::AttachImpl(const cpp::OpDesc& opdesc,
+bool ElementwiseGradOp::AttachImpl(const lite::OpDescAPI & opdesc,
                                    lite::Scope* scope) {
   auto Y_name = opdesc.Input("Y").front();
   auto X_name = opdesc.Input("X").front();

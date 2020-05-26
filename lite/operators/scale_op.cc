@@ -29,7 +29,7 @@ bool ScaleOp::InferShapeImpl() const {
   return true;
 }
 
-bool ScaleOp::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
+bool ScaleOp::AttachImpl(const lite::OpDescAPI &op_desc, lite::Scope *scope) {
   AttachParam(&param_);
   auto x = op_desc.Input("X").front();
   auto output = op_desc.Output("Out").front();

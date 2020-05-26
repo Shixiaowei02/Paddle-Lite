@@ -66,7 +66,7 @@ bool BoxCoderOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool BoxCoderOpLite::AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) {
+bool BoxCoderOpLite::AttachImpl(const lite::OpDescAPI & opdesc, lite::Scope* scope) {
   auto Prior_box_name = opdesc.Input("PriorBox").front();
   auto Target_box_name = opdesc.Input("TargetBox").front();
   auto Output_box_name = opdesc.Output("OutputBox").front();

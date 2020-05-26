@@ -49,7 +49,7 @@ bool CollectFpnProposalsOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool CollectFpnProposalsOpLite::AttachImpl(const cpp::OpDesc& op_desc,
+bool CollectFpnProposalsOpLite::AttachImpl(const lite::OpDescAPI & op_desc,
                                            lite::Scope* scope) {
   auto rois_names = op_desc.Input("MultiLevelRois");
   for (const auto& var_name : rois_names) {

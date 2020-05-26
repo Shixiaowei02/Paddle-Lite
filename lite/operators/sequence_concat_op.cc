@@ -28,7 +28,7 @@ bool SequenceConcatOp::CheckShape() const {
 
 bool SequenceConcatOp::InferShapeImpl() const { return true; }
 
-bool SequenceConcatOp::AttachImpl(const cpp::OpDesc &opdesc,
+bool SequenceConcatOp::AttachImpl(const lite::OpDescAPI &opdesc,
                                   lite::Scope *scope) {
   auto input_list = opdesc.Input("X");
   param_.X.clear();

@@ -31,7 +31,7 @@ class MeanOp : public OpLite {
 
   void AttachKernel(KernelBase *kernel) override { kernel->SetParam(param_); }
 
-  bool AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) override;
+  bool AttachImpl(const lite::OpDescAPI &op_desc, lite::Scope *scope) override;
 
   std::string DebugString() const override { return "mean"; }
 

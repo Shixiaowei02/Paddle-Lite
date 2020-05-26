@@ -60,7 +60,7 @@ class RangeComputeTester : public arena::TestCase {
     }
   }
 
-  void PrepareOpDesc(cpp::OpDesc* op_desc) {
+  void PrepareOpDesc(lite::OpDescAPI * op_desc) {
     op_desc->SetType("range");
     op_desc->SetInput("Start", {start});
     op_desc->SetInput("End", {end});

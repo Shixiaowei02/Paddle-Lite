@@ -50,7 +50,7 @@ bool SearchSeqDepaddingOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool SearchSeqDepaddingOpLite::AttachImpl(const cpp::OpDesc& op_desc,
+bool SearchSeqDepaddingOpLite::AttachImpl(const lite::OpDescAPI & op_desc,
                                           lite::Scope* scope) {
   auto pad = op_desc.Input("Pad").front();
   auto src = op_desc.Input("Src").front();

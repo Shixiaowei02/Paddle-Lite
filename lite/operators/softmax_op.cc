@@ -37,7 +37,7 @@ bool SoftmaxOp::InferShapeImpl() const {
   return true;
 }
 
-bool SoftmaxOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
+bool SoftmaxOp::AttachImpl(const lite::OpDescAPI &opdesc, lite::Scope *scope) {
   AttachParam(&param_);
 
   param_.x = const_cast<lite::Tensor *>(

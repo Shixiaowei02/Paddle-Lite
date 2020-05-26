@@ -46,7 +46,7 @@ bool LookupTableV2OpLite::InferShapeImpl() const {
   return true;
 }
 
-bool LookupTableV2OpLite::AttachImpl(const cpp::OpDesc &op_desc,
+bool LookupTableV2OpLite::AttachImpl(const lite::OpDescAPI &op_desc,
                                      lite::Scope *scope) {
   auto input = op_desc.Input("W").front();
   auto ids = op_desc.Input("Ids").front();

@@ -160,7 +160,7 @@ class FcOPTest : public arena::TestCase {
 #endif
   }
 
-  void PrepareOpDesc(cpp::OpDesc* op_desc) {
+  void PrepareOpDesc(lite::OpDescAPI * op_desc) {
     op_desc->SetType("fc");
     op_desc->SetInput("Input", {input_});
     if (padding_weights_) {

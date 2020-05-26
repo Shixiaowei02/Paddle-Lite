@@ -31,7 +31,7 @@ bool SearchSeqSoftmaxOp::InferShapeImpl() const {
   return true;
 }
 
-bool SearchSeqSoftmaxOp::AttachImpl(const cpp::OpDesc &opdesc,
+bool SearchSeqSoftmaxOp::AttachImpl(const lite::OpDescAPI &opdesc,
                                     lite::Scope *scope) {
   param_.x = const_cast<lite::Tensor *>(
       &scope->FindVar(opdesc.Input("X").front())->Get<lite::Tensor>());

@@ -34,7 +34,7 @@ bool BinaryLogicalOp::InferShapeImpl() const {
   return true;
 }
 
-bool BinaryLogicalOp::AttachImpl(const cpp::OpDesc &opdesc,
+bool BinaryLogicalOp::AttachImpl(const lite::OpDescAPI &opdesc,
                                  lite::Scope *scope) {
   param_.X =
       scope->FindVar(opdesc.Input("X").front())->GetMutable<lite::Tensor>();
@@ -61,7 +61,7 @@ bool UnaryLogicalOp::InferShapeImpl() const {
   return true;
 }
 
-bool UnaryLogicalOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
+bool UnaryLogicalOp::AttachImpl(const lite::OpDescAPI &opdesc, lite::Scope *scope) {
   param_.X =
       scope->FindVar(opdesc.Input("X").front())->GetMutable<lite::Tensor>();
   param_.Out =

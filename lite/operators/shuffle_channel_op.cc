@@ -32,7 +32,7 @@ bool ShuffleChannelOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool ShuffleChannelOpLite::AttachImpl(const cpp::OpDesc& op_desc,
+bool ShuffleChannelOpLite::AttachImpl(const lite::OpDescAPI & op_desc,
                                       lite::Scope* scope) {
   auto X = op_desc.Input("X").front();
   auto Out = op_desc.Output("Out").front();

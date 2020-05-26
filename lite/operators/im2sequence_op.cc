@@ -52,7 +52,7 @@ bool Im2SequenceOp::InferShapeImpl() const {
   return true;
 }
 
-bool Im2SequenceOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
+bool Im2SequenceOp::AttachImpl(const lite::OpDescAPI &opdesc, lite::Scope *scope) {
   param_.X =
       scope->FindVar(opdesc.Input("X").front())->GetMutable<lite::Tensor>();
   if (opdesc.Input("Y").size()) {

@@ -33,7 +33,7 @@ bool IncrementOp::InferShapeImpl() const {
   return true;
 }
 
-bool IncrementOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
+bool IncrementOp::AttachImpl(const lite::OpDescAPI &opdesc, lite::Scope *scope) {
   param_.X = scope->FindMutableTensor(opdesc.Input("X").front());
   param_.Out = scope->FindMutableTensor(opdesc.Output("Out").front());
   CHECK(param_.X);

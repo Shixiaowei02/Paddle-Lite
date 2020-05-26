@@ -37,7 +37,7 @@ bool SequenceReverseOp::InferShapeImpl() const {
   return true;
 }
 
-bool SequenceReverseOp::AttachImpl(const cpp::OpDesc &opdesc,
+bool SequenceReverseOp::AttachImpl(const lite::OpDescAPI &opdesc,
                                    lite::Scope *scope) {
   param_.X = const_cast<lite::Tensor *>(
       &scope->FindVar(opdesc.Input("X").front())->Get<lite::Tensor>());

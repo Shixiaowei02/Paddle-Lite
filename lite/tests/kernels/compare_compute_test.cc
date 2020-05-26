@@ -137,7 +137,7 @@ class CompareComputeTester : public arena::TestCase {
     }
   }
 
-  void PrepareOpDesc(cpp::OpDesc* op_desc) {
+  void PrepareOpDesc(lite::OpDescAPI * op_desc) {
     op_desc->SetType(op_);
     op_desc->SetInput("X", {x_});
     op_desc->SetInput("Y", {y_});

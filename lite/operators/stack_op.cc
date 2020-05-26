@@ -44,7 +44,7 @@ bool StackOp::InferShapeImpl() const {
   return true;
 }
 
-bool StackOp::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
+bool StackOp::AttachImpl(const lite::OpDescAPI &op_desc, lite::Scope *scope) {
   auto X = op_desc.Input("X");
   auto Out = op_desc.Output("Y").front();
   param_.X.clear();

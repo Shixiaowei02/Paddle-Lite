@@ -27,7 +27,7 @@ bool UniformRandomOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool UniformRandomOpLite::AttachImpl(const cpp::OpDesc& opdesc,
+bool UniformRandomOpLite::AttachImpl(const lite::OpDescAPI & opdesc,
                                      lite::Scope* scope) {
   param_.shape = opdesc.GetAttr<std::vector<int64_t>>("shape");
   param_.min = opdesc.GetAttr<float>("min");

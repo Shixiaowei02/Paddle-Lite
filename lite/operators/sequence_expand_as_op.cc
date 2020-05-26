@@ -55,7 +55,7 @@ bool SequenceExpandAsOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool SequenceExpandAsOpLite::AttachImpl(const cpp::OpDesc &op_desc,
+bool SequenceExpandAsOpLite::AttachImpl(const lite::OpDescAPI &op_desc,
                                         lite::Scope *scope) {
   auto x = op_desc.Input("X").front();
   auto y = op_desc.Input("Y").front();

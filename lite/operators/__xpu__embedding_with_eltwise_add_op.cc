@@ -46,7 +46,7 @@ bool XPUEmbeddingWithEltwiseAddOp::InferShapeImpl() const {
   return true;
 }
 
-bool XPUEmbeddingWithEltwiseAddOp::AttachImpl(const cpp::OpDesc& op_desc,
+bool XPUEmbeddingWithEltwiseAddOp::AttachImpl(const lite::OpDescAPI & op_desc,
                                               lite::Scope* scope) {
   param_.Out = scope->FindVar(op_desc.Output("Output").front())
                    ->GetMutable<lite::Tensor>();

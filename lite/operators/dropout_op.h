@@ -32,7 +32,7 @@ class DropoutOp : public OpLite {
 
   void AttachKernel(KernelBase* kernel) override { kernel->SetParam(param_); }
   // TODO(Superjomn) replace framework::OpDesc with a lite one.
-  bool AttachImpl(const cpp::OpDesc& op_desc, lite::Scope* scope) override;
+  bool AttachImpl(const lite::OpDescAPI & op_desc, lite::Scope* scope) override;
 
   std::string DebugString() const override { return "dropout"; }
 

@@ -51,7 +51,7 @@ bool AffineChannelOpLite::InferShapeImpl() const {
 }
 
 // TODO(Superjomn) replace framework::OpDesc with a lite one.
-bool AffineChannelOpLite::AttachImpl(const cpp::OpDesc &op_desc,
+bool AffineChannelOpLite::AttachImpl(const lite::OpDescAPI &op_desc,
                                      lite::Scope *scope) {
   auto x = op_desc.Input("X").front();
   auto scale = op_desc.Input("Scale").front();

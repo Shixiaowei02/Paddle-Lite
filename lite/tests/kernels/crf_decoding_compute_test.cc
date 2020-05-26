@@ -46,7 +46,7 @@ class CrfDecodingComputeTester : public arena::TestCase {
     }
   }
 
-  void PrepareOpDesc(cpp::OpDesc* op_desc) {
+  void PrepareOpDesc(lite::OpDescAPI * op_desc) {
     op_desc->SetType("crf_decoding");
     op_desc->SetInput("Emission", {emission_});
     op_desc->SetInput("Transition", {transition_});

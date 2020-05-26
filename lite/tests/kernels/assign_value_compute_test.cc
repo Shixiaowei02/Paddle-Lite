@@ -67,7 +67,7 @@ class AssignValueComputeTester : public arena::TestCase {
     }
   }
 
-  void PrepareOpDesc(cpp::OpDesc* op_desc) {
+  void PrepareOpDesc(lite::OpDescAPI * op_desc) {
     op_desc->SetType("assign_value");
     op_desc->SetAttr("shape", shape_);
     op_desc->SetAttr("dtype", dtype_);

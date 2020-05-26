@@ -115,7 +115,7 @@ class ReshapeComputeTester : public arena::TestCase {
     }
   }
 
-  void PrepareOpDesc(cpp::OpDesc* op_desc) {
+  void PrepareOpDesc(lite::OpDescAPI * op_desc) {
     op_desc->SetType(op_type_);
     op_desc->SetInput("X", {input_});
     if (shape_tensor_vct_.size() > 0) {

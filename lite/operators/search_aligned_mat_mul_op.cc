@@ -76,7 +76,7 @@ bool SearchAlignedMatMulOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool SearchAlignedMatMulOpLite::AttachImpl(const cpp::OpDesc& op_desc,
+bool SearchAlignedMatMulOpLite::AttachImpl(const lite::OpDescAPI & op_desc,
                                            lite::Scope* scope) {
   CHECK(!op_desc.Input("X").empty());
   CHECK(!op_desc.Input("Y").empty());

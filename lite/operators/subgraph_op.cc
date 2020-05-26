@@ -24,7 +24,7 @@ bool SubgraphOp::CheckShape() const { return true; }
 
 bool SubgraphOp::InferShapeImpl() const { return CheckShape(); /* enrich me */ }
 
-bool SubgraphOp::AttachImpl(const cpp::OpDesc& op_desc, lite::Scope* scope) {
+bool SubgraphOp::AttachImpl(const lite::OpDescAPI & op_desc, lite::Scope* scope) {
   param_.input_names = op_desc.Input("Inputs");
   param_.output_names = op_desc.Output("Outputs");
   for (auto& input_name : param_.input_names) {

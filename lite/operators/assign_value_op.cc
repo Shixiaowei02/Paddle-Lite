@@ -43,7 +43,7 @@ bool AssignValueOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool AssignValueOpLite::AttachImpl(const cpp::OpDesc &op_desc,
+bool AssignValueOpLite::AttachImpl(const lite::OpDescAPI &op_desc,
                                    lite::Scope *scope) {
   param_.shape = op_desc.GetAttr<std::vector<int>>("shape");
   param_.dtype = op_desc.GetAttr<int>("dtype");

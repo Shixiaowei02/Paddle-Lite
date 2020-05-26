@@ -40,7 +40,7 @@ bool SplitLodTensorOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool SplitLodTensorOpLite::AttachImpl(const cpp::OpDesc &op_desc,
+bool SplitLodTensorOpLite::AttachImpl(const lite::OpDescAPI &op_desc,
                                       lite::Scope *scope) {
   auto x = op_desc.Input("X").front();
   auto mask = op_desc.Input("Mask").front();

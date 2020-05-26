@@ -74,7 +74,7 @@ bool SplitOp::InferShapeImpl() const {
   return true;
 }
 
-bool SplitOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
+bool SplitOp::AttachImpl(const lite::OpDescAPI &opdesc, lite::Scope *scope) {
   AttachParam(&param_);
   param_.axis = opdesc.GetAttr<int>("axis");
   param_.num = opdesc.GetAttr<int>("num");

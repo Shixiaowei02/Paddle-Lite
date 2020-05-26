@@ -29,7 +29,7 @@ bool DensityPriorBoxOpLite::CheckShape() const {
 
 bool DensityPriorBoxOpLite::InferShapeImpl() const { return true; }
 
-bool DensityPriorBoxOpLite::AttachImpl(const cpp::OpDesc& opdesc,
+bool DensityPriorBoxOpLite::AttachImpl(const lite::OpDescAPI & opdesc,
                                        lite::Scope* scope) {
   auto input = opdesc.Input("Input").front();
   auto image = opdesc.Input("Image").front();

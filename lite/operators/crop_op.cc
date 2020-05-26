@@ -39,7 +39,7 @@ bool CropOpLite::InferShapeImpl() const {
 }
 
 // TODO(Superjomn) replace framework::OpDesc with a lite one.
-bool CropOpLite::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
+bool CropOpLite::AttachImpl(const lite::OpDescAPI &op_desc, lite::Scope *scope) {
   param_.X = scope->FindVar(op_desc.Input("X").front())->GetMutable<Tensor>();
   param_.Out =
       scope->FindVar(op_desc.Output("Out").front())->GetMutable<Tensor>();

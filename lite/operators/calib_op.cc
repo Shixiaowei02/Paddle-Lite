@@ -30,7 +30,7 @@ bool CalibOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool CalibOpLite::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
+bool CalibOpLite::AttachImpl(const lite::OpDescAPI &opdesc, lite::Scope *scope) {
   auto x_var = scope->FindVar(opdesc.Input("Input").front());
   auto output_var = scope->FindVar(opdesc.Output("Out").front());
   CHECK(x_var);

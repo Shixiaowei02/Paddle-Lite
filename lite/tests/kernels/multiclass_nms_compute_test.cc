@@ -431,7 +431,7 @@ class MulticlassNmsComputeTester : public arena::TestCase {
     outs->set_lod(lod);
   }
 
-  void PrepareOpDesc(cpp::OpDesc* op_desc) {
+  void PrepareOpDesc(lite::OpDescAPI * op_desc) {
     op_desc->SetType(type_);
     op_desc->SetInput("BBoxes", {bboxes_});
     op_desc->SetInput("Scores", {scores_});

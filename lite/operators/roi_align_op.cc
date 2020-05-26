@@ -47,7 +47,7 @@ bool RoiAlignOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool RoiAlignOpLite::AttachImpl(const cpp::OpDesc &op_desc,
+bool RoiAlignOpLite::AttachImpl(const lite::OpDescAPI &op_desc,
                                 lite::Scope *scope) {
   param_.X =
       scope->FindVar(op_desc.Input("X").front())->GetMutable<lite::Tensor>();

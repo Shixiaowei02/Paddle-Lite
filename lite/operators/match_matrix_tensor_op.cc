@@ -78,7 +78,7 @@ bool MatchMatrixTensorOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool MatchMatrixTensorOpLite::AttachImpl(const cpp::OpDesc& op_desc,
+bool MatchMatrixTensorOpLite::AttachImpl(const lite::OpDescAPI & op_desc,
                                          lite::Scope* scope) {
   auto x = op_desc.Input("X").front();
   auto w = op_desc.Input("W").front();

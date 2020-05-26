@@ -150,7 +150,7 @@ class ConvTransposeComputeTester : public arena::TestCase {
                                fuse_relu_);
   }
 
-  void PrepareOpDesc(cpp::OpDesc* op_desc) {
+  void PrepareOpDesc(lite::OpDescAPI * op_desc) {
     op_desc->SetType(op_type_);
     op_desc->SetInput("Input", {input_});
     op_desc->SetInput("Filter", {filter_});

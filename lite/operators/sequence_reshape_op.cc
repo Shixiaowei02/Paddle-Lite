@@ -36,7 +36,7 @@ bool SequenceReshapeOp::InferShapeImpl() const {
   return true;
 }
 
-bool SequenceReshapeOp::AttachImpl(const cpp::OpDesc &opdesc,
+bool SequenceReshapeOp::AttachImpl(const lite::OpDescAPI &opdesc,
                                    lite::Scope *scope) {
   param_.x =
       scope->FindVar(opdesc.Input("X").front())->GetMutable<lite::Tensor>();

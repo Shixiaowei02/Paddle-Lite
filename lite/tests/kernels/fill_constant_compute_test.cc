@@ -82,7 +82,7 @@ class FillConstantComputeTester : public arena::TestCase {
     }
   }
 
-  void PrepareOpDesc(cpp::OpDesc* op_desc) {
+  void PrepareOpDesc(lite::OpDescAPI * op_desc) {
     op_desc->SetType("fill_constant");
     if (is_use_shape_tensor_) {
       op_desc->SetInput("ShapeTensor", {shape_tensor_});

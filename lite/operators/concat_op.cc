@@ -65,7 +65,7 @@ bool ConcatOpLite::InferShapeImpl() const {
 }
 
 // TODO(Superjomn) replace framework::OpDesc with a lite one.
-bool ConcatOpLite::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
+bool ConcatOpLite::AttachImpl(const lite::OpDescAPI &op_desc, lite::Scope *scope) {
   AttachParam(&param_);
   auto inputs = op_desc.Input("X");
   auto out = op_desc.Output("Out").front();

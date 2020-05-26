@@ -57,7 +57,7 @@ bool SearchFcOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool SearchFcOpLite::AttachImpl(const cpp::OpDesc &op_desc,
+bool SearchFcOpLite::AttachImpl(const lite::OpDescAPI &op_desc,
                                 lite::Scope *scope) {
   auto X = op_desc.Input("X").front();
   auto W = op_desc.Input("W").front();

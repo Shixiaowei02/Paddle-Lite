@@ -29,7 +29,7 @@ bool ConditionalBlockOpLite::CheckShape() const {
 
 bool ConditionalBlockOpLite::InferShapeImpl() const { return true; }
 
-bool ConditionalBlockOpLite::AttachImpl(const cpp::OpDesc &op_desc,
+bool ConditionalBlockOpLite::AttachImpl(const lite::OpDescAPI &op_desc,
                                         lite::Scope *scope) {
   auto condition = op_desc.Input("Cond").front();
   param_.cond = scope->FindVar(condition)->GetMutable<lite::Tensor>();

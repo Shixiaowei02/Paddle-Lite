@@ -37,7 +37,7 @@ bool LodResetOp::InferShapeImpl() const {
   return true;
 }
 
-bool LodResetOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
+bool LodResetOp::AttachImpl(const lite::OpDescAPI &opdesc, lite::Scope *scope) {
   param_.X =
       scope->FindVar(opdesc.Input("X").front())->GetMutable<lite::Tensor>();
   if (opdesc.Input("Y").size()) {

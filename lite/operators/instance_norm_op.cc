@@ -52,7 +52,7 @@ bool InstanceNormOp::InferShapeImpl() const {
   return true;
 }
 
-bool InstanceNormOp::AttachImpl(const cpp::OpDesc& op_desc,
+bool InstanceNormOp::AttachImpl(const lite::OpDescAPI & op_desc,
                                 lite::Scope* scope) {
   param_.x = scope->FindVar(op_desc.Input("X").front())->GetMutable<Tensor>();
   param_.scale =

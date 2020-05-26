@@ -71,7 +71,7 @@ bool CrfDecodingOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool CrfDecodingOpLite::AttachImpl(const cpp::OpDesc &op_desc,
+bool CrfDecodingOpLite::AttachImpl(const lite::OpDescAPI &op_desc,
                                    lite::Scope *scope) {
   // inputs
   param_.emission = scope->FindVar(op_desc.Input("Emission").front())

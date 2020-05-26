@@ -46,7 +46,7 @@ bool AttentionPaddingMaskOp::InferShapeImpl() const {
   return true;
 }
 
-bool AttentionPaddingMaskOp::AttachImpl(const cpp::OpDesc &op_desc,
+bool AttentionPaddingMaskOp::AttachImpl(const lite::OpDescAPI &op_desc,
                                         lite::Scope *scope) {
   param_.X = scope->FindTensor(op_desc.Input("X").front());
   param_.Y = scope->FindTensor(op_desc.Input("Y").front());

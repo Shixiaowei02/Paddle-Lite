@@ -34,7 +34,7 @@ bool SequenceArithmeticOp::InferShapeImpl() const {
   return true;
 }
 
-bool SequenceArithmeticOp::AttachImpl(const cpp::OpDesc &opdesc,
+bool SequenceArithmeticOp::AttachImpl(const lite::OpDescAPI &opdesc,
                                       lite::Scope *scope) {
   param_.X = scope->FindTensor(opdesc.Input("X").front());
   param_.Y = scope->FindTensor(opdesc.Input("Y").front());

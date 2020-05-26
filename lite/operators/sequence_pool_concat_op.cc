@@ -42,7 +42,7 @@ bool SequencePoolConcatOp::InferShapeImpl() const {
   return true;
 }
 
-bool SequencePoolConcatOp::AttachImpl(const cpp::OpDesc &opdesc,
+bool SequencePoolConcatOp::AttachImpl(const lite::OpDescAPI &opdesc,
                                       lite::Scope *scope) {
   auto input_list = opdesc.Input("X");
   param_.X.clear();

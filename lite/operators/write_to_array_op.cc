@@ -28,7 +28,7 @@ bool WriteToArrayOp::CheckShape() const {
 
 bool WriteToArrayOp::InferShapeImpl() const { return true; }
 
-bool WriteToArrayOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
+bool WriteToArrayOp::AttachImpl(const lite::OpDescAPI &opdesc, lite::Scope *scope) {
   auto inputs = opdesc.Input("X").front();
   param_.X = scope->FindTensor(inputs);
 

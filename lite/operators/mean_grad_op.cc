@@ -33,7 +33,7 @@ bool MeanGradOp::InferShapeImpl() const {
   return true;
 }
 
-bool MeanGradOp::AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) {
+bool MeanGradOp::AttachImpl(const lite::OpDescAPI & opdesc, lite::Scope* scope) {
   CHECK_EQ(opdesc.InputArgumentNames().size(), 2UL);
   auto X_name = opdesc.Input("X").front();
   auto Out_grad_name = opdesc.Input("Out@GRAD").front();

@@ -30,7 +30,7 @@ bool XPUResNet50Op::InferShapeImpl() const {
   return true;
 }
 
-bool XPUResNet50Op::AttachImpl(const cpp::OpDesc& op_desc, lite::Scope* scope) {
+bool XPUResNet50Op::AttachImpl(const lite::OpDescAPI & op_desc, lite::Scope* scope) {
   param_.input = const_cast<lite::Tensor*>(
       &scope->FindVar(op_desc.Input("Input").front())->Get<lite::Tensor>());
   param_.output = scope->FindVar(op_desc.Output("Output").front())

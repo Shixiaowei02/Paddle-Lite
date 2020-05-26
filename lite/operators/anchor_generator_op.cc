@@ -41,7 +41,7 @@ bool AnchorGeneratorOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool AnchorGeneratorOpLite::AttachImpl(const cpp::OpDesc &op_desc,
+bool AnchorGeneratorOpLite::AttachImpl(const lite::OpDescAPI &op_desc,
                                        lite::Scope *scope) {
   auto input_name = op_desc.Input("Input").front();
   auto anchor_name = op_desc.Output("Anchors").front();

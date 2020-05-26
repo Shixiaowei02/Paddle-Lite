@@ -39,7 +39,7 @@ bool TopkOp::InferShapeImpl() const {
   return true;
 }
 
-bool TopkOp::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
+bool TopkOp::AttachImpl(const lite::OpDescAPI &op_desc, lite::Scope *scope) {
   auto x = op_desc.Input("X").front();
   param_.X = scope->FindTensor(x);
 

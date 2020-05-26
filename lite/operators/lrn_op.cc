@@ -32,7 +32,7 @@ bool LrnOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool LrnOpLite::AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) {
+bool LrnOpLite::AttachImpl(const lite::OpDescAPI & opdesc, lite::Scope* scope) {
   auto X_name = opdesc.Input("X").front();
   auto Out_name = opdesc.Output("Out").front();
   param_.X = GetVar<lite::Tensor>(scope, X_name);

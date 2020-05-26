@@ -40,7 +40,7 @@ class MaxPoolWithIndexOpLite : public OpLite {
   bool InferShapeImpl() const override;
 
   // TODO(Superjomn) replace framework::OpDesc with a lite one.
-  bool AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) override {
+  bool AttachImpl(const lite::OpDescAPI &op_desc, lite::Scope *scope) override {
     auto x = op_desc.Input("X").front();
     auto out = op_desc.Output("Out").front();
     auto mask = op_desc.Output("Mask").front();

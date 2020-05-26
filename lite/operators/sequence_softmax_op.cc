@@ -32,7 +32,7 @@ bool SequenceSoftmaxOp::InferShapeImpl() const {
   return true;
 }
 
-bool SequenceSoftmaxOp::AttachImpl(const cpp::OpDesc &opdesc,
+bool SequenceSoftmaxOp::AttachImpl(const lite::OpDescAPI &opdesc,
                                    lite::Scope *scope) {
   AttachParam(&param_);
   param_.X =

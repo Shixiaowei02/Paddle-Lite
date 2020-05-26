@@ -33,7 +33,7 @@ bool FusionElementwiseActivationOp::InferShapeImpl() const {
   return true;
 }
 
-bool FusionElementwiseActivationOp::AttachImpl(const cpp::OpDesc& opdesc,
+bool FusionElementwiseActivationOp::AttachImpl(const lite::OpDescAPI & opdesc,
                                                lite::Scope* scope) {
   auto X_name = opdesc.Input("X").front();
   auto Y_name = opdesc.Input("Y").front();
@@ -64,7 +64,7 @@ bool FusionElementwiseActivationOp::AttachImpl(const cpp::OpDesc& opdesc,
 // }
 
 // bool FusionElementwiseActivationGradExplicitOp::AttachImpl(
-//     const cpp::OpDesc& opdesc, lite::Scope* scope) {
+//     const lite::OpDescAPI & opdesc, lite::Scope* scope) {
 //   CHECK_EQ(opdesc.InputArgumentNames().size(), 1UL);
 //   auto Out_name = opdesc.Input(framework::GradVarName("Out")).front();
 //   auto X_name = opdesc.Output(framework::GradVarName("X")).front();

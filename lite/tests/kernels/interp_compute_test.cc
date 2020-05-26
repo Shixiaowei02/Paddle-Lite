@@ -244,7 +244,7 @@ class NearestInterpComputeTester : public arena::TestCase {
     }
   }
 
-  void PrepareOpDesc(cpp::OpDesc* op_desc) {
+  void PrepareOpDesc(lite::OpDescAPI * op_desc) {
     if (interp_method_ == "nearest") {
       op_desc->SetType("nearest_interp");
     } else if (interp_method_ == "bilinear") {

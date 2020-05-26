@@ -69,7 +69,7 @@ bool TransposeOp::InferShapeImpl() const {
   return true;
 }
 
-bool TransposeOp::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
+bool TransposeOp::AttachImpl(const lite::OpDescAPI &op_desc, lite::Scope *scope) {
   AttachParam(&param_);
   auto x = op_desc.Input("X").front();
   auto out = op_desc.Output("Out").front();
@@ -148,7 +148,7 @@ bool Transpose2Op::InferShapeImpl() const {
   return true;
 }
 
-bool Transpose2Op::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
+bool Transpose2Op::AttachImpl(const lite::OpDescAPI &op_desc, lite::Scope *scope) {
   auto x = op_desc.Input("X").front();
   auto out = op_desc.Output("Out").front();
 

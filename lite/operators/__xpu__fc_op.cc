@@ -69,7 +69,7 @@ bool XPUFcOp::InferShapeImpl() const {
   return true;
 }
 
-bool XPUFcOp::AttachImpl(const cpp::OpDesc& op_desc, lite::Scope* scope) {
+bool XPUFcOp::AttachImpl(const lite::OpDescAPI & op_desc, lite::Scope* scope) {
   auto input = op_desc.Input("Input").front();
   auto W = op_desc.Input("W").front();
   auto out = op_desc.Output("Out").front();

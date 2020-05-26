@@ -59,7 +59,7 @@ bool MulGradOpLite::InferShapeImpl() const {
   }
 }
 
-bool MulGradOpLite::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
+bool MulGradOpLite::AttachImpl(const lite::OpDescAPI &op_desc, lite::Scope *scope) {
   CHECK(!op_desc.Input("X").empty());
   CHECK(!op_desc.Input("Y").empty());
   CHECK(!op_desc.Input("Out@GRAD").empty());

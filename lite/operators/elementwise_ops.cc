@@ -86,7 +86,7 @@ bool ElementwiseOp::InferShapeImpl() const {
   return true;
 }
 
-bool ElementwiseOp::AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) {
+bool ElementwiseOp::AttachImpl(const lite::OpDescAPI & opdesc, lite::Scope* scope) {
   AttachParam(&param_);
 
   auto X_name = opdesc.Input("X").front();
@@ -114,7 +114,7 @@ bool ElementwiseOp::AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) {
 //   return true;
 // }
 
-// bool ElementwiseGradExplicitOp::AttachImpl(const cpp::OpDesc& opdesc,
+// bool ElementwiseGradExplicitOp::AttachImpl(const lite::OpDescAPI & opdesc,
 //                                            lite::Scope* scope) {
 //   CHECK_EQ(opdesc.InputArgumentNames().size(), 2UL);
 //   auto Y_name = opdesc.Input("Y").front();

@@ -43,7 +43,7 @@ bool BoxClipOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool BoxClipOpLite::AttachImpl(const cpp::OpDesc& op_desc, lite::Scope* scope) {
+bool BoxClipOpLite::AttachImpl(const lite::OpDescAPI & op_desc, lite::Scope* scope) {
   auto input = op_desc.Input("Input").front();
   auto im_info = op_desc.Input("ImInfo").front();
   auto output = op_desc.Output("Output").front();

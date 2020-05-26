@@ -34,7 +34,7 @@ class FeedOp : public OpLite {
   void AttachKernel(KernelBase* kernel) override { kernel->SetParam(param_); }
 
  protected:
-  bool AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) override {
+  bool AttachImpl(const lite::OpDescAPI & opdesc, lite::Scope* scope) override {
     auto feed_var_name = opdesc.Input("X").front();
     auto* feed_var = scope->FindVar(feed_var_name);
     CHECK(feed_var);

@@ -29,7 +29,7 @@ bool WhileOpLite::CheckShape() const {
 
 bool WhileOpLite::InferShapeImpl() const { return true; }
 
-bool WhileOpLite::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
+bool WhileOpLite::AttachImpl(const lite::OpDescAPI &op_desc, lite::Scope *scope) {
   auto inputs = op_desc.Input("X");
   auto outs = op_desc.Output("Out");
 

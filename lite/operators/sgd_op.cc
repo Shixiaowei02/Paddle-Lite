@@ -35,7 +35,7 @@ bool SGDOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool SGDOpLite::AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) {
+bool SGDOpLite::AttachImpl(const lite::OpDescAPI & opdesc, lite::Scope* scope) {
   auto Param_name = opdesc.Input("Param").front();
   auto LearningRate_name = opdesc.Input("LearningRate").front();
   auto Grad_name = opdesc.Input("Grad").front();

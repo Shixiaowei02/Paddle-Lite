@@ -96,7 +96,7 @@ bool ConvTransposeOpLite::InferShapeImpl() const {
 }
 
 // TODO(Superjomn) replace framework::OpDesc with a lite one.
-bool ConvTransposeOpLite::AttachImpl(const cpp::OpDesc& op_desc,
+bool ConvTransposeOpLite::AttachImpl(const lite::OpDescAPI & op_desc,
                                      lite::Scope* scope) {
   auto X = op_desc.Input("Input").front();
   auto Filter = op_desc.Input("Filter").front();

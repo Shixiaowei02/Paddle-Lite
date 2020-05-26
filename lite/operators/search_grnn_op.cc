@@ -61,7 +61,7 @@ bool SearchGrnnOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool SearchGrnnOpLite::AttachImpl(const cpp::OpDesc& op_desc,
+bool SearchGrnnOpLite::AttachImpl(const lite::OpDescAPI & op_desc,
                                   lite::Scope* scope) {
   auto x = op_desc.Input("X").front();
   auto wi = op_desc.Input("Wi").front();

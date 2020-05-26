@@ -30,7 +30,7 @@ bool ActivationGradOp::InferShapeImpl() const {
   return true;
 }
 
-bool ActivationGradOp::AttachImpl(const cpp::OpDesc& opdesc,
+bool ActivationGradOp::AttachImpl(const lite::OpDescAPI & opdesc,
                                   lite::Scope* scope) {
   auto Out_grad_name = opdesc.Input("Out@GRAD").front();
   auto X_grad_name = opdesc.Output("X@GRAD").front();

@@ -23,7 +23,7 @@ bool VarConv2dOp::CheckShape() const { return true; }
 
 bool VarConv2dOp::InferShapeImpl() const { return true; }
 
-bool VarConv2dOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
+bool VarConv2dOp::AttachImpl(const lite::OpDescAPI &opdesc, lite::Scope *scope) {
   param_.X = const_cast<lite::Tensor *>(
       &scope->FindVar(opdesc.Input("X").front())->Get<lite::Tensor>());
   // param_.ROW = const_cast<lite::Tensor *>(

@@ -51,7 +51,7 @@ bool RangeOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool RangeOpLite::AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) {
+bool RangeOpLite::AttachImpl(const lite::OpDescAPI & opdesc, lite::Scope* scope) {
   auto start = opdesc.Input("Start").front();
   auto end = opdesc.Input("End").front();
   auto step = opdesc.Input("Step").front();

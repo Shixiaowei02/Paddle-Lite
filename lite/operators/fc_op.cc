@@ -68,7 +68,7 @@ bool FcOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool FcOpLite::AttachImpl(const cpp::OpDesc& op_desc, lite::Scope* scope) {
+bool FcOpLite::AttachImpl(const lite::OpDescAPI & op_desc, lite::Scope* scope) {
   AttachParam(&param_);
 
   auto input = op_desc.Input("Input").front();

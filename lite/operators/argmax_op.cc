@@ -47,7 +47,7 @@ bool ArgmaxOpLite::InferShapeImpl() const {
 }
 
 // TODO(Superjomn) replace framework::OpDesc with a lite one.
-bool ArgmaxOpLite::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
+bool ArgmaxOpLite::AttachImpl(const lite::OpDescAPI &op_desc, lite::Scope *scope) {
   auto x = op_desc.Input("X").front();
   auto out = op_desc.Output("Out").front();
 

@@ -31,7 +31,7 @@ bool ShapeOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool ShapeOpLite::AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) {
+bool ShapeOpLite::AttachImpl(const lite::OpDescAPI & opdesc, lite::Scope* scope) {
   auto X_name = opdesc.Input("Input").front();
   auto Out_name = opdesc.Output("Out").front();
   param_.X = GetVar<lite::Tensor>(scope, X_name);

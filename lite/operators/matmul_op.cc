@@ -131,7 +131,7 @@ bool MatMulOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool MatMulOpLite::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
+bool MatMulOpLite::AttachImpl(const lite::OpDescAPI &op_desc, lite::Scope *scope) {
   AttachParam(&param_);
   CHECK(!op_desc.Input("X").empty());
   CHECK(!op_desc.Input("Y").empty());

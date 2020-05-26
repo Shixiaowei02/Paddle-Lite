@@ -89,7 +89,7 @@ bool ReduceMeanOp::InferShapeImpl() const {
   return true;
 }
 
-bool ReduceMeanOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
+bool ReduceMeanOp::AttachImpl(const lite::OpDescAPI &opdesc, lite::Scope *scope) {
   param_.X = const_cast<lite::Tensor *>(
       &scope->FindVar(opdesc.Input("X").front())->Get<lite::Tensor>());
   param_.Out =

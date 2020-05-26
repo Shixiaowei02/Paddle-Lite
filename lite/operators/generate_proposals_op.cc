@@ -49,7 +49,7 @@ bool GenerateProposalsOpLite::InferShapeImpl() const {
   return true;
 }
 
-bool GenerateProposalsOpLite::AttachImpl(const cpp::OpDesc &op_desc,
+bool GenerateProposalsOpLite::AttachImpl(const lite::OpDescAPI &op_desc,
                                          lite::Scope *scope) {
   // inputs
   param_.Scores = scope->FindVar(op_desc.Input("Scores").front())

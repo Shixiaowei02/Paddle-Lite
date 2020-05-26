@@ -84,7 +84,7 @@ bool InterpolateOp::InferShapeImpl() const {
   return true;
 }
 
-bool InterpolateOp::AttachImpl(const cpp::OpDesc& op_desc, lite::Scope* scope) {
+bool InterpolateOp::AttachImpl(const lite::OpDescAPI & op_desc, lite::Scope* scope) {
   auto X = op_desc.Input("X").front();
   if (op_desc.HasInput("OutSize")) {
     auto out_size_var_names = op_desc.Input("OutSize");

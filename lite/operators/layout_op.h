@@ -41,7 +41,7 @@ class LayoutOp : public OpLite {
 #endif
 
  protected:
-  bool AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) override;
+  bool AttachImpl(const lite::OpDescAPI &opdesc, lite::Scope *scope) override;
 
  private:
   operators::LayoutParam param_;

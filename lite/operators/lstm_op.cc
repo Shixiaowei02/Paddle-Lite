@@ -64,7 +64,7 @@ bool LstmOp::InferShapeImpl() const {
   return true;
 }
 
-bool LstmOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
+bool LstmOp::AttachImpl(const lite::OpDescAPI &opdesc, lite::Scope *scope) {
   param_.Input =
       scope->FindVar(opdesc.Input("Input").front())->GetMutable<lite::Tensor>();
   param_.Weight = scope->FindVar(opdesc.Input("Weight").front())
