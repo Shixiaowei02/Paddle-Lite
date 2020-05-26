@@ -1,17 +1,6 @@
-// Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+lite_cc_library(fbs_op_desc SRCS op_desc.cc)
+lite_cc_library(fbs_var_desc SRCS var_desc.cc)
+lite_cc_library(fbs_block_desc SRCS block_desc.cc)
+lite_cc_library(fbs_program_desc SRCS program_desc.cc)
 
-// This file contains model format related operations, such as load a model,
-// parse an operator definitions and so on.
-
+set(fbs_wrapper fbs_op_desc fbs_var_desc fbs_block_desc fbs_program_desc PARENT_SCOPE)
