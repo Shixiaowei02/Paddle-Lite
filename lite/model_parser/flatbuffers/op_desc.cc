@@ -27,9 +27,12 @@ std::string OpDesc::GetAttr<std::string>(const std::string &name) const {
 template <>
 std::vector<std::string> OpDesc::GetAttr<std::vector<std::string>>(const std::string &name) const {
   const auto& it = desc_->attrs()->LookupByKey(name.c_str());
+  CHECK(it) << "Attr " << name << "does not exist.";
   std::vector<std::string> res;
-  for (const auto &v : *it->strings()) {
-    res.push_back(v->str());
+  if (it->strings()) {
+    for (const auto &v : *it->strings()) {
+      res.push_back(v->str());
+    }
   }
   return res;
 }

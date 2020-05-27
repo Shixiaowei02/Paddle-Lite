@@ -38,9 +38,11 @@ class OpDesc : public OpDescAPI {
   std::vector<std::string> Input(const std::string &param) const override {
     const auto& var = desc_->inputs()->LookupByKey(param.c_str());
     std::vector<std::string> args_vec;
+      if (var->arguments()) {
     args_vec.reserve(var->arguments()->size());
-    for (const auto& in: *var->arguments()) {
-      args_vec.push_back(in->str());
+      for (const auto& in: *var->arguments()) {
+        args_vec.push_back(in->str());
+      }
     }
     return args_vec;
   }
@@ -48,9 +50,11 @@ class OpDesc : public OpDescAPI {
   std::vector<std::string> InputArgumentNames() const override {
     const auto& vars = desc_->inputs();
     std::vector<std::string> input_names_vec;
+    if (vars) {
     input_names_vec.reserve(vars->size());
-    for (const auto& in: *vars) {
-      input_names_vec.push_back(in->parameter()->str());
+      for (const auto& in: *vars) {
+        input_names_vec.push_back(in->parameter()->str());
+      }
     }
     return input_names_vec;
   }
@@ -63,9 +67,11 @@ class OpDesc : public OpDescAPI {
   std::vector<std::string> Output(const std::string &param) const override {
     const auto& var = desc_->outputs()->LookupByKey(param.c_str());
     std::vector<std::string> args_vec;
+    if (var->arguments()) {
     args_vec.reserve(var->arguments()->size());
-    for (const auto& out: *var->arguments()) {
-      args_vec.push_back(out->str());
+      for (const auto& out: *var->arguments()) {
+        args_vec.push_back(out->str());
+      }
     }
     return args_vec;
   }
@@ -73,9 +79,11 @@ class OpDesc : public OpDescAPI {
   std::vector<std::string> OutputArgumentNames() const override {
     const auto& vars = desc_->outputs();
     std::vector<std::string> output_names_vec;
+    if (vars) {
     output_names_vec.reserve(vars->size());
-    for (const auto& out: *vars) {
-      output_names_vec.push_back(out->parameter()->str());
+      for (const auto& out: *vars) {
+        output_names_vec.push_back(out->parameter()->str());
+      }
     }
     return output_names_vec;
   }
@@ -98,9 +106,11 @@ class OpDesc : public OpDescAPI {
   std::vector<std::string> AttrNames() const override {
     const auto& attrs = desc_->attrs();
     std::vector<std::string> attr_names_vec;
-    attr_names_vec.reserve(attrs->size());
-    for (const auto& attr: *attrs) {
-      attr_names_vec.push_back(attr->name()->str());
+    if (attrs) {
+      attr_names_vec.reserve(attrs->size());
+      for (const auto& attr: *attrs) {
+        attr_names_vec.push_back(attr->name()->str());
+      }
     }
     return attr_names_vec;
   }
@@ -114,7 +124,7 @@ class OpDesc : public OpDescAPI {
   T GetAttr(const std::string &name) const;
 
  private:
-  std::shared_ptr<proto::OpDesc> desc_;
+  proto::OpDesc* desc_;
 };
 
 }  // namespace fbs

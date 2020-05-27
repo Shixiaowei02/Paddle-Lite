@@ -40,9 +40,12 @@ class ProgramDesc : public ProgramDescAPI {
     LOG(FATAL) << "Feature not yet supported.";
   }
 
-  bool HasVersion() const override { return desc_->version() == nullptr; }
+  bool HasVersion() const override { return desc_->version() != nullptr; }
 
-  int64_t Version() const override { return desc_->version()->version(); }
+  int64_t Version() const override {
+    CHECK(HasVersion());
+    return desc_->version()->version();
+  }
 
   void SetVersion(int64_t version) override {
     LOG(FATAL) << "Feature not yet supported.";

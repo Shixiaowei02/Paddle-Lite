@@ -21,7 +21,7 @@ DEFINE_string(model_dir, "", "");
 
 namespace paddle {
 namespace lite {
-
+/*
 TEST(ModelParser, LoadProgram) {
   CHECK(!FLAGS_model_dir.empty());
   auto program = LoadProgram(FLAGS_model_dir + "/__model__");
@@ -138,6 +138,13 @@ TEST(ModelParser, LoadModelNaiveFromMemory) {
   auto model_path = std::string(FLAGS_model_dir) + ".saved.naive.nb";
   std::string model_buffer = lite::ReadFile(model_path);
   LoadModelNaiveFromMemory(model_buffer, &scope, &prog);
+}
+*/
+
+TEST(ModelParser, LoadModelNaiveFromMemory) {
+  //CHECK(!FLAGS_model_dir.empty());
+  cpp::ProgramDesc prog;
+  lite::LoadModelFbs("/shixiaowei02/Paddle-Lite-FlatBuf/framework_test/save_model.bin", &prog);
 }
 
 }  // namespace lite

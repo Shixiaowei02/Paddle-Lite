@@ -19,17 +19,17 @@ namespace lite {
 namespace fbs {
 
 template <>
-const proto::VarDesc* BlockDesc::GetVar<const proto::VarDesc>(
+proto::VarDesc* BlockDesc::GetVar<proto::VarDesc>(
     int32_t idx) {
   CHECK_LT(idx, VarsSize()) << "idx >= vars.size()";
-  return desc_->vars()->Get(idx);
+  return const_cast<proto::VarDesc*>(desc_->vars()->Get(idx));
 }
 
 template <>
-const proto::OpDesc* BlockDesc::GetOp<const proto::OpDesc>(
+proto::OpDesc* BlockDesc::GetOp<proto::OpDesc>(
     int32_t idx) {
   CHECK_LT(idx, OpsSize()) << "idx >= ops.size()";
-  return desc_->ops()->Get(idx);
+  return const_cast<proto::OpDesc*>(desc_->ops()->Get(idx));
 }
 
 }  // namespace fbs

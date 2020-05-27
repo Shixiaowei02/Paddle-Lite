@@ -344,8 +344,9 @@ void LoadModelFbs(const std::string& path,
   char *data = new char[length];
   infile.read(data, length);
   infile.close();
-  auto fbs_prog = paddle::lite::fbs::proto::GetProgramDesc(data);
-  TransformProgramDescAnyToCpp(fbs_prog, cpp_prog);
+  paddle::lite::fbs::proto::ProgramDesc* fbs_prog = 
+  const_cast<paddle::lite::fbs::proto::ProgramDesc*>(paddle::lite::fbs::proto::GetProgramDesc(data));
+  TransformProgramDescAnyToCpp(fbs::ProgramDesc(fbs_prog), cpp_prog);
 }
 
 void TensorToStream(std::ostream &os, const lite::Tensor &tensor) {

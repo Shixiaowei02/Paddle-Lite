@@ -7,6 +7,9 @@ add_subdirectory(flatbuffers)
 
 #lite_cc_library(runtime_lite SRCS runtime.cc)
 
+lite_cc_binary(test_parser SRCS parser_test.cc
+    DEPS model_parser framework_proto)
+
 #TODO(Superjomn) enable it again.
 if(NOT LITE_ON_MOBILE AND NOT LITE_ON_TINY_PUBLISH)
     lite_cc_test(test_model_parser SRCS model_parser_test.cc
