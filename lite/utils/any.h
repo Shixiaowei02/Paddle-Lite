@@ -31,7 +31,13 @@ public:
   inline explicit Any(const Any& other);
 
   template <typename T>
-  void set(const T&& other);
+  void set();
+
+  template <typename T>
+  void set(T&& other);
+
+  template <typename T>
+  void set(const T& other);
 
   template <typename T>
   const T& get() const;
@@ -51,6 +57,7 @@ public:
   inline Any& operator=(T&& other);
 
   inline bool empty() const;
+  inline bool valid() const;
   inline void clear();
   inline void swap(Any& other);
   inline const std::type_info& type() const;
@@ -84,7 +91,7 @@ private:
 
   template <typename T>
   struct data_on_stack {
-    static const bool value = (alignof(T) <= kAlign && sizeof(T) <= kStack);
+    static const bool value = ((alignof(T) <= kAlign) && (sizeof(T) <= kStack));
   };
 
   inline void construct(Any&& other);
@@ -103,14 +110,19 @@ private:
 template <typename T>
 inline Any::Any(T&& other) {
   typedef typename std::decay<T>::type DT;
-  if (std::is_same<DT, any>::value) {
+  if (std::is_same<DT, Any>::value) {
     this->construct(std::forward<T>(other));
   } else {
     static_assert(std::is_copy_constructible<DT>::value,
       "Any can only hold value that is copy constructable");
-    type_ = TypeInfo<DT::get_type();
+    type_ = TypeInfo<DT>::get_type();
     if (data_on_stack<DT>::value) {
+#pragma GCC diagnostic push
+#if 6 <= __GNUC__
+#pragma GCC diagnostic ignored "-Wplacement-new"
+#endif
       new (&(data_.stack)) DT(std::forward<T>(other));
+#pragma GCC diagnostic pop
     } else {
       data_.pheap = new DT(std::forward<T>(other));
     }
@@ -144,15 +156,30 @@ inline void Any::construct(Args&&... args) {
   typedef typename std::decay<T>::type DT;
   type_ = TypeInfo<DT>::get_type();
   if (data_on_stack<DT>::value) {
+#pragma GCC diagnostic push
+#if 6 <= __GNUC__
+#pragma GCC diagnostic ignored "-Wplacement-new"
+#endif
     new (&(data_.stack)) DT(std::forward<Args>(args)...);
+#pragma GCC diagnostic pop
   } else {
     data_.pheap = new DT(std::forward<Args>(args)...);
   }
 }
 
 template <typename T>
-void set(const T&& other) {
-  this->construct(other);
+void Any::set() {
+  this->construct<T>();
+}
+
+template <typename T>
+void Any::set(T&& other) {
+  this->construct(std::forward<T>(other));
+}
+
+template <typename T>
+void Any::set(const T& other) {
+  this->construct(std::forward<const T>(other));
 }
 
 inline Any::~Any() {
@@ -190,7 +217,11 @@ inline void Any::clear() {
 }
 
 inline bool Any::empty() const {
-  return type_ = nullptr;
+  return type_ == nullptr;
+}
+
+inline bool Any::valid() const {
+  return empty() == false;
 }
 
 inline const std::type_info& Any::type() const {
@@ -220,6 +251,11 @@ inline const T& Any::get() const {
 }
 
 template <typename T>
+T* Any::get_mutable() {
+  return Any::TypeInfo<T>::get_ptr(&(this->data_));
+}
+
+template <typename T>
 class Any::TypeOnHeap {
 public:
   inline static T* get_ptr(Any::Data* data) {
@@ -229,7 +265,7 @@ public:
     return static_cast<const T*>(data->pheap);
   }
   inline static void create_from_data(Any::Data* dst, const Any::Data& data) {
-    dst->pheap = new T(*get_ptr(data));
+    dst->pheap = new T(*get_ptr(&data));
   }
   inline static void destroy(Data* data) {
     delete static_cast<T*>(data->pheap);
@@ -261,7 +297,7 @@ class Any::TypeInfo :
                           Any::TypeOnHeap<T>>::type {
 public:
     inline static const Type* get_type() {
-      static TypeInfo<T tp;
+      static TypeInfo<T> tp;
       return &(tp.type_);
   }
 
