@@ -21,7 +21,7 @@ class Timer {
     return used_time_ms;
   }
 };
-#if 1
+#if 0
 int main() {
   paddle::lite::cpp::ProgramDesc cpp_prog;
   //double t = 0;
@@ -50,14 +50,21 @@ int main() {
 #else
 
 int main() {
+  double t = 0;
+  Timer timer;
+  timer.tic();
   paddle::lite::cpp::ProgramDesc cpp_prog;
   paddle::lite::LoadModelFbs("/shixiaowei02/Paddle-Lite-FlatBuf/framework_test/save_model.bin", &cpp_prog);
+  t = timer.toc();
+  std::cout << "time = " << t << std::endl;
+  /*
   paddle::framework::proto::ProgramDesc pb_proto_prog;
   paddle::lite::pb::ProgramDesc pb_prog(&pb_proto_prog);
   paddle::lite::TransformProgramDescCppToAny(cpp_prog, &pb_prog);
   std::string pb_str;
   google::protobuf::TextFormat::PrintToString(pb_proto_prog, &pb_str);
   std::cout << pb_str << std::endl;
+  */
   return 0;
 }
 #endif
