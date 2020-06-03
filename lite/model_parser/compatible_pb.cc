@@ -113,9 +113,66 @@ void OpOutputsCppToAny(const cpp::OpDesc &cpp_desc, OpDescType *any_desc) {
     any_desc->SetOutput(param, cpp_desc.Output(param));
   }
 }
+template <typename OpDescType>
+void OpAttrsAnyToCpp(const OpDescType &any_desc, cpp::OpDesc *cpp_desc) {
+  using AttrType = OpDescAPI::AttrType;
+  auto set_attr = [&](const std::string &name, AttrType type) {
+    switch (type) {
+      case AttrType::INT:
+        cpp_desc->SetAttr<int32_t>(name,
+                                   any_desc.template GetAttr<int32_t>(name));
+        break;
+      case AttrType::FLOAT:
+        cpp_desc->SetAttr<float>(name, any_desc.template GetAttr<float>(name));
+        break;
+      case AttrType::STRING:
+        cpp_desc->SetAttr<std::string>(
+            name, any_desc.template GetAttr<std::string>(name));
+        break;
+      case AttrType::LONG:
+        cpp_desc->SetAttr<int64_t>(name,
+                                   any_desc.template GetAttr<int64_t>(name));
+        break;
+      case AttrType::INTS:
+        cpp_desc->SetAttr<std::vector<int>>(
+            name, any_desc.template GetAttr<std::vector<int>>(name));
+        break;
+      case AttrType::FLOATS:
+        cpp_desc->SetAttr<std::vector<float>>(
+            name, any_desc.template GetAttr<std::vector<float>>(name));
+        break;
+      case AttrType::BOOLEAN:
+        cpp_desc->SetAttr<bool>(name, any_desc.template GetAttr<bool>(name));
+        break;
+      case AttrType::STRINGS:
+        cpp_desc->SetAttr<std::vector<std::string>>(
+            name, any_desc.template GetAttr<std::vector<std::string>>(name));
+        break;
+      case AttrType::LONGS:
+        cpp_desc->SetAttr<std::vector<int64_t>>(
+            name, any_desc.template GetAttr<std::vector<int64_t>>(name));
+        break;
+      case AttrType::BLOCK: {
+        auto i = any_desc.template GetAttr<int16_t>(name);
+        cpp_desc->SetAttr<int32_t>(name, i);
+        // naive_buffer::BlockDesc* sub_block = any_desc.template
+        // GetAttr<naive_buffer::BlockDesc*>(name);
+        // LOG(INFO) << sub_block->OpsSize();
+        break;
+      }
+      default:
+        LOG(FATAL) << "Unsupported attr type found " << static_cast<int>(type);
+    }
+  };
 
-template <typename fbs::OpDesc>
-void OpAttrsAnyToCpp(const fbs::OpDesc &any_desc, cpp::OpDesc *cpp_desc) {
+  for (const auto &attr_name : any_desc.AttrNames()) {
+    auto type = any_desc.GetAttrType(attr_name);
+    set_attr(attr_name, type);
+  }
+}
+
+template <>
+void OpAttrsAnyToCpp<fbs::OpDesc>(const fbs::OpDesc &any_desc, cpp::OpDesc *cpp_desc) {
   using AttrType = OpDescAPI::AttrType;
   auto set_attr = [&](size_t idx, const AttrType& type) {
     const std::string& name = any_desc.AttrName(idx);
@@ -132,7 +189,7 @@ void OpAttrsAnyToCpp(const fbs::OpDesc &any_desc, cpp::OpDesc *cpp_desc) {
             name, any_desc.template GetAttr<std::string>(idx));
         break;
       case AttrType::LONG:
-        cpp_desc->SetAttr<int64_t>(idx,
+        cpp_desc->SetAttr<int64_t>(name,
                                    any_desc.template GetAttr<int64_t>(idx));
         break;
       case AttrType::INTS:
