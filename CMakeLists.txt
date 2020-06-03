@@ -167,7 +167,7 @@ if(LITE_WITH_RKNPU)
    include(device/rknpu)
 endif()
 
-include(external/flatbuffers)
+#include(external/flatbuffers)
 
 # for mobile
 if (WITH_LITE AND LITE_WITH_LIGHT_WEIGHT_FRAMEWORK)
