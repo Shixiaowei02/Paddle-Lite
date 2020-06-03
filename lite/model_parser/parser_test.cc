@@ -21,7 +21,7 @@ class Timer {
     return used_time_ms;
   }
 };
-#if 0
+#if 1
 int main() {
   paddle::lite::cpp::ProgramDesc cpp_prog;
   //double t = 0;
@@ -47,7 +47,7 @@ int main() {
 */
   return 0;
 }
-#endif
+#else
 
 int main() {
   paddle::lite::cpp::ProgramDesc cpp_prog;
@@ -60,3 +60,4 @@ int main() {
   std::cout << pb_str << std::endl;
   return 0;
 }
+#endif

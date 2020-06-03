@@ -16,6 +16,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <unordered_map>
 #include "lite/model_parser/desc_apis.h"
 #include "lite/utils/any.h"
 #include "lite/utils/varient.h"
@@ -30,14 +31,14 @@ namespace cpp {
  */
 class OpDesc : public OpDescAPI {
  public:
-  using attrs_t = std::map<std::string, Any>;
+  using attrs_t = std::unordered_map<std::string, Any>;
   using attr_types_t = std::map<std::string, AttrType>;
 
  protected:
   std::string type_;
   std::map<std::string, std::vector<std::string>> inputs_;
   std::map<std::string, std::vector<std::string>> outputs_;
-  std::map<std::string, Any> attrs_;
+  std::unordered_map<std::string, Any> attrs_;
   std::map<std::string, AttrType> attr_types_;
 
  public:
@@ -114,7 +115,7 @@ class OpDesc : public OpDescAPI {
   template <typename T>
   T GetAttr(const std::string& name) const;
 
-  const std::map<std::string, Any>& attrs() const { return attrs_; }
+  const std::unordered_map<std::string, Any>& attrs() const { return attrs_; }
   const std::map<std::string, AttrType>& attr_types() const {
     return attr_types_;
   }
