@@ -97,8 +97,22 @@ class OpDesc : public OpDescAPI {
     return desc_->attrs()->LookupByKey(name.c_str()) == nullptr;
   }
 
+  size_t AttrsSize() const {
+    return desc_->attrs()->size();
+  }
+
+  std::string AttrName(size_t idx) const {
+    return desc_->attrs()->Get(idx)->name()->str();
+  }
+
   OpDescAPI::AttrType GetAttrType(const std::string &name) const override {
     const auto& attr = desc_->attrs()->LookupByKey(name.c_str());
+    CHECK(attr);
+    return static_cast<OpDescAPI::AttrType>(attr->type());
+  }
+
+  OpDescAPI::AttrType GetAttrType(size_t idx) const {
+    const auto& attr = desc_->attrs()->Get(idx);
     CHECK(attr);
     return static_cast<OpDescAPI::AttrType>(attr->type());
   }
@@ -122,6 +136,10 @@ class OpDesc : public OpDescAPI {
 
   template <typename T>
   T GetAttr(const std::string &name) const;
+
+  template <typename T>
+  T GetAttr(size_t idx) const;
+
 
  private:
   proto::OpDesc* desc_;

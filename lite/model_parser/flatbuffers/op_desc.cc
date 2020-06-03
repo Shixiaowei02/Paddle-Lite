@@ -38,6 +38,20 @@ std::vector<std::string> OpDesc::GetAttr<std::vector<std::string>>(const std::st
   return res;
 }
 
+template <>
+std::vector<std::string> OpDesc::GetAttr<std::vector<std::string>>(size_t idx) const {
+  const auto& it = desc_->attrs()->Get(idx);
+  CHECK(it) << "Attr " << name << "does not exist.";
+  std::vector<std::string> res;
+  if (it->strings()) {
+    res.reserve(it->strings()->size());
+    for (const auto &v : *it->strings()) {
+      res.push_back(v->str());
+    }
+  }
+  return res;
+}
+
 #define GET_ATTR_IMPL(T, fb_f__)                                \
   template <>                                                   \
   T OpDesc::GetAttr<T>(const std::string &name) const {         \
@@ -49,6 +63,16 @@ std::vector<std::string> OpDesc::GetAttr<std::vector<std::string>>(const std::st
   template <>                                                   \
   T OpDesc::GetAttr<T>(const std::string &name) const {         \
     const auto& it = desc_->attrs()->LookupByKey(name.c_str()); \
+    T res;                                                      \
+    res.reserve(it->fb_f__()->size());                          \
+    for (const auto &v : *it->fb_f__()) {                       \
+      res.push_back(v);                                         \
+    }                                                           \
+    return res;                                                 \
+  }                                                             \
+  template <>                                                   \
+  T OpDesc::GetAttr<T>(size_t idx) const {                      \
+    const auto& it = desc_->attrs()->Get(idx);                  \
     T res;                                                      \
     res.reserve(it->fb_f__()->size());                          \
     for (const auto &v : *it->fb_f__()) {                       \

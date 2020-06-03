@@ -109,6 +109,9 @@ class OpDesc : public OpDescAPI {
   void SetAttr(const std::string& name, const T& v);
 
   template <typename T>
+  void SetAttr(const std::string& name, const T&& v);
+
+  template <typename T>
   T GetAttr(const std::string& name) const;
 
   const std::map<std::string, Any>& attrs() const { return attrs_; }

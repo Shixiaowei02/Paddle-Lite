@@ -20,11 +20,16 @@ namespace paddle {
 namespace lite {
 namespace cpp {
 
-#define SET_ATTR_IMPL(T, repr__)                                 \
-  template <>                                                    \
-  void OpDesc::SetAttr<T>(const std::string& name, const T& v) { \
-    attr_types_[name] = AttrType::repr__;                        \
-    attrs_[name].set(v);                                         \
+#define SET_ATTR_IMPL(T, repr__)                                  \
+  template <>                                                     \
+  void OpDesc::SetAttr<T>(const std::string& name, const T& v) {  \
+    attr_types_[name] = AttrType::repr__;                         \
+    attrs_[name].set(v);                                          \
+  }                                                               \
+  template <>                                                     \
+  void OpDesc::SetAttr<T>(const std::string& name, const T&& v) { \
+    attr_types_[name] = AttrType::repr__;                         \
+    attrs_[name].set(std::forward<const T>(v));                   \
   }
 
 SET_ATTR_IMPL(int32_t, INT);
