@@ -9,6 +9,7 @@ add_subdirectory(flatbuffers)
 
 lite_cc_binary(test_parser SRCS parser_test.cc
     DEPS model_parser framework_proto)
+target_link_libraries(test_parser tcmalloc profiler)
 
 #TODO(Superjomn) enable it again.
 if(NOT LITE_ON_MOBILE AND NOT LITE_ON_TINY_PUBLISH)

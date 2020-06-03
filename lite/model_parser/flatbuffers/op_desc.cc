@@ -30,6 +30,7 @@ std::vector<std::string> OpDesc::GetAttr<std::vector<std::string>>(const std::st
   CHECK(it) << "Attr " << name << "does not exist.";
   std::vector<std::string> res;
   if (it->strings()) {
+    res.reserve(it->strings()->size());
     for (const auto &v : *it->strings()) {
       res.push_back(v->str());
     }
@@ -49,6 +50,7 @@ std::vector<std::string> OpDesc::GetAttr<std::vector<std::string>>(const std::st
   T OpDesc::GetAttr<T>(const std::string &name) const {         \
     const auto& it = desc_->attrs()->LookupByKey(name.c_str()); \
     T res;                                                      \
+    res.reserve(it->fb_f__()->size());                          \
     for (const auto &v : *it->fb_f__()) {                       \
       res.push_back(v);                                         \
     }                                                           \
