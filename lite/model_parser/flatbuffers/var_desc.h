@@ -64,7 +64,7 @@ class VarDesc : public VarDescAPI, public proto::VarDescT {
   }
 
  private:
-  proto::VarDesc* desc_;
+
 };
 
 }  // namespace fbs
