@@ -23,6 +23,13 @@ namespace fbs {
 
 class ProgramDesc : public ProgramDescAPI, public proto::ProgramDescT {
  public:
+  ProgramDesc() = default;
+
+  explicit ProgramDesc(proto::ProgramDesc* desc) {
+    desc_ = desc;
+    desc->UnPackTo(dynamic_cast<ProgramDescT*>(this));
+  }
+
   size_t BlocksSize() const override {
     return blocks.size();
   }
@@ -51,6 +58,9 @@ class ProgramDesc : public ProgramDescAPI, public proto::ProgramDescT {
   void SetVersion(int64_t version_in) override {
     version->version = version_in;
   }
+  private:
+  proto::ProgramDesc* desc_;
+  flatbuffers::FlatBufferBuilder fbb_;
 };
 
 template <>
