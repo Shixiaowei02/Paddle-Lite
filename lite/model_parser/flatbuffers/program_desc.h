@@ -15,6 +15,7 @@
 #include <memory>
 #include "lite/model_parser/desc_apis.h"
 #include "lite/model_parser/flatbuffers/framework_generated.h"
+#include "lite/model_parser/flatbuffers/block_desc.h"
 
 namespace paddle {
 namespace lite {
@@ -22,10 +23,6 @@ namespace fbs {
 
 class ProgramDesc : public ProgramDescAPI, public proto::ProgramDescT {
  public:
-  ProgramDesc() = delete;
-
-  explicit ProgramDesc(proto::ProgramDesc *desc) {}
-
   size_t BlocksSize() const override {
     return blocks.size();
   }
@@ -57,8 +54,9 @@ class ProgramDesc : public ProgramDescAPI, public proto::ProgramDescT {
 
 template <>
 BlockDesc* ProgramDesc::AddBlock() {
-  auto* block = new BlockDesc();
-  blocks.push_back(block);
+  auto* block = new BlockDesc(this);
+  std::unique_ptr<proto::BlockDescT> block_p(static_cast<proto::BlockDescT*>(block));
+  blocks.push_back(std::move(block_p));
   return block;
 }
 

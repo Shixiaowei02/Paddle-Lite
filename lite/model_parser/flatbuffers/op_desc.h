@@ -20,11 +20,15 @@ namespace paddle {
 namespace lite {
 namespace fbs {
 
+class BlockDesc;
+
 class OpDesc : public OpDescAPI, public proto::OpDescT {
  public:
   OpDesc() = delete;
 
-  explicit OpDesc(proto::OpDesc *desc) { }
+  explicit OpDesc(fbs::BlockDesc* desc) {
+    block_desc_  = desc;
+  }
 
   std::string Type() const override {
     return type;
@@ -77,32 +81,64 @@ class OpDesc : public OpDescAPI, public proto::OpDescT {
 
   std::string AttrName(size_t idx) const {
     LOG(FATAL);
+    return std::string();
   }
 
   OpDescAPI::AttrType GetAttrType(const std::string &name) const override {
     LOG(FATAL);
+    return OpDescAPI::AttrType();
   }
 
   OpDescAPI::AttrType GetAttrType(size_t idx) const {
     LOG(FATAL);
+    return OpDescAPI::AttrType();
   }
 
   std::vector<std::string> AttrNames() const override {
     LOG(FATAL);
+    return std::vector<std::string>();
   }
 
   template <typename T>
-  void SetAttr(const std::string &name, const T &v);
+  T GetAttr(const std::string &name) const {
+    LOG(FATAL);
+    return T();
+  }
 
   template <typename T>
-  T GetAttr(const std::string &name) const;
+  T GetAttr(size_t idx) const {
+    LOG(FATAL);
+    return T();
+  }
 
   template <typename T>
-  T GetAttr(size_t idx) const;
+  void AddAttr(const std::string &name, const T &v);
 
  private:
-
+  fbs::BlockDesc* block_desc_;
 };
+
+#define ADD_ATTR_IMPL(T, ty__, fbs_a_)                            \
+  template <> \
+  void OpDesc::AddAttr<T>(const std::string &name, const T &v) { \
+    auto* attr = new proto::OpDesc_::AttrT(); \
+    attr->type = proto::AttrType_##ty__; \
+    attr->fbs_a_ = v; \
+    std::unique_ptr<proto::OpDesc_::AttrT> attr_p(attr); \
+    attrs.emplace_back(std::move(attr_p)); \
+  }
+  
+ADD_ATTR_IMPL(int, INT, i);
+ADD_ATTR_IMPL(float, FLOAT, f);
+ADD_ATTR_IMPL(bool, BOOLEAN, b);
+ADD_ATTR_IMPL(int64_t, LONG, l);
+ADD_ATTR_IMPL(std::string, STRING, s);
+ADD_ATTR_IMPL(std::vector<int>, INTS, ints);
+ADD_ATTR_IMPL(std::vector<float>, FLOATS, floats);
+ADD_ATTR_IMPL(std::vector<bool>, BOOLEANS, bools);
+ADD_ATTR_IMPL(std::vector<int64_t>, LONGS, longs);
+ADD_ATTR_IMPL(std::vector<std::string>, STRINGS, strings);
+
 
 }  // namespace fbs
 }  // namespace lite

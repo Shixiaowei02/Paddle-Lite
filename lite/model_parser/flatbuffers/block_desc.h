@@ -15,16 +15,21 @@
 #include <memory>
 #include "lite/model_parser/desc_apis.h"
 #include "lite/model_parser/flatbuffers/framework_generated.h"
+#include "lite/model_parser/flatbuffers/op_desc.h"
 
 namespace paddle {
 namespace lite {
 namespace fbs {
 
+class ProgramDesc;
+
 class BlockDesc : public BlockDescAPI, public proto::BlockDescT {
  public:
   BlockDesc() = delete;
 
-  explicit BlockDesc(proto::BlockDesc* desc) { }
+  explicit BlockDesc(fbs::ProgramDesc* desc) {
+    program_desc_  = desc;
+  }
 
   int32_t Idx() const override {
     return idx;
@@ -79,7 +84,18 @@ class BlockDesc : public BlockDescAPI, public proto::BlockDescT {
   void SetForwardBlockIdx(int32_t idx_in) override {
     forward_block_idx = idx_in;
   }
+
+private:
+fbs::ProgramDesc* program_desc_;
 };
+
+template <>
+OpDesc* BlockDesc::AddOp() {
+  auto* op = new OpDesc(this);
+  std::unique_ptr<proto::OpDescT> op_p(static_cast<proto::OpDescT*>(op));
+  ops.push_back(std::move(op_p));
+  return op;
+}
 
 }  // namespace fbs
 }  // namespace lite

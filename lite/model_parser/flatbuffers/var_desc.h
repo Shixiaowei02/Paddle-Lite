@@ -22,10 +22,6 @@ namespace fbs {
 
 class VarDesc : public VarDescAPI, public proto::VarDescT {
  public:
-  VarDesc() = default;
-
-  explicit VarDesc(proto::VarDesc* desc) {}
-
   std::string Name() const override {
     return name;
   }
@@ -62,9 +58,6 @@ class VarDesc : public VarDescAPI, public proto::VarDescT {
     CHECK(GetType() == VarDescAPI::Type::LOD_TENSOR);
     return type->lod_tensor->tensor->dims;
   }
-
- private:
-
 };
 
 }  // namespace fbs
