@@ -35,12 +35,12 @@ class ProgramDesc : public ProgramDescAPI, public proto::ProgramDescT {
   }
 
   template <typename T>
-  T *GetBlock(int32_t idx);
+  T *GetBlock(int32_t idx) {
+    LOG(INFO);
+  }
 
   template <typename T>
-  T *AddBlock() {
-
-  }
+  T *AddBlock();
 
   bool HasVersion() const override {
     return version.get();
@@ -53,10 +53,14 @@ class ProgramDesc : public ProgramDescAPI, public proto::ProgramDescT {
   void SetVersion(int64_t version_in) override {
     version->version = version_in;
   }
-
- private:
-
 };
+
+template <>
+BlockDesc* ProgramDesc::AddBlock() {
+  auto* block = new BlockDesc();
+  blocks.push_back(block);
+  return block;
+}
 
 }  // namespace fbs
 }  // namespace lite

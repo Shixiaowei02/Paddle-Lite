@@ -65,7 +65,9 @@ class BlockDesc : public BlockDescAPI, public proto::BlockDescT {
   }
 
   template <typename T>
-  T* GetOp(int32_t idx);
+  T* GetOp(int32_t idx) {
+    LOG(FATAL);
+  }
 
   template <typename T>
   T* AddOp();
@@ -77,9 +79,6 @@ class BlockDesc : public BlockDescAPI, public proto::BlockDescT {
   void SetForwardBlockIdx(int32_t idx_in) override {
     forward_block_idx = idx_in;
   }
-
- private:
-
 };
 
 }  // namespace fbs
