@@ -51,7 +51,7 @@ class ProgramDesc : public ProgramDescAPI, public proto::ProgramDescT {
   }
 
   void SetVersion(int64_t version_in) override {
-    version_in = version->version;
+    version->version = version_in;
   }
 
  private:
