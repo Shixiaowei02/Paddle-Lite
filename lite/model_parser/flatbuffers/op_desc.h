@@ -24,7 +24,7 @@ class OpDesc : public OpDescAPI, public proto::OpDescT {
  public:
   OpDesc() = delete;
 
-  explicit OpDesc(proto::OpDesc *desc) : { }
+  explicit OpDesc(proto::OpDesc *desc) { }
 
   std::string Type() const override {
     return type;
@@ -45,10 +45,10 @@ class OpDesc : public OpDescAPI, public proto::OpDescT {
 
   void SetInput(const std::string &param,
                 const std::vector<std::string> &args) override {
-    proto::VarT var;
-    var.parameter = param;
-    var.arguments = args;
-    inputs.emplace_back(std::move(var));
+    auto* var = new proto::OpDesc_::VarT;
+    var->parameter = param;
+    var->arguments = args;
+    inputs.emplace_back(var);
   }
 
   std::vector<std::string> Output(const std::string &param) const override {
@@ -61,10 +61,10 @@ class OpDesc : public OpDescAPI, public proto::OpDescT {
 
   void SetOutput(const std::string &param,
                  const std::vector<std::string> &args) override {
-    proto::VarT var;
-    var.parameter = param;
-    var.arguments = args;
-    outputs.emplace_back(std::move(var));
+    auto* var = new proto::OpDesc_::VarT;
+    var->parameter = param;
+    var->arguments = args;
+    outputs.emplace_back(var);
   }
 
   bool HasAttr(const std::string &name) const override {
