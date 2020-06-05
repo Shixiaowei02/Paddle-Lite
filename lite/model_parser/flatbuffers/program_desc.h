@@ -33,7 +33,8 @@ class ProgramDesc : public ProgramDescAPI, public proto::ProgramDescT {
 
   template <typename T>
   T *GetBlock(int32_t idx) {
-    LOG(INFO);
+    LOG(FATAL);
+    return T();
   }
 
   template <typename T>
