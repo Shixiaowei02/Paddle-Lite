@@ -12,26 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "lite/model_parser/flatbuffers/block_desc.h"
-
-namespace paddle {
-namespace lite {
-namespace fbs {
-
-template <>
-proto::VarDesc* BlockDesc::GetVar<proto::VarDesc>(
-    int32_t idx) {
-  CHECK_LT(idx, VarsSize()) << "idx >= vars.size()";
-  return const_cast<proto::VarDesc*>(desc_->vars()->Get(idx));
-}
-
-template <>
-proto::OpDesc* BlockDesc::GetOp<proto::OpDesc>(
-    int32_t idx) {
-  CHECK_LT(idx, OpsSize()) << "idx >= ops.size()";
-  return const_cast<proto::OpDesc*>(desc_->ops()->Get(idx));
-}
-
-}  // namespace fbs
-}  // namespace lite
-}  // namespace paddle
+#include "lite/model_parser/flatbuffers/ro/var_desc.h"

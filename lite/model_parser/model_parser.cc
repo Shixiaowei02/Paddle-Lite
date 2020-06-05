@@ -27,8 +27,8 @@
 #include "lite/model_parser/naive_buffer/param_desc.h"
 #include "lite/model_parser/naive_buffer/program_desc.h"
 #include "lite/model_parser/naive_buffer/var_desc.h"
-#include "lite/model_parser/flatbuffers/program_desc.h"
-#include "lite/model_parser/flatbuffers/var_desc.h"
+#include "lite/model_parser/flatbuffers/ro/program_desc.h"
+#include "lite/model_parser/flatbuffers/ro/var_desc.h"
 #ifndef LITE_ON_TINY_PUBLISH
 #include "lite/model_parser/pb/program_desc.h"
 #include "lite/model_parser/pb/var_desc.h"

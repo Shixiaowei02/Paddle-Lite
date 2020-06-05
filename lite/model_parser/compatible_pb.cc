@@ -15,10 +15,10 @@
 #include "lite/model_parser/compatible_pb.h"
 #include <string>
 #include <vector>
-#include "lite/model_parser/flatbuffers/block_desc.h"
-#include "lite/model_parser/flatbuffers/op_desc.h"
-#include "lite/model_parser/flatbuffers/program_desc.h"
-#include "lite/model_parser/flatbuffers/var_desc.h"
+#include "lite/model_parser/flatbuffers/ro/block_desc.h"
+#include "lite/model_parser/flatbuffers/ro/op_desc.h"
+#include "lite/model_parser/flatbuffers/ro/program_desc.h"
+#include "lite/model_parser/flatbuffers/ro/var_desc.h"
 #include "lite/model_parser/naive_buffer/block_desc.h"
 #include "lite/model_parser/naive_buffer/op_desc.h"
 #include "lite/model_parser/naive_buffer/program_desc.h"

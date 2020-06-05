@@ -22,6 +22,8 @@ if(NOT LITE_ON_MOBILE AND NOT LITE_ON_TINY_PUBLISH)
 endif()
 
 if (NOT LITE_ON_TINY_PUBLISH)
+    set(fbs_wrapper fbs_op_desc fbs_var_desc fbs_block_desc fbs_program_desc)
+    message(STATUS "===== fbs_wrapper: ${fbs_wrapper}")
     lite_cc_library(compatible_pb SRCS compatible_pb.cc
       DEPS ${cpp_wrapper} ${naive_wrapper} ${pb_wrapper} ${fbs_wrapper} framework_proto)
 else()
