@@ -30,7 +30,7 @@ class VarDesc : public VarDescAPI, public proto::VarDescT {
     return name;
   }
 
-  void SetName(const std::string& name_in) override {
+  void SetName(std::string name_in) override {
     name = name_in;
   }
 
@@ -39,7 +39,7 @@ class VarDesc : public VarDescAPI, public proto::VarDescT {
   }
 
   void SetType(VarDescAPI::Type type_in) override {
-    *type = type_in;
+    type->type = static_cast<proto::VarType_::Type>(type_in);
   }
 
   bool Persistable() const override {
@@ -55,12 +55,12 @@ class VarDesc : public VarDescAPI, public proto::VarDescT {
   }
 
   void SetDataType(Type data_type_in) {
-    type->lod_tensor->tensor->data_type = data_type_in;
+    type->lod_tensor->tensor->data_type = static_cast<proto::VarType_::Type>(data_type_in);
   }
 
   std::vector<int64_t> GetShape() const override {
     CHECK(GetType() == VarDescAPI::Type::LOD_TENSOR);
-    const auto& dims = type->lod_tensor->tensor->dims;
+    return type->lod_tensor->tensor->dims;
   }
 
  private:
