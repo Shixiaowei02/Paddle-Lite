@@ -26,6 +26,10 @@ class VarDesc : public VarDescAPI, private proto::VarDescT {
  public:
   VarDesc() = delete;
 
+  explicit VarDesc(fbs::BlockDesc* desc) {
+    block_desc_  = desc;
+  }
+
   std::string Name() const override {
     return name;
   }
@@ -62,6 +66,9 @@ class VarDesc : public VarDescAPI, private proto::VarDescT {
     CHECK(GetType() == VarDescAPI::Type::LOD_TENSOR);
     return type->lod_tensor->tensor->dims;
   }
+
+ private:
+  fbs::BlockDesc* block_desc_;
 
   friend class BlockDesc;
 };
