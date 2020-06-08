@@ -23,17 +23,6 @@ namespace fbs {
 class BlockDesc;
 
 class OpDesc : public OpDescAPI, private proto::OpDescT {
- public:
-  OpDesc() = delete;
-
-  // will be deleted
-  explicit OpDesc(paddle::lite::fbs::OpDesc* desc) {
-  }
-
-  explicit OpDesc(fbs::BlockDesc* desc) {
-    block_desc_  = desc;
-  }
-
   std::string Type() const override {
     return type;
   }
@@ -127,7 +116,12 @@ class OpDesc : public OpDescAPI, private proto::OpDescT {
     LOG(FATAL);
     return T();
   }
+private:
+  OpDesc() = default;
 
+  // will be deleted
+  explicit OpDesc(paddle::lite::fbs::OpDesc* desc) {
+  }
   friend class BlockDesc;
 };
 

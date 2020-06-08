@@ -21,7 +21,7 @@ namespace fbs {
 
 template <>
 BlockDesc* ProgramDesc::AddBlock() {
-  auto* block = new BlockDesc(this);
+  auto* block = new BlockDesc();
   std::unique_ptr<proto::BlockDescT> block_p(static_cast<proto::BlockDescT*>(block));
   blocks.push_back(std::move(block_p));
   return block;
