@@ -15,24 +15,11 @@
 #include <fstream>
 #include "lite/model_parser/flatbuffers/io.h"
 
+
 namespace paddle {
 namespace lite {
 namespace fbs {
 namespace ro {
-
-void LoadModelFbs(const std::string& path,
-               cpp::ProgramDesc *cpp_prog) {
-  std::ifstream infile;
-  infile.open(path, std::ios::binary | std::ios::in);
-  infile.seekg(0,std::ios::end);
-  int length = infile.tellg();
-  infile.seekg(0,std::ios::beg);
-  char *data = new char[length];
-  infile.read(data, length);
-  infile.close();
-  auto fbs_prog = paddle::lite::fbs::proto::GetProgramDesc(data);
-  TransformProgramDescAnyToCpp(fbs_prog, cpp_prog);
-}
 
 }
 }  // namespace fbs

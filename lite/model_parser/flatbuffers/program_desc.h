@@ -20,7 +20,7 @@ namespace paddle {
 namespace lite {
 namespace fbs {
 
-class ProgramDesc : public ProgramDescAPI, private proto::ProgramDescT {
+class ProgramDesc : public ProgramDescAPI, public proto::ProgramDescT {
  public:
   ProgramDesc() = default;
 
@@ -37,7 +37,8 @@ class ProgramDesc : public ProgramDescAPI, private proto::ProgramDescT {
 
   const flatbuffers::DetachedBuffer& SyncBuffer() {
     fbb_.Reset();
-    proto::ProgramDesc::Pack(fbb_, this);
+    flatbuffers::Offset<proto::ProgramDesc> desc = proto::ProgramDesc::Pack(fbb_, this);
+    fbb_.Finish(desc);
     buf_ = fbb_.Release();
     return buf_;
   }

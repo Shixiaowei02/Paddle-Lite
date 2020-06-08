@@ -22,15 +22,16 @@ namespace fbs {
 
 template <>
 OpDesc* BlockDesc::AddOp() {
-  auto* op = new OpDesc(this);
+  OpDesc* op = new OpDesc(this);
   std::unique_ptr<proto::OpDescT> op_p(static_cast<proto::OpDescT*>(op));
   ops.push_back(std::move(op_p));
+  LOG(INFO) << "fbs::BlockDesc::AddOp() " << &ops;
   return op;
 }
 
 template <>
 VarDesc* BlockDesc::AddVar() {
-  auto* var = new VarDesc(this);
+  VarDesc* var = new VarDesc(this);
   std::unique_ptr<proto::VarDescT> var_p(static_cast<proto::VarDescT*>(var));
   vars.push_back(std::move(var_p));
   return var;

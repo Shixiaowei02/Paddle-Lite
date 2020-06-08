@@ -29,6 +29,7 @@
 #include "lite/model_parser/naive_buffer/var_desc.h"
 #include "lite/model_parser/flatbuffers/ro/program_desc.h"
 #include "lite/model_parser/flatbuffers/ro/var_desc.h"
+#include "flatbuffers/idl.h"
 #ifndef LITE_ON_TINY_PUBLISH
 #include "lite/model_parser/pb/program_desc.h"
 #include "lite/model_parser/pb/var_desc.h"
@@ -346,6 +347,18 @@ void LoadModelFbs(const std::string& path,
   infile.close();
   paddle::lite::fbs::proto::ProgramDesc* fbs_prog = 
   const_cast<paddle::lite::fbs::proto::ProgramDesc*>(paddle::lite::fbs::proto::GetProgramDesc(data));
+  /*
+  std::string schemafile;
+  flatbuffers::LoadFile("/shixiaowei02/Paddle-Lite-FlatBuf/framework_test/schema/framework.fbs", false, &schemafile);
+  flatbuffers::Parser parser;
+  parser.Parse(schemafile.c_str());
+  std::string jsongen;
+  if (!GenerateText(parser, fbs_prog, &jsongen)) {
+      std::cout << "Couldn't serialize parsed data to JSON!" << std::endl;
+  }
+  std::cout<< jsongen << std::endl;
+  std::cout << "Here!!" << std::endl;
+  */
   TransformProgramDescAnyToCpp(fbs::ro::ProgramDesc(fbs_prog), cpp_prog);
 }
 

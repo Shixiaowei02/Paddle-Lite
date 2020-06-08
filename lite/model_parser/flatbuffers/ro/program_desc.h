@@ -23,7 +23,7 @@ namespace ro {
 
 class ProgramDesc : public ProgramDescAPI {
  public:
-  ProgramDesc() = delete;
+  //ProgramDesc() = delete;
 
   explicit ProgramDesc(proto::ProgramDesc *desc) : desc_(desc) {
     CHECK(desc);
@@ -53,7 +53,7 @@ class ProgramDesc : public ProgramDescAPI {
     LOG(FATAL) << "Feature not yet supported.";
   }
 
- private:
+ //private:
   proto::ProgramDesc* desc_; // not_own
 };
 

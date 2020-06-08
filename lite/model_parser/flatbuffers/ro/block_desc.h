@@ -50,7 +50,11 @@ class BlockDesc : public BlockDescAPI {
     return nullptr;
   }
 
-  size_t OpsSize() const override { return desc_->ops()->size(); }
+  size_t OpsSize() const override {
+    CHECK(desc_);
+    CHECK(desc_->ops());
+    return desc_->ops()->size();
+  }
 
   void ClearOps() override { LOG(FATAL) << "Feature not yet supported."; }
 
@@ -71,7 +75,7 @@ class BlockDesc : public BlockDescAPI {
     LOG(FATAL) << "Feature not yet supported.";
   }
 
- private:
+ //private:
   proto::BlockDesc* desc_;  // not_own
 };
 
