@@ -77,10 +77,12 @@ int main() {
   paddle::lite::LoadModelFbs("/shixiaowei02/Paddle-Lite-FlatBuf/framework_test/save_model.bin", &cpp_prog);
   paddle::lite::fbs::ProgramDesc fbs_program;
   paddle::lite::TransformProgramDescCppToAny(cpp_prog, &fbs_program);
+  /*
   LOG(INFO) << "(fbs_program.blocks.size() = " << fbs_program.blocks.size();
   LOG(INFO) << "(fbs_program.blocks[0])->ops = " << &((fbs_program.blocks[0])->ops);
   LOG(INFO) << "(fbs_program.blocks[0])->ops.size() = " << (fbs_program.blocks[0])->ops.size();
   LOG(INFO) << "(fbs_program.blocks[0])->vars.size() = " << (fbs_program.blocks[0])->vars.size();
+  */
 
   auto& buffer = fbs_program.SyncBuffer();
   auto* data = buffer.data();

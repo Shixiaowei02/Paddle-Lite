@@ -24,6 +24,9 @@ class ProgramDesc;
 
 class BlockDesc : public BlockDescAPI, private proto::BlockDescT {
  public:
+  // will be deleted.
+  explicit BlockDesc(paddle::lite::fbs::BlockDesc* desc) {
+  }
   int32_t Idx() const override {
     return idx;
   }
@@ -83,11 +86,6 @@ class BlockDesc : public BlockDescAPI, private proto::BlockDescT {
   }
 private:
   BlockDesc() = default;
-
-  // will be deleted.
-  explicit BlockDesc(paddle::lite::fbs::BlockDesc* desc) {
-  }
-
   friend class ProgramDesc;
 };
 
