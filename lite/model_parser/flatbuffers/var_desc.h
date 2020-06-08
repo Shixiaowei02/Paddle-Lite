@@ -22,6 +22,8 @@ namespace fbs {
 
 class VarDesc : public VarDescAPI, public proto::VarDescT {
  public:
+  VarDesc() = delete;
+
   std::string Name() const override {
     return name;
   }
