@@ -27,7 +27,7 @@ class VarDesc : public VarDescAPI, private proto::VarDescT {
   VarDesc() = delete;
 
   // will be deleted.
-  explicit VarDesc(paddle::lite::fbs::proto::VarDesc* desc) {
+  explicit VarDesc(paddle::lite::fbs::VarDesc* desc) {
     LOG(FATAL);
   }
 

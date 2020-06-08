@@ -27,7 +27,7 @@ class OpDesc : public OpDescAPI, private proto::OpDescT {
   OpDesc() = delete;
 
   // will be deleted
-  explicit OpDesc(paddle::lite::fbs::proto::OpDesc* desc) {
+  explicit OpDesc(paddle::lite::fbs::OpDesc* desc) {
     LOG(FATAL);
   }
 

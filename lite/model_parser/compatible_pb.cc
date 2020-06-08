@@ -293,14 +293,14 @@ void OpAttrsCppToAny(const cpp::OpDesc &cpp_desc, OpDescType *any_desc) {
                                                                             \
     cpp_desc->ClearOps();                                                   \
     for (size_t i = 0; i < desc.OpsSize(); ++i) {                           \
-      auto any_op_desc = NT::OpDesc(desc.GetOp<PNT::proto::OpDesc>(i));     \
+      auto any_op_desc = NT::OpDesc(desc.GetOp<PNT::OpDesc>(i));     \
       auto *cpp_op_desc = cpp_desc->AddOp<cpp::OpDesc>();                   \
       TransformOpDescAnyToCpp(any_op_desc, cpp_op_desc);                    \
     }                                                                       \
                                                                             \
     cpp_desc->ClearVars();                                                  \
     for (size_t i = 0; i < desc.VarsSize(); ++i) {                          \
-      auto any_var_desc = NT::VarDesc(desc.GetVar<PNT::proto::VarDesc>(i)); \
+      auto any_var_desc = NT::VarDesc(desc.GetVar<PNT::VarDesc>(i)); \
       auto *cpp_var_desc = cpp_desc->AddVar<cpp::VarDesc>();                \
       TransformVarDescAnyToCpp(any_var_desc, cpp_var_desc);                 \
     }                                                                       \
@@ -317,7 +317,7 @@ void OpAttrsCppToAny(const cpp::OpDesc &cpp_desc, OpDescType *any_desc) {
     any_desc->ClearOps();                                                   \
     for (size_t i = 0; i < desc.OpsSize(); ++i) {                           \
       auto *cpp_op_desc = desc.GetOp<cpp::OpDesc>(i);                       \
-      auto any_op_desc = NT::OpDesc(any_desc->AddOp<PNT::proto::OpDesc>()); \
+      auto any_op_desc = NT::OpDesc(any_desc->AddOp<PNT::OpDesc>()); \
       TransformOpDescCppToAny(*cpp_op_desc, &any_op_desc);                  \
     }                                                                       \
                                                                             \
@@ -325,7 +325,7 @@ void OpAttrsCppToAny(const cpp::OpDesc &cpp_desc, OpDescType *any_desc) {
     for (size_t i = 0; i < desc.VarsSize(); ++i) {                          \
       auto *cpp_var_desc = desc.GetVar<cpp::VarDesc>(i);                    \
       auto any_var_desc =                                                   \
-          NT::VarDesc(any_desc->AddVar<PNT::proto::VarDesc>());             \
+          NT::VarDesc(any_desc->AddVar<PNT::VarDesc>());             \
       TransformVarDescCppToAny(*cpp_var_desc, &any_var_desc);               \
     }                                                                       \
   }
@@ -343,7 +343,7 @@ void OpAttrsCppToAny(const cpp::OpDesc &cpp_desc, OpDescType *any_desc) {
     cpp_desc->ClearBlocks();                                             \
     for (size_t i = 0; i < desc.BlocksSize(); ++i) {                     \
       auto any_block_desc =                                              \
-          NT::BlockDesc(desc.GetBlock<PNT::proto::BlockDesc>(i));        \
+          NT::BlockDesc(desc.GetBlock<PNT::BlockDesc>(i));        \
       auto *cpp_block_desc = cpp_desc->AddBlock<cpp::BlockDesc>();       \
       TransformBlockDescAnyToCpp(any_block_desc, cpp_block_desc);        \
     }                                                                    \
@@ -361,20 +361,20 @@ void OpAttrsCppToAny(const cpp::OpDesc &cpp_desc, OpDescType *any_desc) {
     for (size_t i = 0; i < desc.BlocksSize(); ++i) {                     \
       auto *cpp_block_desc = desc.GetBlock<cpp::BlockDesc>(i);           \
       auto any_block_desc =                                              \
-          NT::BlockDesc(any_desc->AddBlock<PNT::proto::BlockDesc>());    \
+          NT::BlockDesc(any_desc->AddBlock<PNT::BlockDesc>());    \
       TransformBlockDescCppToAny(*cpp_block_desc, &any_block_desc);      \
     }                                                                    \
   }
 
 TRANS_VAR_ANY_WITH_CPP_IMPL(naive_buffer::VarDesc);
 TRANS_OP_ANY_WITH_CPP_IMPL(naive_buffer::OpDesc);
-TRANS_BLOCK_ANY_WITH_CPP_IMPL(BlockDesc, naive_buffer, naive_buffer);
-TRANS_PROGRAM_ANY_WITH_CPP_IMPL(ProgramDesc, naive_buffer, naive_buffer);
+TRANS_BLOCK_ANY_WITH_CPP_IMPL(BlockDesc, naive_buffer, naive_buffer::proto);
+TRANS_PROGRAM_ANY_WITH_CPP_IMPL(ProgramDesc, naive_buffer, naive_buffer::proto);
 
 TRANS_VAR_ANY_WITH_CPP_IMPL(fbs::ro::VarDesc);
 TRANS_OP_ANY_WITH_CPP_IMPL(fbs::ro::OpDesc);
-TRANS_BLOCK_ANY_WITH_CPP_IMPL(BlockDesc, fbs::ro, fbs);
-TRANS_PROGRAM_ANY_WITH_CPP_IMPL(ProgramDesc, fbs::ro, fbs);
+TRANS_BLOCK_ANY_WITH_CPP_IMPL(BlockDesc, fbs::ro, fbs::proto);
+TRANS_PROGRAM_ANY_WITH_CPP_IMPL(ProgramDesc, fbs::ro, fbs::proto);
 
 TRANS_VAR_ANY_WITH_CPP_IMPL(fbs::VarDesc);
 TRANS_OP_ANY_WITH_CPP_IMPL(fbs::OpDesc);
@@ -384,8 +384,8 @@ TRANS_PROGRAM_ANY_WITH_CPP_IMPL(ProgramDesc, fbs, fbs);
 #ifndef LITE_ON_TINY_PUBLISH
 TRANS_VAR_ANY_WITH_CPP_IMPL(pb::VarDesc);
 TRANS_OP_ANY_WITH_CPP_IMPL(pb::OpDesc);
-TRANS_BLOCK_ANY_WITH_CPP_IMPL(BlockDesc, pb, framework);
-TRANS_PROGRAM_ANY_WITH_CPP_IMPL(ProgramDesc, pb, framework);
+TRANS_BLOCK_ANY_WITH_CPP_IMPL(BlockDesc, pb, framework::proto);
+TRANS_PROGRAM_ANY_WITH_CPP_IMPL(ProgramDesc, pb, framework::proto);
 #endif
 
 #undef TRANS_VAR_ANY_WITH_CPP_IMPL

@@ -1,5 +1,6 @@
 #include "lite/model_parser/model_parser.h"
 #include "lite/model_parser/pb/program_desc.h"
+#include "lite/model_parser/flatbuffers/program_desc.h"
 #include "lite/model_parser/pb/var_desc.h"
 #include <google/protobuf/text_format.h>
 #include "gperftools/profiler.h"
@@ -47,7 +48,7 @@ int main() {
 */
   return 0;
 }
-#else
+#elif 0
 
 int main() {
   double t = 0;
@@ -65,6 +66,15 @@ int main() {
   google::protobuf::TextFormat::PrintToString(pb_proto_prog, &pb_str);
   std::cout << pb_str << std::endl;
   */
+  return 0;
+}
+#else
+int main() {
+  paddle::lite::cpp::ProgramDesc cpp_prog;
+  paddle::lite::LoadModelFbs("/shixiaowei02/Paddle-Lite-FlatBuf/framework_test/save_model.bin", &cpp_prog);
+  paddle::lite::fbs::ProgramDesc fbs_program;
+  paddle::lite::TransformProgramDescCppToAny(cpp_prog, &fbs_program);
+
   return 0;
 }
 #endif
