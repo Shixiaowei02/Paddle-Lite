@@ -19,6 +19,12 @@
 #include "lite/model_parser/flatbuffers/ro/op_desc.h"
 #include "lite/model_parser/flatbuffers/ro/program_desc.h"
 #include "lite/model_parser/flatbuffers/ro/var_desc.h"
+
+#include "lite/model_parser/flatbuffers/block_desc.h"
+#include "lite/model_parser/flatbuffers/op_desc.h"
+#include "lite/model_parser/flatbuffers/program_desc.h"
+#include "lite/model_parser/flatbuffers/var_desc.h"
+
 #include "lite/model_parser/naive_buffer/block_desc.h"
 #include "lite/model_parser/naive_buffer/op_desc.h"
 #include "lite/model_parser/naive_buffer/program_desc.h"
@@ -280,7 +286,7 @@ void OpAttrsCppToAny(const cpp::OpDesc &cpp_desc, OpDescType *any_desc) {
   template <>                                                               \
   void TransformBlockDescAnyToCpp<NT::T>(const NT::T &any_desc,             \
                                          cpp::BlockDesc *cpp_desc) {        \
-    NT::T desc = any_desc;                                                  \
+    NT::T& desc = const_cast<NT::T &>(any_desc);                                                  \
     cpp_desc->SetIdx(desc.Idx());                                           \
     cpp_desc->SetParentIdx(desc.ParentIdx());                               \
     cpp_desc->SetForwardBlockIdx(desc.ForwardBlockIdx());                   \
@@ -369,6 +375,11 @@ TRANS_VAR_ANY_WITH_CPP_IMPL(fbs::ro::VarDesc);
 TRANS_OP_ANY_WITH_CPP_IMPL(fbs::ro::OpDesc);
 TRANS_BLOCK_ANY_WITH_CPP_IMPL(BlockDesc, fbs::ro, fbs);
 TRANS_PROGRAM_ANY_WITH_CPP_IMPL(ProgramDesc, fbs::ro, fbs);
+
+TRANS_VAR_ANY_WITH_CPP_IMPL(fbs::VarDesc);
+TRANS_OP_ANY_WITH_CPP_IMPL(fbs::OpDesc);
+TRANS_BLOCK_ANY_WITH_CPP_IMPL(BlockDesc, fbs, fbs);
+TRANS_PROGRAM_ANY_WITH_CPP_IMPL(ProgramDesc, fbs, fbs);
 
 #ifndef LITE_ON_TINY_PUBLISH
 TRANS_VAR_ANY_WITH_CPP_IMPL(pb::VarDesc);

@@ -13,3 +13,19 @@
 // limitations under the License.
 
 #include "lite/model_parser/flatbuffers/program_desc.h"
+#include "lite/model_parser/flatbuffers/block_desc.h"
+
+namespace paddle {
+namespace lite {
+namespace fbs {
+
+template <>
+BlockDesc* ProgramDesc::AddBlock() {
+  auto* block = new BlockDesc(this);
+  std::unique_ptr<proto::BlockDescT> block_p(static_cast<proto::BlockDescT*>(block));
+  blocks.push_back(std::move(block_p));
+  return block;
+}
+}
+}
+}

@@ -39,6 +39,7 @@ class ProgramDesc : public ProgramDescAPI {
   template <typename T>
   T *AddBlock() {
     LOG(FATAL) << "Feature not yet supported.";
+    return nullptr;
   }
 
   bool HasVersion() const override { return desc_->version() != nullptr; }

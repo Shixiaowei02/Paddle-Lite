@@ -13,3 +13,29 @@
 // limitations under the License.
 
 #include "lite/model_parser/flatbuffers/block_desc.h"
+#include "lite/model_parser/flatbuffers/op_desc.h"
+#include "lite/model_parser/flatbuffers/var_desc.h"
+
+namespace paddle {
+namespace lite {
+namespace fbs {
+
+template <>
+OpDesc* BlockDesc::AddOp() {
+  auto* op = new OpDesc(this);
+  std::unique_ptr<proto::OpDescT> op_p(static_cast<proto::OpDescT*>(op));
+  ops.push_back(std::move(op_p));
+  return op;
+}
+
+template <>
+VarDesc* BlockDesc::AddVar() {
+  auto* var = new VarDesc(this);
+  std::unique_ptr<proto::VarDescT> var_p(static_cast<proto::VarDescT*>(var));
+  vars.push_back(std::move(var_p));
+  return var;
+}
+
+}
+}
+}

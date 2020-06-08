@@ -15,8 +15,6 @@
 #include <memory>
 #include "lite/model_parser/desc_apis.h"
 #include "lite/model_parser/flatbuffers/framework_generated.h"
-#include "lite/model_parser/flatbuffers/op_desc.h"
-#include "lite/model_parser/flatbuffers/var_desc.h"
 
 namespace paddle {
 namespace lite {
@@ -26,7 +24,12 @@ class ProgramDesc;
 
 class BlockDesc : public BlockDescAPI, private proto::BlockDescT {
  public:
-  BlockDesc() = delete;
+  //BlockDesc() = delete;
+
+  // will be deleted.
+  explicit BlockDesc(paddle::lite::fbs::proto::BlockDesc* desc) {
+    LOG(FATAL);
+  }
 
   explicit BlockDesc(fbs::ProgramDesc* desc) {
     program_desc_  = desc;
@@ -57,7 +60,10 @@ class BlockDesc : public BlockDescAPI, private proto::BlockDescT {
   }
 
   template <typename T>
-  T* GetVar(int32_t idx);
+  T* GetVar(int32_t idx) {
+    LOG(FATAL);
+    return nullptr;
+  }
 
   template <typename T>
   T* AddVar();
@@ -73,6 +79,7 @@ class BlockDesc : public BlockDescAPI, private proto::BlockDescT {
   template <typename T>
   T* GetOp(int32_t idx) {
     LOG(FATAL);
+    return nullptr;
   }
 
   template <typename T>
@@ -90,22 +97,6 @@ private:
   fbs::ProgramDesc* program_desc_;
   friend class ProgramDesc;
 };
-
-template <>
-OpDesc* BlockDesc::AddOp() {
-  auto* op = new OpDesc(this);
-  std::unique_ptr<proto::OpDescT> op_p(static_cast<proto::OpDescT*>(op));
-  ops.push_back(std::move(op_p));
-  return op;
-}
-
-template <>
-VarDesc* BlockDesc::AddVar() {
-  auto* var = new VarDesc(this);
-  std::unique_ptr<proto::VarDescT> var_p(static_cast<proto::VarDescT*>(var));
-  vars.push_back(std::move(var_p));
-  return var;
-}
 
 }  // namespace fbs
 }  // namespace lite

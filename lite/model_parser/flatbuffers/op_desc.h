@@ -24,7 +24,12 @@ class BlockDesc;
 
 class OpDesc : public OpDescAPI, private proto::OpDescT {
  public:
-  OpDesc() = delete;
+  //OpDesc() = delete;
+
+  // will be deleted
+  explicit OpDesc(paddle::lite::fbs::proto::OpDesc* desc) {
+    LOG(FATAL);
+  }
 
   explicit OpDesc(fbs::BlockDesc* desc) {
     block_desc_  = desc;
@@ -41,10 +46,12 @@ class OpDesc : public OpDescAPI, private proto::OpDescT {
 
   std::vector<std::string> Input(const std::string &param) const override {
     LOG(FATAL);
+    return std::vector<std::string>();
   }
 
   std::vector<std::string> InputArgumentNames() const override {
     LOG(FATAL);
+    return std::vector<std::string>();
   }
 
   void SetInput(const std::string &param,
@@ -57,10 +64,12 @@ class OpDesc : public OpDescAPI, private proto::OpDescT {
 
   std::vector<std::string> Output(const std::string &param) const override {
     LOG(FATAL);
+    return std::vector<std::string>();
   }
 
   std::vector<std::string> OutputArgumentNames() const override {
     LOG(FATAL);
+    return std::vector<std::string>();
   }
 
   void SetOutput(const std::string &param,
@@ -73,6 +82,7 @@ class OpDesc : public OpDescAPI, private proto::OpDescT {
 
   bool HasAttr(const std::string &name) const override {
     LOG(FATAL);
+    return false;
   }
 
   size_t AttrsSize() const {
