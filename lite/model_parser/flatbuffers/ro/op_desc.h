@@ -19,6 +19,7 @@
 namespace paddle {
 namespace lite {
 namespace fbs {
+namespace ro {
 
 class OpDesc : public OpDescAPI {
  public:
@@ -145,6 +146,7 @@ class OpDesc : public OpDescAPI {
   proto::OpDesc* desc_;
 };
 
+}
 }  // namespace fbs
 }  // namespace lite
 }  // namespace paddle

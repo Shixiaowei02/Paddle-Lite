@@ -19,6 +19,7 @@
 namespace paddle {
 namespace lite {
 namespace fbs {
+namespace ro {
 
 class VarDesc : public VarDescAPI {
  public:
@@ -71,6 +72,7 @@ class VarDesc : public VarDescAPI {
   proto::VarDesc* desc_;
 };
 
+}
 }  // namespace fbs
 }  // namespace lite
 }  // namespace paddle

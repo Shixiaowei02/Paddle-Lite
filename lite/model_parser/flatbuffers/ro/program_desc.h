@@ -19,6 +19,7 @@
 namespace paddle {
 namespace lite {
 namespace fbs {
+namespace ro {
 
 class ProgramDesc : public ProgramDescAPI {
  public:
@@ -55,6 +56,7 @@ class ProgramDesc : public ProgramDescAPI {
   proto::ProgramDesc* desc_; // not_own
 };
 
+}
 }  // namespace fbs
 }  // namespace lite
 }  // namespace paddle

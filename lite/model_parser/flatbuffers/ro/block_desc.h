@@ -19,6 +19,7 @@
 namespace paddle {
 namespace lite {
 namespace fbs {
+namespace ro {
 
 class BlockDesc : public BlockDescAPI {
  public:
@@ -72,6 +73,7 @@ class BlockDesc : public BlockDescAPI {
   proto::BlockDesc* desc_;  // not_own
 };
 
+}
 }  // namespace fbs
 }  // namespace lite
 }  // namespace paddle

@@ -17,6 +17,7 @@
 namespace paddle {
 namespace lite {
 namespace fbs {
+namespace ro {
 
 template <>
 proto::VarDesc* BlockDesc::GetVar<proto::VarDesc>(
@@ -32,6 +33,7 @@ proto::OpDesc* BlockDesc::GetOp<proto::OpDesc>(
   return const_cast<proto::OpDesc*>(desc_->ops()->Get(idx));
 }
 
+}  // namespace ro
 }  // namespace fbs
 }  // namespace lite
 }  // namespace paddle
