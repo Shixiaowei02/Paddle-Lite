@@ -17,6 +17,7 @@
 namespace paddle {
 namespace lite {
 namespace fbs {
+namespace ro {
 
 template <>
 proto::BlockDesc* ProgramDesc::GetBlock<proto::BlockDesc>(
@@ -25,6 +26,7 @@ proto::BlockDesc* ProgramDesc::GetBlock<proto::BlockDesc>(
   return const_cast<proto::BlockDesc*>(desc_->blocks()->Get(idx));
 }
 
+}
 }  // namespace fbs
 }  // namespace lite
 }  // namespace paddle

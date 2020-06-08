@@ -47,6 +47,7 @@ class BlockDesc : public BlockDescAPI {
   template <typename T>
   T* AddVar() {
     LOG(FATAL) << "Feature not yet supported.";
+    return nullptr;
   }
 
   size_t OpsSize() const override { return desc_->ops()->size(); }
@@ -59,6 +60,7 @@ class BlockDesc : public BlockDescAPI {
   template <typename T>
   T* AddOp() {
     LOG(FATAL) << "Feature not yet supported.";
+    return nullptr;
   }
 
   int32_t ForwardBlockIdx() const override {

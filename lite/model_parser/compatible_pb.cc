@@ -78,8 +78,8 @@ void TransformVarDescAnyToCpp<naive_buffer::VarDesc>(
 }
 
 template <>
-void TransformVarDescAnyToCpp<fbs::VarDesc>(
-    const fbs::VarDesc &any_desc, cpp::VarDesc *cpp_desc) {
+void TransformVarDescAnyToCpp<fbs::ro::VarDesc>(
+    const fbs::ro::VarDesc &any_desc, cpp::VarDesc *cpp_desc) {
   cpp_desc->SetName(any_desc.Name());
   cpp_desc->SetType(any_desc.GetType());
   cpp_desc->SetPersistable(any_desc.Persistable());
@@ -172,7 +172,7 @@ void OpAttrsAnyToCpp(const OpDescType &any_desc, cpp::OpDesc *cpp_desc) {
 }
 
 template <>
-void OpAttrsAnyToCpp<fbs::OpDesc>(const fbs::OpDesc &any_desc, cpp::OpDesc *cpp_desc) {
+void OpAttrsAnyToCpp<fbs::ro::OpDesc>(const fbs::ro::OpDesc &any_desc, cpp::OpDesc *cpp_desc) {
   using AttrType = OpDescAPI::AttrType;
   auto set_attr = [&](size_t idx, const AttrType& type) {
     const std::string& name = any_desc.AttrName(idx);
@@ -365,10 +365,10 @@ TRANS_OP_ANY_WITH_CPP_IMPL(naive_buffer::OpDesc);
 TRANS_BLOCK_ANY_WITH_CPP_IMPL(BlockDesc, naive_buffer, naive_buffer);
 TRANS_PROGRAM_ANY_WITH_CPP_IMPL(ProgramDesc, naive_buffer, naive_buffer);
 
-TRANS_VAR_ANY_WITH_CPP_IMPL(fbs::VarDesc);
-TRANS_OP_ANY_WITH_CPP_IMPL(fbs::OpDesc);
-TRANS_BLOCK_ANY_WITH_CPP_IMPL(BlockDesc, fbs, fbs);
-TRANS_PROGRAM_ANY_WITH_CPP_IMPL(ProgramDesc, fbs, fbs);
+TRANS_VAR_ANY_WITH_CPP_IMPL(fbs::ro::VarDesc);
+TRANS_OP_ANY_WITH_CPP_IMPL(fbs::ro::OpDesc);
+TRANS_BLOCK_ANY_WITH_CPP_IMPL(BlockDesc, fbs::ro, fbs);
+TRANS_PROGRAM_ANY_WITH_CPP_IMPL(ProgramDesc, fbs::ro, fbs);
 
 #ifndef LITE_ON_TINY_PUBLISH
 TRANS_VAR_ANY_WITH_CPP_IMPL(pb::VarDesc);

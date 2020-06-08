@@ -18,6 +18,7 @@
 namespace paddle {
 namespace lite {
 namespace fbs {
+namespace ro {
 
 void LoadModelFbs(const std::string& path,
                cpp::ProgramDesc *cpp_prog) {
@@ -33,6 +34,7 @@ void LoadModelFbs(const std::string& path,
   TransformProgramDescAnyToCpp(fbs_prog, cpp_prog);
 }
 
+}
 }  // namespace fbs
 }  // namespace lite
 }  // namespace paddle

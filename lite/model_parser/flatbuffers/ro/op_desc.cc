@@ -17,6 +17,7 @@
 namespace paddle {
 namespace lite {
 namespace fbs {
+namespace ro {
 
 template <>
 std::string OpDesc::GetAttr<std::string>(const std::string &name) const {
@@ -101,6 +102,7 @@ GET_ATTRS_IMPL(std::vector<int>, ints);
 GET_ATTRS_IMPL(std::vector<float>, floats);
 GET_ATTRS_IMPL(std::vector<int64_t>, longs);
 
+}
 }  // namespace fbs
 }  // namespace lite
 }  // namespace paddle
