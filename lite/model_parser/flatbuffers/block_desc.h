@@ -23,7 +23,7 @@ namespace fbs {
 
 class ProgramDesc;
 
-class BlockDesc : public BlockDescAPI, public proto::BlockDescT {
+class BlockDesc : public BlockDescAPI, private proto::BlockDescT {
  public:
   BlockDesc() = delete;
 
@@ -86,7 +86,9 @@ class BlockDesc : public BlockDescAPI, public proto::BlockDescT {
   }
 
 private:
-fbs::ProgramDesc* program_desc_;
+  fbs::ProgramDesc* program_desc_;
+
+  friend class ProgramDesc;
 };
 
 template <>

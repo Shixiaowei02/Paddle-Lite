@@ -20,7 +20,9 @@ namespace paddle {
 namespace lite {
 namespace fbs {
 
-class VarDesc : public VarDescAPI, public proto::VarDescT {
+class BlockDesc;
+
+class VarDesc : public VarDescAPI, private proto::VarDescT {
  public:
   VarDesc() = delete;
 
@@ -60,6 +62,8 @@ class VarDesc : public VarDescAPI, public proto::VarDescT {
     CHECK(GetType() == VarDescAPI::Type::LOD_TENSOR);
     return type->lod_tensor->tensor->dims;
   }
+
+  friend class BlockDesc;
 };
 
 }  // namespace fbs

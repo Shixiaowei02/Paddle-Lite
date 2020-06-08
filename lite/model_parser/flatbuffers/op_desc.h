@@ -22,7 +22,7 @@ namespace fbs {
 
 class BlockDesc;
 
-class OpDesc : public OpDescAPI, public proto::OpDescT {
+class OpDesc : public OpDescAPI, private proto::OpDescT {
  public:
   OpDesc() = delete;
 
@@ -116,6 +116,8 @@ class OpDesc : public OpDescAPI, public proto::OpDescT {
 
  private:
   fbs::BlockDesc* block_desc_;
+
+  friend class BlockDesc;
 };
 
 #define ADD_ATTR_IMPL(T, ty__, fbs_a_)                            \
