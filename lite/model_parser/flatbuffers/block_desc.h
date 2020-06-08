@@ -16,6 +16,7 @@
 #include "lite/model_parser/desc_apis.h"
 #include "lite/model_parser/flatbuffers/framework_generated.h"
 #include "lite/model_parser/flatbuffers/op_desc.h"
+#include "lite/model_parser/flatbuffers/var_desc.h"
 
 namespace paddle {
 namespace lite {
@@ -99,7 +100,7 @@ OpDesc* BlockDesc::AddOp() {
 }
 
 template <>
-VarDesc* AddVar() {
+VarDesc* BlockDesc::AddVar() {
   auto* var = new VarDesc(this);
   std::unique_ptr<proto::VarDescT> var_p(static_cast<proto::VarDescT*>(var));
   vars.push_back(std::move(var_p));
