@@ -24,7 +24,7 @@ class ProgramDesc;
 
 class BlockDesc : public BlockDescAPI, private proto::BlockDescT {
  public:
-  //BlockDesc() = delete;
+  BlockDesc() = delete;
 
   // will be deleted.
   explicit BlockDesc(paddle::lite::fbs::proto::BlockDesc* desc) {

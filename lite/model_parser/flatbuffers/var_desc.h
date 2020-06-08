@@ -24,7 +24,7 @@ class BlockDesc;
 
 class VarDesc : public VarDescAPI, private proto::VarDescT {
  public:
-  //VarDesc() = delete;
+  VarDesc() = delete;
 
   // will be deleted.
   explicit VarDesc(paddle::lite::fbs::proto::VarDesc* desc) {

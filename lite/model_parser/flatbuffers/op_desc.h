@@ -24,7 +24,7 @@ class BlockDesc;
 
 class OpDesc : public OpDescAPI, private proto::OpDescT {
  public:
-  //OpDesc() = delete;
+  OpDesc() = delete;
 
   // will be deleted
   explicit OpDesc(paddle::lite::fbs::proto::OpDesc* desc) {
