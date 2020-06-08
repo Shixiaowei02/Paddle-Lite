@@ -20,7 +20,7 @@ namespace paddle {
 namespace lite {
 namespace fbs {
 
-class ProgramDesc : public ProgramDescAPI, public proto::ProgramDescT {
+class ProgramDesc : public ProgramDescAPI, private proto::ProgramDescT {
  public:
   ProgramDesc() = default;
 

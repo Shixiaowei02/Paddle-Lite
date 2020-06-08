@@ -92,8 +92,6 @@ class BlockDesc : public BlockDescAPI, private proto::BlockDescT {
     forward_block_idx = idx_in;
   }
 
-private:
-  fbs::ProgramDesc* program_desc_;
   friend class ProgramDesc;
 };
 

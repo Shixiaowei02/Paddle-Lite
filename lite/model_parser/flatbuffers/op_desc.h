@@ -128,8 +128,6 @@ class OpDesc : public OpDescAPI, private proto::OpDescT {
     return T();
   }
 
- private:
-  fbs::BlockDesc* block_desc_;
   friend class BlockDesc;
 };
 

@@ -78,8 +78,6 @@ class VarDesc : public VarDescAPI, private proto::VarDescT {
     return type->lod_tensor->tensor->dims;
   }
 
- private:
-  fbs::BlockDesc* block_desc_;
   friend class BlockDesc;
 };
 
