@@ -31,9 +31,11 @@ class ProgramDesc : public ProgramDescAPI, private proto::ProgramDescT {
     desc->UnPackTo(dynamic_cast<ProgramDescT*>(this));
   }
 
-  void SyncT() {
+  const flatbuffers::DetachedBuffer& SyncBuffer() {
     fbb_.Reset();
     proto::ProgramDesc::Pack(fbb_, this);
+    buf_ = fbb_.Release();
+    return buf_;
   }
 
   size_t BlocksSize() const override {

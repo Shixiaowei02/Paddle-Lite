@@ -87,7 +87,6 @@ class BlockDesc : public BlockDescAPI, private proto::BlockDescT {
 
 private:
   fbs::ProgramDesc* program_desc_;
-
   friend class ProgramDesc;
 };
 
@@ -97,6 +96,14 @@ OpDesc* BlockDesc::AddOp() {
   std::unique_ptr<proto::OpDescT> op_p(static_cast<proto::OpDescT*>(op));
   ops.push_back(std::move(op_p));
   return op;
+}
+
+template <>
+VarDesc* AddVar() {
+  auto* var = new VarDesc(this);
+  std::unique_ptr<proto::VarDescT> var_p(static_cast<proto::VarDescT*>(var));
+  vars.push_back(std::move(var_p));
+  return var;
 }
 
 }  // namespace fbs

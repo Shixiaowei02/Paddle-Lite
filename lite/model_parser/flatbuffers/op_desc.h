@@ -116,7 +116,6 @@ class OpDesc : public OpDescAPI, private proto::OpDescT {
 
  private:
   fbs::BlockDesc* block_desc_;
-
   friend class BlockDesc;
 };
 

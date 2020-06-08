@@ -69,7 +69,6 @@ class VarDesc : public VarDescAPI, private proto::VarDescT {
 
  private:
   fbs::BlockDesc* block_desc_;
-
   friend class BlockDesc;
 };
 
