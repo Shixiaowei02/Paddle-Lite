@@ -25,8 +25,8 @@ class ProgramDesc : public ProgramDescAPI, private proto::ProgramDescT {
  public:
   ProgramDesc() = default;
 
-  explicit ProgramDesc(DetachedBuffer&& buf) {
-    buf_ = buf;
+  explicit ProgramDesc(flatbuffers::DetachedBuffer&& buf) {
+    buf_ = std::move(buf);
     auto* desc = proto::GetProgramDesc(buf.data());
     desc->UnPackTo(dynamic_cast<ProgramDescT*>(this));
   }
@@ -65,7 +65,7 @@ class ProgramDesc : public ProgramDescAPI, private proto::ProgramDescT {
     version->version = version_in;
   }
 private:
-  DetachedBuffer buf_;
+  flatbuffers::DetachedBuffer buf_;
   flatbuffers::FlatBufferBuilder fbb_;
 };
 
