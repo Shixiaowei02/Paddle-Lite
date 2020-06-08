@@ -91,6 +91,14 @@ void TransformVarDescAnyToCpp<fbs::ro::VarDesc>(
   cpp_desc->SetPersistable(any_desc.Persistable());
 }
 
+template <>
+void TransformVarDescAnyToCpp<fbs::VarDesc>(
+    const fbs::VarDesc &any_desc, cpp::VarDesc *cpp_desc) {
+  cpp_desc->SetName(any_desc.Name());
+  cpp_desc->SetType(any_desc.GetType());
+  cpp_desc->SetPersistable(any_desc.Persistable());
+}
+
 /// For OpDesc transform
 template <typename OpDescType>
 void OpInputsAnyToCpp(const OpDescType &any_desc, cpp::OpDesc *cpp_desc) {

@@ -64,10 +64,17 @@ class ProgramDesc : public ProgramDescAPI, private proto::ProgramDescT {
   }
 
   int64_t Version() const override {
-    return version->version;
+    if(!HasVersion()) {
+      return version->version;
+    } else {
+      return -1;
+    }
   }
 
   void SetVersion(int64_t version_in) override {
+    if(!HasVersion()) {
+      version.reset(new fbs::proto::VersionT());
+    }
     version->version = version_in;
   }
 private:

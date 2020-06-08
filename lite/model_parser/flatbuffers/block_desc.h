@@ -28,7 +28,6 @@ class BlockDesc : public BlockDescAPI, private proto::BlockDescT {
 
   // will be deleted.
   explicit BlockDesc(paddle::lite::fbs::BlockDesc* desc) {
-    LOG(FATAL);
   }
 
   explicit BlockDesc(fbs::ProgramDesc* desc) {

@@ -28,7 +28,6 @@ class VarDesc : public VarDescAPI, private proto::VarDescT {
 
   // will be deleted.
   explicit VarDesc(paddle::lite::fbs::VarDesc* desc) {
-    LOG(FATAL);
   }
 
   explicit VarDesc(fbs::BlockDesc* desc) {
@@ -48,6 +47,13 @@ class VarDesc : public VarDescAPI, private proto::VarDescT {
   }
 
   void SetType(VarDescAPI::Type type_in) override {
+    if (!type) {
+      type = std::unique_ptr<proto::VarTypeT>(new proto::VarTypeT());
+      if (type_in == VarDescAPI::Type::LOD_TENSOR) {
+        type->lod_tensor = std::unique_ptr<proto::VarType_::LoDTensorDescT>(new proto::VarType_::LoDTensorDescT());
+        type->lod_tensor->tensor = std::unique_ptr<proto::VarType_::TensorDescT>(new proto::VarType_::TensorDescT()); 
+      }
+    }
     type->type = static_cast<proto::VarType_::Type>(type_in);
   }
 

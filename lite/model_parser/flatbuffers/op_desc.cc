@@ -13,3 +13,32 @@
 // limitations under the License.
 
 #include "lite/model_parser/flatbuffers/op_desc.h"
+
+namespace paddle {
+namespace lite {
+namespace fbs {
+
+#define ADD_ATTR_IMPL(T, ty__, fbs_a_)                            \
+  template <> \
+  void OpDesc::AddAttr<T>(const std::string &name, const T &v) { \
+    auto* attr = new proto::OpDesc_::AttrT(); \
+    attr->type = proto::AttrType_##ty__; \
+    attr->fbs_a_ = v; \
+    std::unique_ptr<proto::OpDesc_::AttrT> attr_p(attr); \
+    attrs.emplace_back(std::move(attr_p)); \
+  }
+  
+ADD_ATTR_IMPL(int, INT, i);
+ADD_ATTR_IMPL(float, FLOAT, f);
+ADD_ATTR_IMPL(bool, BOOLEAN, b);
+ADD_ATTR_IMPL(int64_t, LONG, l);
+ADD_ATTR_IMPL(std::string, STRING, s);
+ADD_ATTR_IMPL(std::vector<int>, INTS, ints);
+ADD_ATTR_IMPL(std::vector<float>, FLOATS, floats);
+ADD_ATTR_IMPL(std::vector<bool>, BOOLEANS, bools);
+ADD_ATTR_IMPL(std::vector<int64_t>, LONGS, longs);
+ADD_ATTR_IMPL(std::vector<std::string>, STRINGS, strings);
+
+}
+}
+}

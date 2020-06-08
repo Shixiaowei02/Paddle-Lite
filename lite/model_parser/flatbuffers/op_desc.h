@@ -28,7 +28,6 @@ class OpDesc : public OpDescAPI, private proto::OpDescT {
 
   // will be deleted
   explicit OpDesc(paddle::lite::fbs::OpDesc* desc) {
-    LOG(FATAL);
   }
 
   explicit OpDesc(fbs::BlockDesc* desc) {
@@ -116,40 +115,23 @@ class OpDesc : public OpDescAPI, private proto::OpDescT {
   }
 
   template <typename T>
+  void AddAttr(const std::string &name, const T &v);
+
+  template <typename T>
+  void SetAttr(const std::string &name, const T &v) {
+     AddAttr(name, v);
+  }
+  
+  template <typename T>
   T GetAttr(size_t idx) const {
     LOG(FATAL);
     return T();
   }
 
-  template <typename T>
-  void AddAttr(const std::string &name, const T &v);
-
  private:
   fbs::BlockDesc* block_desc_;
   friend class BlockDesc;
 };
-
-#define ADD_ATTR_IMPL(T, ty__, fbs_a_)                            \
-  template <> \
-  void OpDesc::AddAttr<T>(const std::string &name, const T &v) { \
-    auto* attr = new proto::OpDesc_::AttrT(); \
-    attr->type = proto::AttrType_##ty__; \
-    attr->fbs_a_ = v; \
-    std::unique_ptr<proto::OpDesc_::AttrT> attr_p(attr); \
-    attrs.emplace_back(std::move(attr_p)); \
-  }
-  
-ADD_ATTR_IMPL(int, INT, i);
-ADD_ATTR_IMPL(float, FLOAT, f);
-ADD_ATTR_IMPL(bool, BOOLEAN, b);
-ADD_ATTR_IMPL(int64_t, LONG, l);
-ADD_ATTR_IMPL(std::string, STRING, s);
-ADD_ATTR_IMPL(std::vector<int>, INTS, ints);
-ADD_ATTR_IMPL(std::vector<float>, FLOATS, floats);
-ADD_ATTR_IMPL(std::vector<bool>, BOOLEANS, bools);
-ADD_ATTR_IMPL(std::vector<int64_t>, LONGS, longs);
-ADD_ATTR_IMPL(std::vector<std::string>, STRINGS, strings);
-
 
 }  // namespace fbs
 }  // namespace lite
