@@ -25,9 +25,15 @@ class ProgramDesc : public ProgramDescAPI, private proto::ProgramDescT {
  public:
   ProgramDesc() = default;
 
-  explicit ProgramDesc(proto::ProgramDesc* desc) {
-    desc_ = desc;
+  explicit ProgramDesc(DetachedBuffer&& buf) {
+    buf_ = buf;
+    auto* desc = proto::GetProgramDesc(buf.data());
     desc->UnPackTo(dynamic_cast<ProgramDescT*>(this));
+  }
+
+  void SyncT() {
+    fbb_.Reset();
+    proto::ProgramDesc::Pack(fbb_, this);
   }
 
   size_t BlocksSize() const override {
@@ -58,8 +64,8 @@ class ProgramDesc : public ProgramDescAPI, private proto::ProgramDescT {
   void SetVersion(int64_t version_in) override {
     version->version = version_in;
   }
-  private:
-  proto::ProgramDesc* desc_;
+private:
+  DetachedBuffer buf_;
   flatbuffers::FlatBufferBuilder fbb_;
 };
 
