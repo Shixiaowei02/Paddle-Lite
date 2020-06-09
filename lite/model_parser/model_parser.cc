@@ -606,7 +606,7 @@ void SaveModelFbs(const std::string &model_dir,
   const lite::Scope &exec_scope,
                     const cpp::ProgramDesc &cpp_prog) {
   // Save program
-  const std::string prog_path = model_dir + ".fbs";
+  const std::string prog_path = model_dir + "/model.fbs";
 
   paddle::lite::fbs::ProgramDesc fbs_program;
   paddle::lite::TransformProgramDescCppToAny(cpp_prog, &fbs_program);
@@ -860,10 +860,10 @@ void ReadModelDataFromFile(T *data,
 void LoadModelFbsFromFile(const std::string &filename,
                             Scope *scope,
                             cpp::ProgramDesc *cpp_prog) {
-  const std::string prog_file = filename + ".nb";
-  const std::string params_file = filename + ".params";
+  const std::string prog_file = filename + "/model.fbs";
+  const std::string params_file = filename + "/params.fbs";
   LoadModelFbs(prog_file, cpp_prog);
-  LoadCombinedParamsNaive(params_file, offset, scope, *cpp_prog, false);
+  LoadCombinedParamsNaive(params_file, 0, scope, *cpp_prog, false);
 }
 
 
