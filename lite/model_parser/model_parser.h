@@ -117,5 +117,9 @@ void LoadModelNaiveFromMemory(const std::string& model_buffer,
 void LoadModelFbs(const std::string& path,
                cpp::ProgramDesc *cpp_prog);
 
+void SaveModelFbs(const std::string& model_dir,
+                    const Scope& exec_scope,
+                    const cpp::ProgramDesc& cpp_prog);
+
 }  // namespace lite
 }  // namespace paddle

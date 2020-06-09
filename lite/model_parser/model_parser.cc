@@ -29,6 +29,7 @@
 #include "lite/model_parser/naive_buffer/var_desc.h"
 #include "lite/model_parser/flatbuffers/ro/program_desc.h"
 #include "lite/model_parser/flatbuffers/ro/var_desc.h"
+#include "lite/model_parser/flatbuffers/program_desc.h"
 #include "flatbuffers/idl.h"
 #ifndef LITE_ON_TINY_PUBLISH
 #include "lite/model_parser/pb/program_desc.h"
@@ -575,7 +576,7 @@ void SaveCombinedParamsNaive(const std::string &path,
   table.AppendToFile(path);
 }
 
-void SaveCombinedParamsNaive(const std::string &path,
+void SaveCombinedParamsFbs(const std::string &path,
                              const lite::Scope &exec_scope,
                              const cpp::ProgramDesc &cpp_prog) {
   const std::string params_path = path + ".param";
@@ -618,7 +619,7 @@ void SaveModelFbs(const std::string &model_dir,
     LOG(FATAL) << "Write file error: " << prog_path;
   }
   fclose(fp);
-  SaveCombinedParamsNaive(model_dir, exec_scope, cpp_prog);
+  SaveCombinedParamsFbs(model_dir, exec_scope, cpp_prog);
 }
 
 
