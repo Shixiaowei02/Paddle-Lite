@@ -241,8 +241,6 @@ void OpAttrsAnyToCpp<fbs::ro::OpDesc>(const fbs::ro::OpDesc &any_desc, cpp::OpDe
   }
 }
 
-
-
 template <typename OpDescType>
 void OpAttrsCppToAny(const cpp::OpDesc &cpp_desc, OpDescType *any_desc) {
   using AttrType = OpDescAPI::AttrType;
@@ -386,8 +384,92 @@ TRANS_PROGRAM_ANY_WITH_CPP_IMPL(ProgramDesc, fbs::ro, fbs::proto);
 
 TRANS_VAR_ANY_WITH_CPP_IMPL(fbs::VarDesc);
 TRANS_OP_ANY_WITH_CPP_IMPL(fbs::OpDesc);
-TRANS_BLOCK_ANY_WITH_CPP_IMPL(BlockDesc, fbs, fbs);
-TRANS_PROGRAM_ANY_WITH_CPP_IMPL(ProgramDesc, fbs, fbs);
+
+  template <>                                                               \
+  void TransformBlockDescAnyToCpp<fbs::BlockDesc>(const fbs::BlockDesc &any_desc,             \
+                                         cpp::BlockDesc *cpp_desc) {        \
+    fbs::BlockDesc& desc = const_cast<fbs::BlockDesc &>(any_desc);                                                  \
+    cpp_desc->SetIdx(desc.Idx());                                           \
+    cpp_desc->SetParentIdx(desc.ParentIdx());                               \
+    cpp_desc->SetForwardBlockIdx(desc.ForwardBlockIdx());                   \
+                                                                            \
+    cpp_desc->ClearOps();                                                   \
+    for (size_t i = 0; i < desc.OpsSize(); ++i) {                           \
+      auto any_op_desc = fbs::OpDesc(desc.GetOp<fbs::OpDesc>(i));     \
+      auto *cpp_op_desc = cpp_desc->AddOp<cpp::OpDesc>();                   \
+      TransformOpDescAnyToCpp(any_op_desc, cpp_op_desc);                    \
+    }                                                                       \
+                                                                            \
+    cpp_desc->ClearVars();                                                  \
+    for (size_t i = 0; i < desc.VarsSize(); ++i) {                          \
+      auto any_var_desc = fbs::VarDesc(desc.GetVar<fbs::VarDesc>(i)); \
+      auto *cpp_var_desc = cpp_desc->AddVar<cpp::VarDesc>();                \
+      TransformVarDescAnyToCpp(any_var_desc, cpp_var_desc);                 \
+    }                                                                       \
+  }   
+
+  template <>                                                               \
+  void TransformBlockDescCppToAny<fbs::BlockDesc>(const cpp::BlockDesc &cpp_desc,            \
+                                         fbs::BlockDesc *any_desc) {                 \
+    auto desc = cpp_desc;                                                   \
+    any_desc->SetIdx(desc.Idx());                                           \
+    any_desc->SetParentIdx(desc.ParentIdx());                               \
+    any_desc->SetForwardBlockIdx(desc.ForwardBlockIdx());                   \
+                                                                            \
+    any_desc->ClearOps();                                                   \
+    for (size_t i = 0; i < desc.OpsSize(); ++i) {                           \
+      auto *cpp_op_desc = desc.GetOp<cpp::OpDesc>(i);                       \
+      LOG(INFO) << "BlockDesc=== " << any_desc; \
+      auto any_op_desc = any_desc->AddOp<fbs::OpDesc>(); \
+      TransformOpDescCppToAny(*cpp_op_desc, any_op_desc);                  \
+    }                                                                       \
+                                                                            \
+    any_desc->ClearVars();                                                  \
+    for (size_t i = 0; i < desc.VarsSize(); ++i) {                          \
+      auto *cpp_var_desc = desc.GetVar<cpp::VarDesc>(i);                    \
+      auto any_var_desc =                                                   \
+          any_desc->AddVar<fbs::VarDesc>();             \
+      TransformVarDescCppToAny(*cpp_var_desc, any_var_desc);               \
+    }                                                                       \
+  }
+
+//TRANS_BLOCK_ANY_WITH_CPP_IMPL(BlockDesc, fbs, fbs);
+
+
+  template <>                                                            \
+  void TransformProgramDescAnyToCpp<fbs::ProgramDesc>(const fbs::ProgramDesc &any_desc,        \
+                                           cpp::ProgramDesc *cpp_desc) { \
+    fbs::ProgramDesc desc = any_desc;                                               \
+    if (desc.HasVersion()) {                                             \
+      cpp_desc->SetVersion(desc.Version());                              \
+    }                                                                    \
+                                                                         \
+    cpp_desc->ClearBlocks();                                             \
+    for (size_t i = 0; i < desc.BlocksSize(); ++i) {                     \
+      auto any_block_desc =                                              \
+          fbs::BlockDesc(desc.GetBlock<fbs::BlockDesc>(i));        \
+      auto *cpp_block_desc = cpp_desc->AddBlock<cpp::BlockDesc>();       \
+      TransformBlockDescAnyToCpp(any_block_desc, cpp_block_desc);        \
+    }                                                                    \
+  }                                                                      \
+                                                                         \
+  template <>                                                            \
+  void TransformProgramDescCppToAny<fbs::ProgramDesc>(const cpp::ProgramDesc &cpp_desc,       \
+                                           fbs::ProgramDesc *any_desc) {            \
+    auto desc = cpp_desc;                                                \
+    if (desc.HasVersion()) {                                             \
+      any_desc->SetVersion(desc.Version());                              \
+    }                                                                    \
+                                                                         \
+    any_desc->ClearBlocks();                                             \
+    for (size_t i = 0; i < desc.BlocksSize(); ++i) {                     \
+      auto *cpp_block_desc = desc.GetBlock<cpp::BlockDesc>(i);           \
+      auto any_block_desc =                                              \
+          any_desc->AddBlock<fbs::BlockDesc>();    \
+      TransformBlockDescCppToAny(*cpp_block_desc, any_block_desc);      \
+    }                                                                    \
+  }
+//TRANS_PROGRAM_ANY_WITH_CPP_IMPL(ProgramDesc, fbs, fbs);
 
 #ifndef LITE_ON_TINY_PUBLISH
 TRANS_VAR_ANY_WITH_CPP_IMPL(pb::VarDesc);
@@ -400,6 +482,7 @@ TRANS_PROGRAM_ANY_WITH_CPP_IMPL(ProgramDesc, pb, framework::proto);
 #undef TRANS_OP_ANY_WITH_CPP_IMPL
 #undef TRANS_BLOCK_ANY_WITH_CPP_IMPL
 #undef TRANS_PROGRAM_ANY_WITH_CPP_IMPL
+
 
 }  // namespace lite
 }  // namespace paddle

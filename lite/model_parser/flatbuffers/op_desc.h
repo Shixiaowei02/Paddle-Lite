@@ -22,7 +22,7 @@ namespace fbs {
 
 class BlockDesc;
 
-class OpDesc : public OpDescAPI, private proto::OpDescT {
+class OpDesc : public OpDescAPI, public proto::OpDescT {
 public:
   // will be deleted
   explicit OpDesc(paddle::lite::fbs::OpDesc* desc) {
@@ -120,7 +120,7 @@ public:
     LOG(FATAL);
     return T();
   }
-private:
+//private:
   OpDesc() = default;
   friend class BlockDesc;
 };

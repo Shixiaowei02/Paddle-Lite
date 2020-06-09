@@ -77,13 +77,21 @@ int main() {
   paddle::lite::LoadModelFbs("/shixiaowei02/Paddle-Lite-FlatBuf/framework_test/save_model.bin", &cpp_prog);
   paddle::lite::fbs::ProgramDesc fbs_program;
   paddle::lite::TransformProgramDescCppToAny(cpp_prog, &fbs_program);
-  /*
+/*
   LOG(INFO) << "(fbs_program.blocks.size() = " << fbs_program.blocks.size();
+  LOG(INFO) << "(fbs_program.blocks[0])= " << &((fbs_program.blocks[0]));
   LOG(INFO) << "(fbs_program.blocks[0])->ops = " << &((fbs_program.blocks[0])->ops);
   LOG(INFO) << "(fbs_program.blocks[0])->ops.size() = " << (fbs_program.blocks[0])->ops.size();
   LOG(INFO) << "(fbs_program.blocks[0])->vars.size() = " << (fbs_program.blocks[0])->vars.size();
-  */
-
+*/
+  for (size_t i = 0; i < (fbs_program.blocks[0])->ops.size(); ++i) {
+    for (size_t j = 0 ; j < (fbs_program.blocks[0])->ops[i]->attrs.size(); ++j) {
+      if ((fbs_program.blocks[0])->ops[i]->attrs[j]->name == "y_data_format") {
+        std::cout << "y_data_format!!" << std::endl;
+        std::cout << (fbs_program.blocks[0])->ops[i]->attrs[j]->s << std::endl;
+      }
+    }
+  }
   auto& buffer = fbs_program.SyncBuffer();
   auto* data = buffer.data();
   auto* fbs_prog = paddle::lite::fbs::proto::GetProgramDesc(data);
@@ -94,11 +102,28 @@ int main() {
   for (size_t i = 0; i < fbs_prog->blocks()->size(); ++i) {
     for (size_t j = 0; j < (*fbs_prog->blocks())[i]->ops()->size(); ++j) {
       auto op = (*(*fbs_prog->blocks())[i]->ops())[j];
-      std::cout << op->type() << std::endl;
+      std::cout << "=======" << std::endl;
+      std::cout << op->type()->str() << std::endl;
+      //std::cout << op->attrs()->size() << std::endl;
+      /*
+      for (size_t k = 0; k < (*op->attrs()).size(); ++k) {
+        if ((*op->attrs())[k]->type() == paddle::lite::fbs::proto::AttrType::AttrType_STRING) {
+        std::cout << (*op->attrs())[k]->name()->str() << std::endl;
+        std::cout << ((*op->attrs())[k]->s()->str()) << std::endl;
+        }
+      }
+      */
+      /*
+      std::cout << (*op->attrs())[0]->name()->str() << std::endl;
+      if ((9 < op->attrs()->size()) && (*op->attrs())[9]->name()->str() == "data_format") {
+        std::cout << "data_format! " << ((*op->attrs())[9]->s()->str()) << std::endl;
+      }
+      */
     }
   }
+  LOG(INFO) << "This is the end.";
 
-/*
+
   paddle::lite::cpp::ProgramDesc cpp_prog_2;
   paddle::lite::TransformProgramDescAnyToCpp(paddle::lite::fbs::ro::ProgramDesc(
     const_cast<paddle::lite::fbs::proto::ProgramDesc*>(fbs_prog)), &cpp_prog_2);
@@ -110,7 +135,7 @@ int main() {
   std::string pb_str;
   google::protobuf::TextFormat::PrintToString(pb_proto_prog, &pb_str);
   std::cout << pb_str << std::endl;
-*/
+
   return 0;
 }
 #endif

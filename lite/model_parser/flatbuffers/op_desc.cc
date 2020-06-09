@@ -23,6 +23,7 @@ namespace fbs {
   void OpDesc::AddAttr<T>(const std::string &name, const T &v) { \
     auto* attr = new proto::OpDesc_::AttrT(); \
     attr->type = proto::AttrType_##ty__; \
+    attr->name = name; \
     attr->fbs_a_ = v; \
     std::unique_ptr<proto::OpDesc_::AttrT> attr_p(attr); \
     attrs.emplace_back(std::move(attr_p)); \

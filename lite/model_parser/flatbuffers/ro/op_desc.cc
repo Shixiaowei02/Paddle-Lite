@@ -22,12 +22,18 @@ namespace ro {
 template <>
 std::string OpDesc::GetAttr<std::string>(const std::string &name) const {
   const auto& it = desc_->attrs()->LookupByKey(name.c_str());
+  if (!it->s()) {
+    return std::string();
+  }
   return it->s()->str();
 }
 
 template <>
 std::string OpDesc::GetAttr<std::string>(size_t idx) const {
   const auto& it = desc_->attrs()->Get(idx);
+  if (!it->s()) {
+    return std::string();
+  }
   return it->s()->str();
 }
 

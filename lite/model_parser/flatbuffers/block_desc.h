@@ -22,7 +22,7 @@ namespace fbs {
 
 class ProgramDesc;
 
-class BlockDesc : public BlockDescAPI, private proto::BlockDescT {
+class BlockDesc : public BlockDescAPI, public proto::BlockDescT {
  public:
   // will be deleted.
   explicit BlockDesc(paddle::lite::fbs::BlockDesc* desc) {
@@ -84,7 +84,7 @@ class BlockDesc : public BlockDescAPI, private proto::BlockDescT {
   void SetForwardBlockIdx(int32_t idx_in) override {
     forward_block_idx = idx_in;
   }
-private:
+//private:
   BlockDesc() = default;
   friend class ProgramDesc;
 };

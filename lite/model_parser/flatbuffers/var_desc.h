@@ -22,7 +22,7 @@ namespace fbs {
 
 class BlockDesc;
 
-class VarDesc : public VarDescAPI, private proto::VarDescT {
+class VarDesc : public VarDescAPI, public proto::VarDescT {
  public:
   // will be deleted.
   explicit VarDesc(paddle::lite::fbs::VarDesc* desc) {
@@ -72,7 +72,7 @@ class VarDesc : public VarDescAPI, private proto::VarDescT {
     return type->lod_tensor->tensor->dims;
   }
 
-private:
+//private:
   VarDesc() = default;
   friend class BlockDesc;
 };

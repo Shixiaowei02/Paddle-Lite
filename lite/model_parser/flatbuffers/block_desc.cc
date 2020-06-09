@@ -25,7 +25,9 @@ OpDesc* BlockDesc::AddOp() {
   OpDesc* op = new OpDesc();
   std::unique_ptr<proto::OpDescT> op_p(static_cast<proto::OpDescT*>(op));
   ops.push_back(std::move(op_p));
+  LOG(INFO) << "fbs::BlockDesc pointer " << this;
   LOG(INFO) << "fbs::BlockDesc::AddOp() " << &ops;
+  LOG(INFO) << "ops size: " << ops.size();
   return op;
 }
 
