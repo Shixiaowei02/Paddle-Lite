@@ -24,11 +24,6 @@ class ProgramDesc : public ProgramDescAPI, public proto::ProgramDescT {
  public:
   ProgramDesc() = default;
 
-  // will be deleted.
-  ProgramDesc(const paddle::lite::fbs::ProgramDesc&) {
-    LOG(FATAL);
-  }
-
   explicit ProgramDesc(flatbuffers::DetachedBuffer&& buf) {
     buf_ = std::move(buf);
     auto* desc = proto::GetProgramDesc(buf.data());

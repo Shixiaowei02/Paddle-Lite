@@ -388,24 +388,7 @@ TRANS_OP_ANY_WITH_CPP_IMPL(fbs::OpDesc);
   template <>                                                               \
   void TransformBlockDescAnyToCpp<fbs::BlockDesc>(const fbs::BlockDesc &any_desc,             \
                                          cpp::BlockDesc *cpp_desc) {        \
-    fbs::BlockDesc& desc = const_cast<fbs::BlockDesc &>(any_desc);                                                  \
-    cpp_desc->SetIdx(desc.Idx());                                           \
-    cpp_desc->SetParentIdx(desc.ParentIdx());                               \
-    cpp_desc->SetForwardBlockIdx(desc.ForwardBlockIdx());                   \
-                                                                            \
-    cpp_desc->ClearOps();                                                   \
-    for (size_t i = 0; i < desc.OpsSize(); ++i) {                           \
-      auto any_op_desc = fbs::OpDesc(desc.GetOp<fbs::OpDesc>(i));     \
-      auto *cpp_op_desc = cpp_desc->AddOp<cpp::OpDesc>();                   \
-      TransformOpDescAnyToCpp(any_op_desc, cpp_op_desc);                    \
-    }                                                                       \
-                                                                            \
-    cpp_desc->ClearVars();                                                  \
-    for (size_t i = 0; i < desc.VarsSize(); ++i) {                          \
-      auto any_var_desc = fbs::VarDesc(desc.GetVar<fbs::VarDesc>(i)); \
-      auto *cpp_var_desc = cpp_desc->AddVar<cpp::VarDesc>();                \
-      TransformVarDescAnyToCpp(any_var_desc, cpp_var_desc);                 \
-    }                                                                       \
+    LOG(FATAL); \
   }   
 
   template <>                                                               \
@@ -419,7 +402,6 @@ TRANS_OP_ANY_WITH_CPP_IMPL(fbs::OpDesc);
     any_desc->ClearOps();                                                   \
     for (size_t i = 0; i < desc.OpsSize(); ++i) {                           \
       auto *cpp_op_desc = desc.GetOp<cpp::OpDesc>(i);                       \
-      LOG(INFO) << "BlockDesc=== " << any_desc; \
       auto any_op_desc = any_desc->AddOp<fbs::OpDesc>(); \
       TransformOpDescCppToAny(*cpp_op_desc, any_op_desc);                  \
     }                                                                       \
@@ -439,18 +421,7 @@ TRANS_OP_ANY_WITH_CPP_IMPL(fbs::OpDesc);
   template <>                                                            \
   void TransformProgramDescAnyToCpp<fbs::ProgramDesc>(const fbs::ProgramDesc &any_desc,        \
                                            cpp::ProgramDesc *cpp_desc) { \
-    fbs::ProgramDesc desc = any_desc;                                               \
-    if (desc.HasVersion()) {                                             \
-      cpp_desc->SetVersion(desc.Version());                              \
-    }                                                                    \
-                                                                         \
-    cpp_desc->ClearBlocks();                                             \
-    for (size_t i = 0; i < desc.BlocksSize(); ++i) {                     \
-      auto any_block_desc =                                              \
-          fbs::BlockDesc(desc.GetBlock<fbs::BlockDesc>(i));        \
-      auto *cpp_block_desc = cpp_desc->AddBlock<cpp::BlockDesc>();       \
-      TransformBlockDescAnyToCpp(any_block_desc, cpp_block_desc);        \
-    }                                                                    \
+    LOG(FATAL); \
   }                                                                      \
                                                                          \
   template <>                                                            \

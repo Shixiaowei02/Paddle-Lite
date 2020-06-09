@@ -24,10 +24,6 @@ class BlockDesc;
 
 class VarDesc : public VarDescAPI, public proto::VarDescT {
  public:
-  // will be deleted.
-  explicit VarDesc(paddle::lite::fbs::VarDesc* desc) {
-  }
-
   std::string Name() const override {
     return name;
   }

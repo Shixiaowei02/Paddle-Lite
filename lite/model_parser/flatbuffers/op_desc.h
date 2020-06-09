@@ -24,9 +24,6 @@ class BlockDesc;
 
 class OpDesc : public OpDescAPI, public proto::OpDescT {
 public:
-  // will be deleted
-  explicit OpDesc(paddle::lite::fbs::OpDesc* desc) {
-  }
   std::string Type() const override {
     return type;
   }
