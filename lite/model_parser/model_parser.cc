@@ -575,7 +575,34 @@ void SaveCombinedParamsNaive(const std::string &path,
   table.AppendToFile(path);
 }
 
-void SaveProgFbs(const std::string &model_dir,
+void SaveCombinedParamsNaive(const std::string &path,
+                             const lite::Scope &exec_scope,
+                             const cpp::ProgramDesc &cpp_prog) {
+  const std::string params_path = path + ".param";
+  naive_buffer::BinaryTable table;
+  naive_buffer::proto::CombinedParamsDesc pt_desc(&table);
+  naive_buffer::CombinedParamsDesc desc(&pt_desc);
+
+  auto prog = cpp_prog;
+  auto &main_block_desc = *prog.GetBlock<cpp::BlockDesc>(0);
+  // set unique_var_names to avoid saving shared params repeatedly
+  std::unordered_set<std::string> unique_var_names;
+  for (size_t i = 0; i < main_block_desc.VarsSize(); ++i) {
+    auto &var = *main_block_desc.GetVar<cpp::VarDesc>(i);
+    if (var.Name() == "feed" || var.Name() == "fetch" || !var.Persistable() ||
+        unique_var_names.count(var.Name()) > 0)
+      continue;
+    naive_buffer::ParamDesc param_desc(desc.AddParam());
+    SetParamInfoNaive(&param_desc, exec_scope, var.Name());
+    unique_var_names.emplace(var.Name());
+  }
+
+  pt_desc.Save();
+  table.SaveToFile(path);
+}
+
+void SaveModelFbs(const std::string &model_dir,
+  const lite::Scope &exec_scope,
                     const cpp::ProgramDesc &cpp_prog) {
   // Save program
   const std::string prog_path = model_dir + ".fbs";
@@ -591,7 +618,9 @@ void SaveProgFbs(const std::string &model_dir,
     LOG(FATAL) << "Write file error: " << prog_path;
   }
   fclose(fp);
+  SaveCombinedParamsNaive(model_dir, exec_scope, cpp_prog);
 }
+
 
 
 void SaveModelNaive(const std::string &model_dir,
