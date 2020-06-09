@@ -857,6 +857,16 @@ void ReadModelDataFromFile(T *data,
   *offset = *offset + size;
 }
 
+void LoadModelFbsFromFile(const std::string &filename,
+                            Scope *scope,
+                            cpp::ProgramDesc *cpp_prog) {
+  const std::string prog_file = filename + ".nb";
+  const std::string params_file = filename + ".params";
+  LoadModelFbs(prog_file, cpp_prog);
+  LoadCombinedParamsNaive(params_file, offset, scope, *cpp_prog, false);
+}
+
+
 void LoadModelNaiveFromFile(const std::string &filename,
                             Scope *scope,
                             cpp::ProgramDesc *cpp_prog) {
