@@ -40,6 +40,10 @@ void Predictor::SaveModel(const std::string &dir,
     case lite_api::LiteModelType::kNaiveBuffer:
       SaveModelNaive(dir, *program_->exec_scope(), program_desc_);
       break;
+    case lite_api::LiteModelType::kFlatBuffers:
+      SaveProgFbs(dir, program_desc_);
+      //SaveModelFbs(dir, *program_->exec_scope(), program_desc_);
+      // SaveModelFbs(dir, *program_->exec_scope(), program_desc_);
     default:
       LOG(FATAL) << "Unknown model type";
   }

@@ -30,7 +30,7 @@ namespace lite_api {
 using shape_t = std::vector<int64_t>;
 using lod_t = std::vector<std::vector<uint64_t>>;
 
-enum class LiteModelType { kProtobuf = 0, kNaiveBuffer, UNK };
+enum class LiteModelType { kProtobuf = 0, kNaiveBuffer, kFlatBuffers, UNK };
 
 struct LITE_API Tensor {
   explicit Tensor(void* raw);

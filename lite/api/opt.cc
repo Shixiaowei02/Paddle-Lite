@@ -162,6 +162,8 @@ void RunOptimize(const std::string& model_dir,
     model_type = LiteModelType::kProtobuf;
   } else if (optimize_out_type == "naive_buffer") {
     model_type = LiteModelType::kNaiveBuffer;
+  } else if (optimize_out_type == "flatbuffers") {
+    model_type = LiteModelType::kFlatBuffers;
   } else {
     LOG(FATAL) << "Unsupported Model type :" << optimize_out_type;
   }

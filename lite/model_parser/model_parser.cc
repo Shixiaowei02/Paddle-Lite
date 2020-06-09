@@ -575,6 +575,25 @@ void SaveCombinedParamsNaive(const std::string &path,
   table.AppendToFile(path);
 }
 
+void SaveProgFbs(const std::string &model_dir,
+                    const cpp::ProgramDesc &cpp_prog) {
+  // Save program
+  const std::string prog_path = model_dir + ".fbs";
+
+  paddle::lite::fbs::ProgramDesc fbs_program;
+  paddle::lite::TransformProgramDescCppToAny(cpp_prog, &fbs_program);
+  auto& buffer = fbs_program.SyncBuffer();
+
+  FILE *fp = fopen(prog_path.c_str(), "wb");
+  CHECK(fp) << "Unable to open file: " << prog_path;
+  if (fwrite(reinterpret_cast<const char *>(buffer.data()), 1, buffer.size(), fp) != buffer.size()) {
+    fclose(fp);
+    LOG(FATAL) << "Write file error: " << prog_path;
+  }
+  fclose(fp);
+}
+
+
 void SaveModelNaive(const std::string &model_dir,
                     const Scope &exec_scope,
                     const cpp::ProgramDesc &cpp_prog,
