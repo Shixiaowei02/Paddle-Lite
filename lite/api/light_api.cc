@@ -17,6 +17,7 @@
 #include <unordered_map>
 #include "paddle_use_kernels.h"  // NOLINT
 #include "paddle_use_ops.h"      // NOLINT
+#include "lite/model_parser/model_parser.h"
 
 namespace paddle {
 namespace lite {
@@ -26,8 +27,7 @@ void LightPredictor::Build(const std::string& lite_model_file,
   if (model_from_memory) {
     LoadModelNaiveFromMemory(lite_model_file, scope_.get(), &cpp_program_desc_);
   } else {
-    LoadModelFbs(lite_model_file + "/model.fbs", &cpp_program_desc_);
-    LoadCombinedParamsNaive(lite_model_file + "/params.fbs", 0, scope_.get(), cpp_program_desc_, false);
+    LoadModelFbsFromFile(lite_model_file, scope_.get(), &cpp_program_desc_);
   }
 
   // For weight quantization of post training, load the int8/16 weights
