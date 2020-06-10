@@ -8,7 +8,7 @@ add_subdirectory(flatbuffers)
 #lite_cc_library(runtime_lite SRCS runtime.cc)
 
 lite_cc_binary(test_parser SRCS parser_test.cc
-    DEPS model_parser framework_proto flatbuffers)
+    DEPS model_parser framework_proto )#flatbuffers)
 target_link_libraries(test_parser tcmalloc profiler)
 
 #TODO(Superjomn) enable it again.
@@ -35,7 +35,7 @@ lite_cc_library(model_parser SRCS model_parser.cc DEPS
     target_wrapper_host
     compatible_pb
     memory
-    flatbuffers
+#    flatbuffers
     CUDA_DEPS target_wrapper_cuda)
 lite_cc_test(test_compatible_pb SRCS compatible_pb_test.cc DEPS compatible_pb)
 

@@ -74,7 +74,8 @@ int main() {
 #elif 1
 int main() {
   paddle::lite::cpp::ProgramDesc cpp_prog;
-  paddle::lite::LoadModelFbs("/shixiaowei02/Paddle-Lite-FlatBuf/framework_test/save_model.bin", &cpp_prog);
+  //paddle::lite::LoadModelFbs("/shixiaowei02/Paddle-Lite-FlatBuf/framework_test/save_model.bin", &cpp_prog);
+  paddle::lite::LoadModelFbs("/shixiaowei02/Paddle-Lite-FlatBuf/Paddle-Lite/build_debug/optimize_out/model.fbs", &cpp_prog);
   paddle::lite::fbs::ProgramDesc fbs_program;
   paddle::lite::TransformProgramDescCppToAny(cpp_prog, &fbs_program);
 /*
