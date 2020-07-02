@@ -139,14 +139,11 @@ class ConvOpLite : public OpLite {
       auto filter_name = op_info->Input("Filter").front();
       auto output_name = op_info->Output("Output").front();
       if (op_info->HasInputScale(input_name))
-        param_.input_scale =
-            op_info->GetInputScale<OpAttrType::FLOAT>(input_name);
+        param_.input_scale = op_info->GetInputScale(input_name)[0];
       if (op_info->HasInputScale(filter_name))
-        param_.weight_scale =
-            op_info->GetInputScale<OpAttrType::FLOATS>(filter_name);
+        param_.weight_scale = op_info->GetInputScale(filter_name);
       if (op_info->HasOutputScale(output_name)) {
-        param_.output_scale =
-            op_info->GetOutputScale<OpAttrType::FLOAT>(output_name);
+        param_.output_scale = op_info->GetOutputScale(output_name)[0];
       }
     }
 
