@@ -33,7 +33,7 @@ template <typename T, typename U>
 struct VectorTraits;
 
 template <typename T>
-struct VectorTraits<T, Standand> {
+struct VectorTraits<T, Standard> {
   typedef std::vector<T> vector_type;
   typedef typename vector_type::const_iterator const_iterator;
   typedef typename vector_type::const_reference const_reference;

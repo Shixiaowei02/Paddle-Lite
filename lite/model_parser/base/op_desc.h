@@ -15,28 +15,13 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "lite/model_parser/base/traits.h"
 #include "lite/utils/string.h"
 
 namespace paddle {
 namespace lite {
 
 // The AttrType is used to make the proto::AttrType portable.
-enum class OpAttrType {
-  INT = 0,
-  FLOAT = 1,
-  STRING = 2,
-  INTS = 3,
-  FLOATS = 4,
-  STRINGS = 5,
-  BOOLEAN = 6,
-  BOOLEANS = 7,
-  BLOCK = 8,
-  LONG = 9,
-  BLOCKS = 10,
-  LONGS = 11,
-  UNK,
-};
-
 class OpDescReadAPI {
  public:
   virtual std::string Type() const = 0;
@@ -48,8 +33,8 @@ class OpDescReadAPI {
   virtual OpAttrType GetAttrType(const std::string& name) const = 0;
   virtual std::vector<std::string> AttrNames() const = 0;
 
-  template <typename T>
-  T GetAttr(const std::string& name) const;
+  template <OpAttrType Type, typename U>
+  typename OpAttrTypeTrait<Type, U>::RT GetAttr(const std::string& name) const;
 
   std::string Repr() const {
     STL::stringstream ss;

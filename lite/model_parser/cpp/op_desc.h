@@ -112,17 +112,18 @@ class OpDesc : public OpDescAPI {
     attrs_[name].set(v);
   }
 
-  template <typename T>
-  T GetAttr(const std::string& name) const {
+  template <OpAttrType Type>
+  typename OpAttrTypeTrait<Type, Standard>::RT GetAttr(
+      const std::string& name) const {
     auto it = attrs().find(name);
     CHECK(it != attrs().end()) << "No attributes called " << name << " found";
     auto attr_it = attr_types().find(name);
     CHECK(attr_it != attr_types().end());
     auto pair = std::make_pair(it, attr_it);
-    CHECK(pair.second->second == OpDataTypeTrait<T>::AT)
-        << "required type is " << OpDataTypeTrait<T>::ATN
-        << " not match the true type";
-    return pair.first->second.get<T>();
+    CHECK(pair.second->second == Type) << "required type is "
+                                       << OpAttrTypeTrait<Type, Standard>::ATN
+                                       << " not match the true type";
+    return pair.first->second.get<OpAttrTypeTrait<Type, Standard>::DT>();
   }
 
   const std::map<std::string, Any>& attrs() const { return attrs_; }

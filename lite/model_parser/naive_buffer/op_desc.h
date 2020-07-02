@@ -150,8 +150,9 @@ class OpDesc : public OpDescAPI {
   template <typename T>
   void SetAttr(const std::string &name, const T &v);
 
-  template <typename T>
-  T GetAttr(const std::string &name) const;
+  template <OpAttrType Type>
+  typename OpAttrTypeTrait<Type, Standard>::RT GetAttr(
+      const std::string &name) const;
 
   std::string DebugString() const { return "Not Implemented"; }
 

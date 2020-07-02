@@ -93,37 +93,38 @@ const proto::OpDesc::Attr& GetFindAttr(const proto::OpDesc& desc,
   return *it;
 }
 
-#define GET_ATTR_IMPL(T, bd__, pb_f__)                   \
-  template <>                                            \
-  T OpDesc::GetAttr<T>(const std::string& name) const {  \
-    auto& it = GetFindAttr(*desc_, name);                \
-    auto& builder = it.GetField<bd__##Builder>(#pb_f__); \
-    return builder.data();                               \
+#define GET_ATTR_IMPL(T, bd__, pb_f__)                            \
+  template <>                                                     \
+  typename OpAttrTypeTrait<OpAttrType::T, Standard>::RT           \
+  OpDesc::GetAttr<OpAttrType::T>(const std::string& name) const { \
+    auto& it = GetFindAttr(*desc_, name);                         \
+    auto& builder = it.GetField<bd__##Builder>(#pb_f__);          \
+    return builder.data();                                        \
   }
-GET_ATTR_IMPL(int32_t, Int32, i);
-GET_ATTR_IMPL(int16_t, Int32, block_idx);
-GET_ATTR_IMPL(float, Float32, f);
-GET_ATTR_IMPL(bool, Bool, b);
-GET_ATTR_IMPL(int64_t, Int64, l);
-GET_ATTR_IMPL(std::string, String, s);
+GET_ATTR_IMPL(INT, Int32, i);
+GET_ATTR_IMPL(BLOCK, Int32, block_idx);
+GET_ATTR_IMPL(FLOAT, Float32, f);
+GET_ATTR_IMPL(BOOLEAN, Bool, b);
+GET_ATTR_IMPL(LONG, Int64, l);
+GET_ATTR_IMPL(STRING, String, s);
 #undef GET_ATTR_IMPL
 
 #define GET_ATTRS_IMPL(T, bd__, pb_f__)                                    \
   template <>                                                              \
-  std::vector<T> OpDesc::GetAttr<std::vector<T>>(const std::string& name)  \
-      const {                                                              \
+  typename OpAttrTypeTrait<OpAttrType::T, Standard>::RT                    \
+  OpDesc::GetAttr<OpAttrType::T>(const std::string& name) const {          \
     auto& it = GetFindAttr(*desc_, name);                                  \
-    std::vector<T> res;                                                    \
+    std::vector<OpAttrTypeTrait<OpAttrType::T, Standard>::ET> res;         \
     auto& list_builder = it.GetField<ListBuilder<bd__##Builder>>(#pb_f__); \
     for (size_t i = 0; i < list_builder.size(); ++i) {                     \
       res.push_back(list_builder.Get(i).data());                           \
     }                                                                      \
     return res;                                                            \
   }
-GET_ATTRS_IMPL(int, Int32, ints);
-GET_ATTRS_IMPL(float, Float32, floats);
-GET_ATTRS_IMPL(std::string, String, strings);
-GET_ATTRS_IMPL(int64_t, Int64, longs);
+GET_ATTRS_IMPL(INTS, Int32, ints);
+GET_ATTRS_IMPL(FLOATS, Float32, floats);
+GET_ATTRS_IMPL(STRINGS, String, strings);
+GET_ATTRS_IMPL(LONGS, Int64, longs);
 #undef GET_ATTRS_IMPL
 
 }  // namespace naive_buffer

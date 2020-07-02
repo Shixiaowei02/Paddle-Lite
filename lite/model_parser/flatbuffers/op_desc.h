@@ -115,11 +115,12 @@ class OpDesc : public OpDescReadAPI {
     return attr_names_vec;
   }
 
-  template <typename T>
-  T GetAttr(const std::string& name) const;
+  template <OpAttrType Type>
+  typename OpAttrTypeTrait<Type, Standard>::RT GetAttr(
+      const std::string& name) const;
 
-  template <typename T>
-  T GetAttr(size_t idx) const;
+  template <OpAttrType Type>
+  typename OpAttrTypeTrait<Type, Standard>::RT GetAttr(size_t idx) const;
 
   OpDesc() = delete;
 

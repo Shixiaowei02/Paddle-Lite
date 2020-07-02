@@ -16,40 +16,83 @@
 
 #include <string>
 #include <vector>
-#include "lite/model_parser/base/op_desc.h"
 
 namespace paddle {
 namespace lite {
 
-struct Standand {};
+enum class OpAttrType {
+  INT = 0,
+  FLOAT = 1,
+  STRING = 2,
+  INTS = 3,
+  FLOATS = 4,
+  STRINGS = 5,
+  BOOLEAN = 6,
+  BOOLEANS = 7,
+  BLOCK = 8,
+  LONG = 9,
+  BLOCKS = 10,
+  LONGS = 11,
+  UNK,
+};
+
+struct Standard {};
 struct Flatbuffers {};
 
-template <OpAttrType Type, typename B = Standand>
+template <typename T, typename U>
+class VectorView;
+
+template <OpAttrType Type, typename U>
 struct OpAttrTypeTrait;
 
 template <typename T>
 struct OpDataTypeTrait;
 
-#define TYPE_TRAIT_IMPL(T, type__)                  \
-  template <>                                       \
-  struct OpAttrTypeTrait<OpAttrType::T> {           \
-    typedef type__ DT;                              \
+#define OP_TYPE_TRAIT_IMPL(T, dtype__)              \
+  template <typename U>                             \
+  struct OpAttrTypeTrait<OpAttrType::T, U> {        \
+    typedef dtype__ DT;                             \
+    typedef dtype__ RT;                             \
+    static constexpr const char* ATN = #T;          \
   };                                                \
   template <>                                       \
-  struct OpDataTypeTrait<type__> {                  \
+  struct OpDataTypeTrait<dtype__> {                 \
     static constexpr OpAttrType AT = OpAttrType::T; \
     static constexpr const char* ATN = #T;          \
   };
 
-TYPE_TRAIT_IMPL(INT, int32_t);
-TYPE_TRAIT_IMPL(FLOAT, float);
-TYPE_TRAIT_IMPL(STRING, std::string);
-TYPE_TRAIT_IMPL(BOOLEAN, bool);
-TYPE_TRAIT_IMPL(LONG, int64_t);
-TYPE_TRAIT_IMPL(INTS, std::vector<int>);
-TYPE_TRAIT_IMPL(FLOATS, std::vector<float>);
-TYPE_TRAIT_IMPL(STRINGS, std::vector<std::string>);
-TYPE_TRAIT_IMPL(LONGS, std::vector<int64_t>);
+#define OP_VEC_TYPE_TRAIT_IMPL(T, dtype__)             \
+  template <>                                          \
+  struct OpAttrTypeTrait<OpAttrType::T, Flatbuffers> { \
+    typedef dtype__ ET;                                \
+    typedef std::vector<dtype__> DT;                   \
+    typedef VectorView<dtype__, Flatbuffers> RT;       \
+    static constexpr const char* ATN = #T;             \
+  };                                                   \
+  template <>                                          \
+  struct OpAttrTypeTrait<OpAttrType::T, Standard> {    \
+    typedef dtype__ ET;                                \
+    typedef std::vector<dtype__> DT;                   \
+    typedef DT RT;                                     \
+    static constexpr const char* ATN = #T;             \
+  };                                                   \
+  template <>                                          \
+  struct OpDataTypeTrait<std::vector<dtype__>> {       \
+    static constexpr OpAttrType AT = OpAttrType::T;    \
+    static constexpr const char* ATN = #T;             \
+  };
+
+OP_TYPE_TRAIT_IMPL(INT, int32_t);
+OP_TYPE_TRAIT_IMPL(FLOAT, float);
+OP_TYPE_TRAIT_IMPL(STRING, std::string);
+OP_TYPE_TRAIT_IMPL(BOOLEAN, bool);
+OP_TYPE_TRAIT_IMPL(LONG, int64_t);
+OP_TYPE_TRAIT_IMPL(BLOCK, int16_t);
+
+OP_VEC_TYPE_TRAIT_IMPL(INTS, int32_t);
+OP_VEC_TYPE_TRAIT_IMPL(FLOATS, float);
+OP_VEC_TYPE_TRAIT_IMPL(STRINGS, std::string);
+OP_VEC_TYPE_TRAIT_IMPL(LONGS, int64_t);
 #undef TYPE_TRAIT_IMPL
 
 }  // namespace lite

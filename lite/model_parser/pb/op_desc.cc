@@ -110,33 +110,36 @@ GetFindAttr(const framework::proto::OpDesc &desc, const std::string &name) {
   return it;
 }
 
-#define GET_ATTR_IMPL(T, pb_f__)                        \
-  template <>                                           \
-  T OpDesc::GetAttr<T>(const std::string &name) const { \
-    auto it = GetFindAttr(*desc_, name);                \
-    return it->pb_f__();                                \
+#define GET_ATTR_IMPL(T, pb_f__)                                  \
+  template <>                                                     \
+  typename OpAttrTypeTrait<OpAttrType::T, Standard>::RT           \
+  OpDesc::GetAttr<OpAttrType::T>(const std::string &name) const { \
+    auto it = GetFindAttr(*desc_, name);                          \
+    return it->pb_f__();                                          \
   }
 
-#define GET_ATTRS_IMPL(T, pb_f__)                       \
-  template <>                                           \
-  T OpDesc::GetAttr<T>(const std::string &name) const { \
-    auto it = GetFindAttr(*desc_, name);                \
-    T res;                                              \
-    for (const auto &v : it->pb_f__()) {                \
-      res.push_back(v);                                 \
-    }                                                   \
-    return res;                                         \
+#define GET_ATTRS_IMPL(T, pb_f__)                                 \
+  template <>                                                     \
+  typename OpAttrTypeTrait<OpAttrType::T, Standard>::RT           \
+  OpDesc::GetAttr<OpAttrType::T>(const std::string &name) const { \
+    auto it = GetFindAttr(*desc_, name);                          \
+    OpAttrTypeTrait<OpAttrType::T, Standard>::RT res;             \
+    for (const auto &v : it->pb_f__()) {                          \
+      res.push_back(v);                                           \
+    }                                                             \
+    return res;                                                   \
   }
-GET_ATTR_IMPL(int32_t, i);
-GET_ATTR_IMPL(int16_t, block_idx);
-GET_ATTR_IMPL(float, f);
-GET_ATTR_IMPL(bool, b);
-GET_ATTR_IMPL(int64_t, l);
-GET_ATTRS_IMPL(std::vector<int>, ints);
-GET_ATTRS_IMPL(std::vector<float>, floats);
-GET_ATTRS_IMPL(std::vector<std::string>, strings);
-GET_ATTR_IMPL(std::string, s);
-GET_ATTRS_IMPL(std::vector<int64_t>, longs);
+GET_ATTR_IMPL(INT, i);
+GET_ATTR_IMPL(BLOCK, block_idx);
+GET_ATTR_IMPL(FLOAT, f);
+GET_ATTR_IMPL(BOOLEAN, b);
+GET_ATTR_IMPL(LONG, l);
+GET_ATTR_IMPL(STRING, s);
+
+GET_ATTRS_IMPL(INTS, ints);
+GET_ATTRS_IMPL(FLOATS, floats);
+GET_ATTRS_IMPL(STRINGS, strings);
+GET_ATTRS_IMPL(LONGS, longs);
 
 }  // namespace pb
 }  // namespace lite
