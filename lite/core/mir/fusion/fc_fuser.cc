@@ -82,13 +82,13 @@ cpp::OpDesc FcFuser::GenOpDesc(const key2nodes_t& matched) {
   bool is_quantized_op = op_desc.HasInputScale(input_x_name) &&
                          op_desc.HasInputScale(input_y_name);
   if (is_quantized_op) {
-    x_scale = op_desc.GetInputScale<float>(input_x_name);
+    x_scale = op_desc.GetInputScale<OpAttrType::FLOAT>(input_x_name);
     if (y_var_node->is_weight) {  // the scale of y is a vector
       y_scale_vct =
-          op_desc.GetInputScale<std::vector<float>>(op_desc.Input("Y").front());
+          op_desc.GetInputScale<OpAttrType::FLOATS>(op_desc.Input("Y").front());
     } else {
       y_scale_vct.push_back(  // the scale of y is scalar
-          op_desc.GetInputScale<float>(op_desc.Input("Y").front()));
+          op_desc.GetInputScale<OpAttrType::FLOAT>(op_desc.Input("Y").front()));
     }
   }
 
@@ -101,7 +101,8 @@ cpp::OpDesc FcFuser::GenOpDesc(const key2nodes_t& matched) {
   op_desc.SetOutput("Out", {matched.at("Out")->arg()->name});
   op_desc.SetAttr(
       "in_num_col_dims",
-      matched.at("mul")->stmt()->op_info()->GetAttr<int>("x_num_col_dims"));
+      matched.at("mul")->stmt()->op_info()->GetAttr<OpAttrType::INT>(
+          "x_num_col_dims"));
   if (with_relu_) {
     op_desc.SetAttr("activation_type", std::string{"relu"});
   }

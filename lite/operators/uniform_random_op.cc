@@ -29,11 +29,11 @@ bool UniformRandomOpLite::InferShapeImpl() const {
 
 bool UniformRandomOpLite::AttachImpl(const cpp::OpDesc& opdesc,
                                      lite::Scope* scope) {
-  param_.shape = opdesc.GetAttr<std::vector<int64_t>>("shape");
-  param_.min = opdesc.GetAttr<float>("min");
-  param_.max = opdesc.GetAttr<float>("max");
-  param_.seed = opdesc.GetAttr<int>("seed");
-  param_.dtype = opdesc.GetAttr<int>("dtype");
+  param_.shape = opdesc.GetAttr<OpAttrType::LONGS>("shape");
+  param_.min = opdesc.GetAttr<OpAttrType::FLOAT>("min");
+  param_.max = opdesc.GetAttr<OpAttrType::FLOAT>("max");
+  param_.seed = opdesc.GetAttr<OpAttrType::INT>("seed");
+  param_.dtype = opdesc.GetAttr<OpAttrType::INT>("dtype");
   param_.Out = GetMutableVar<Tensor>(scope, opdesc.Output("Out").front());
   return true;
 }

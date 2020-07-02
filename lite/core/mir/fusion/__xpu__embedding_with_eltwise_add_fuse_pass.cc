@@ -120,7 +120,8 @@ class XPUEmbeddingWithEltwiseAddFuser : public FuseBase {
     op_desc.SetAttr<int>("n_embedding", n_embedding_);
     auto* embedding0_op_info = matched.at("embedding0")->stmt()->op_info();
     op_desc.SetAttr<int64_t>(
-        "padding_idx", embedding0_op_info->GetAttr<int64_t>("padding_idx"));
+        "padding_idx",
+        embedding0_op_info->GetAttr<OpAttrType::LONG>("padding_idx"));
 
     auto* new_stmt = matched.at("embedding0")->stmt();
     auto new_op = LiteOpRegistry::Global().Create(op_desc.Type());

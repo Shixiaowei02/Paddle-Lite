@@ -91,12 +91,14 @@ bool LstmOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
     param_.H0 =
         scope->FindVar(opdesc.Input("H0").front())->GetMutable<lite::Tensor>();
   }
-  param_.use_peepholes = opdesc.GetAttr<bool>("use_peepholes");
-  param_.is_reverse = opdesc.GetAttr<bool>("is_reverse");
-  param_.gate_activation = opdesc.GetAttr<std::string>("gate_activation");
-  param_.cell_activation = opdesc.GetAttr<std::string>("cell_activation");
+  param_.use_peepholes = opdesc.GetAttr<OpAttrType::BOOLEAN>("use_peepholes");
+  param_.is_reverse = opdesc.GetAttr<OpAttrType::BOOLEAN>("is_reverse");
+  param_.gate_activation =
+      opdesc.GetAttr<OpAttrType::STRING>("gate_activation");
+  param_.cell_activation =
+      opdesc.GetAttr<OpAttrType::STRING>("cell_activation");
   param_.candidate_activation =
-      opdesc.GetAttr<std::string>("candidate_activation");
+      opdesc.GetAttr<OpAttrType::STRING>("candidate_activation");
 
   return true;
 }

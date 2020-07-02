@@ -157,7 +157,7 @@ void CheckOpDesc(const OpDescType& desc) {
 
   ASSERT_TRUE(desc.HasAttr("aint"));
   ASSERT_FALSE(desc.HasAttr("afloat"));
-  ASSERT_EQ(desc.template GetAttr<int32_t>("aint"), 100);
+  ASSERT_EQ(desc.template GetAttr<OpAttrType::INT>("aint"), 100);
 }
 
 template <typename OpDescType>
@@ -174,7 +174,7 @@ void CheckOpDesc1(const OpDescType& desc) {
 
   ASSERT_TRUE(desc.HasAttr("afloat"));
   ASSERT_FALSE(desc.HasAttr("aint"));
-  EXPECT_NEAR(desc.template GetAttr<float>("afloat"), 0.005, 1e-5);
+  EXPECT_NEAR(desc.template GetAttr<OpAttrType::FLOAT>("afloat"), 0.005, 1e-5);
 }
 
 template <typename OpDescType>

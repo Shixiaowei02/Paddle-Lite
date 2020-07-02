@@ -36,7 +36,7 @@ int TopkConverter(void* ctx, OpLite* op, KernelBase* kernel) {
 
   auto out_name = op_info->Output("Out").front();
 
-  int k = op_info->GetAttr<int>("k");
+  int k = op_info->GetAttr<OpAttrType::INT>("k");
 
   // X node
   std::shared_ptr<Node> x_node = nullptr;

@@ -117,7 +117,7 @@ int ElementwiseConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto out = scope->FindTensor(out_name);
   auto out_dims = out->dims();
 
-  auto axis = op_info->GetAttr<int>("axis");
+  auto axis = op_info->GetAttr<OpAttrType::INT>("axis");
   if (axis < 0) {
     axis = x_dims.size() - y_dims.size();
   }
@@ -203,7 +203,7 @@ int ElementwiseConverter(void* ctx, OpLite* op, KernelBase* kernel) {
       op_type == "fusion_elementwise_sub_activation" ||
       op_type == "fusion_elementwise_mul_activation" ||
       op_type == "fusion_elementwise_div_activation") {
-    auto act_type = op_info->GetAttr<std::string>("act_type");
+    auto act_type = op_info->GetAttr<OpAttrType::STRING>("act_type");
     auto act_node = graph->Add<ge::op::Activation>(out_name);
     auto act_op = act_node->data<ge::op::Activation>();
     act_op->set_input_x(*elt_node->data());

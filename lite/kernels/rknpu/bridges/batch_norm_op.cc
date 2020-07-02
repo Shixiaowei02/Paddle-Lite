@@ -56,10 +56,11 @@ int BatchNormConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto y_type = kernel->GetOutputDeclType("Y");
   auto y = scope->FindMutableTensor(y_name);
   CHECK(y_type->layout() == DATALAYOUT(kNCHW));
-  float momentum = op_info->GetAttr<float>("momentum");
-  float epsilon = op_info->GetAttr<float>("epsilon");
+  float momentum = op_info->GetAttr<OpAttrType::FLOAT>("momentum");
+  float epsilon = op_info->GetAttr<OpAttrType::FLOAT>("epsilon");
   int mode = 1;  // bnScale, bnBias tensor dims are 1xCx1x1
-  bool use_global_stats = op_info->GetAttr<bool>("use_global_stats");
+  bool use_global_stats =
+      op_info->GetAttr<OpAttrType::BOOLEAN>("use_global_stats");
 
   // for quantization
   bool enable_int8 = false;
@@ -70,10 +71,10 @@ int BatchNormConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   PrecisionType precision = PRECISION(kFloat);
 
   if (op_info->HasAttr("enable_int8")) {
-    enable_int8 = op_info->GetAttr<bool>("enable_int8");
-    input_scale = op_info->GetAttr<float>("input_scale");
-    bit_length = op_info->GetAttr<int>("bit_length");
-    output_scale = op_info->GetAttr<float>("output_scale");
+    enable_int8 = op_info->GetAttr<OpAttrType::BOOLEAN>("enable_int8");
+    input_scale = op_info->GetAttr<OpAttrType::FLOAT>("input_scale");
+    bit_length = op_info->GetAttr<OpAttrType::INT>("bit_length");
+    output_scale = op_info->GetAttr<OpAttrType::FLOAT>("output_scale");
 
     if (enable_int8) {
       precision = PRECISION(kInt8);

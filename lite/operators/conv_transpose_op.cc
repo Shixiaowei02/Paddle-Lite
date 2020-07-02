@@ -105,13 +105,14 @@ bool ConvTransposeOpLite::AttachImpl(const cpp::OpDesc& op_desc,
   param_.filter = scope->FindVar(Filter)->GetMutable<lite::Tensor>();
   param_.output = scope->FindVar(Out)->GetMutable<lite::Tensor>();
 
-  param_.strides = op_desc.GetAttr<std::vector<int>>("strides");
-  auto paddings = op_desc.GetAttr<std::vector<int>>("paddings");
-  param_.groups = op_desc.GetAttr<int>("groups");
-  auto dilations = op_desc.GetAttr<std::vector<int>>("dilations");
+  param_.strides = op_desc.GetAttr<OpAttrType::INTS>("strides");
+  auto paddings = op_desc.GetAttr<OpAttrType::INTS>("paddings");
+  param_.groups = op_desc.GetAttr<OpAttrType::INT>("groups");
+  auto dilations = op_desc.GetAttr<OpAttrType::INTS>("dilations");
 
   if (op_desc.HasAttr("padding_algorithm")) {
-    padding_algorithm_ = op_desc.GetAttr<std::string>("padding_algorithm");
+    padding_algorithm_ =
+        op_desc.GetAttr<OpAttrType::STRING>("padding_algorithm");
   }
   // 2-pad to 4-pad
   if (paddings.size() == 2L) {
@@ -142,11 +143,11 @@ bool ConvTransposeOpLite::AttachImpl(const cpp::OpDesc& op_desc,
     }
   }
   if (op_desc.HasAttr("fuse_relu")) {
-    param_.fuse_relu = op_desc.GetAttr<bool>("fuse_relu");
+    param_.fuse_relu = op_desc.GetAttr<OpAttrType::BOOLEAN>("fuse_relu");
     param_.activation_param.active_type = lite_api::ActivationType::kRelu;
   }
   if (op_desc.HasAttr("output_size")) {
-    param_.output_size = op_desc.GetAttr<std::vector<int>>("output_size");
+    param_.output_size = op_desc.GetAttr<OpAttrType::INTS>("output_size");
   }
   return true;
 }

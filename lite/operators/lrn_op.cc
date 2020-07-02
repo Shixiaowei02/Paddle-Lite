@@ -37,12 +37,12 @@ bool LrnOpLite::AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) {
   auto Out_name = opdesc.Output("Out").front();
   param_.X = GetVar<lite::Tensor>(scope, X_name);
   param_.Out = GetMutableVar<lite::Tensor>(scope, Out_name);
-  param_.n = opdesc.GetAttr<int>("n");
-  param_.alpha = opdesc.GetAttr<float>("alpha");
-  param_.beta = opdesc.GetAttr<float>("beta");
-  param_.k = opdesc.GetAttr<float>("k");
+  param_.n = opdesc.GetAttr<OpAttrType::INT>("n");
+  param_.alpha = opdesc.GetAttr<OpAttrType::FLOAT>("alpha");
+  param_.beta = opdesc.GetAttr<OpAttrType::FLOAT>("beta");
+  param_.k = opdesc.GetAttr<OpAttrType::FLOAT>("k");
   if (opdesc.HasAttr("norm_region")) {
-    param_.norm_region = opdesc.GetAttr<std::string>("norm_region");
+    param_.norm_region = opdesc.GetAttr<OpAttrType::STRING>("norm_region");
   }
   return true;
 }

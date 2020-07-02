@@ -95,10 +95,11 @@ bool GRUOpLite::AttachImpl(const cpp::OpDesc& op_desc, lite::Scope* scope) {
     param_.bias = scope->FindVar(bias)->GetMutable<lite::Tensor>();
   }
 
-  param_.gate_activation = op_desc.GetAttr<std::string>("gate_activation");
-  param_.activation = op_desc.GetAttr<std::string>("activation");
-  param_.is_reverse = op_desc.GetAttr<bool>("is_reverse");
-  param_.origin_mode = op_desc.GetAttr<bool>("origin_mode");
+  param_.gate_activation =
+      op_desc.GetAttr<OpAttrType::STRING>("gate_activation");
+  param_.activation = op_desc.GetAttr<OpAttrType::STRING>("activation");
+  param_.is_reverse = op_desc.GetAttr<OpAttrType::BOOLEAN>("is_reverse");
+  param_.origin_mode = op_desc.GetAttr<OpAttrType::BOOLEAN>("origin_mode");
 
   return true;
 }

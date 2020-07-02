@@ -35,8 +35,8 @@ int ReduceMeanConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto x = scope->FindMutableTensor(x_name);
   auto x_dims = x->dims();
   auto out_name = op_info->Input("Out").front();
-  auto keep_dim = op_info->GetAttr<bool>("keep_dim");
-  auto dim = op_info->GetAttr<std::vector<int>>("dim");
+  auto keep_dim = op_info->GetAttr<OpAttrType::BOOLEAN>("keep_dim");
+  auto dim = op_info->GetAttr<OpAttrType::INTS>("dim");
   CHECK(!dim.empty()) << "[NPU] \"dim\" of reduce_mean should not be empty.";
   for (size_t i = 0; i < dim.size(); i++) {
     if (dim[i] < 0) {

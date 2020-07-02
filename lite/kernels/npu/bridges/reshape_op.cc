@@ -84,7 +84,7 @@ int ReshapeConverter(void* ctx, OpLite* op, KernelBase* kernel) {
     }
     reshape_op->set_input_w(*actual_shape_node->data());
   } else {
-    auto shape = op_info->GetAttr<std::vector<int>>("shape");
+    auto shape = op_info->GetAttr<OpAttrType::INTS>("shape");
     auto out_shape = lite::operators::ValidateShape(shape, x_dims);
     out_shape = CvtShape(out_shape);
     if (out_shape.size() > 4) {

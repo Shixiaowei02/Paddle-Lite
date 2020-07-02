@@ -69,11 +69,12 @@ bool RetinanetDetectionOutputOpLite::AttachImpl(const cpp::OpDesc &op_desc,
   AttachInput(op_desc, scope, "ImInfo", false, &param_.im_info);
   AttachOutput(op_desc, scope, "Out", false, &param_.out);
 
-  param_.score_threshold = op_desc.GetAttr<float>("score_threshold");
-  param_.nms_top_k = op_desc.GetAttr<int>("nms_top_k");
-  param_.nms_threshold = op_desc.GetAttr<float>("nms_threshold");
-  param_.nms_eta = op_desc.GetAttr<float>("nms_eta");
-  param_.keep_top_k = op_desc.GetAttr<int>("keep_top_k");
+  param_.score_threshold =
+      op_desc.GetAttr<OpAttrType::FLOAT>("score_threshold");
+  param_.nms_top_k = op_desc.GetAttr<OpAttrType::INT>("nms_top_k");
+  param_.nms_threshold = op_desc.GetAttr<OpAttrType::FLOAT>("nms_threshold");
+  param_.nms_eta = op_desc.GetAttr<OpAttrType::FLOAT>("nms_eta");
+  param_.keep_top_k = op_desc.GetAttr<OpAttrType::INT>("keep_top_k");
 
   return true;
 }

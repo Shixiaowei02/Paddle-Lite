@@ -88,10 +88,10 @@ bool BatchNormOp::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
   auto is_test_type = op_desc.GetAttrType("is_test");
   switch (is_test_type) {
     case OpDescAPI::AttrType::INT:
-      param_.is_test = op_desc.GetAttr<int>("is_test");
+      param_.is_test = op_desc.GetAttr<OpAttrType::INT>("is_test");
       break;
     case OpDescAPI::AttrType::BOOLEAN:
-      param_.is_test = op_desc.GetAttr<bool>("is_test");
+      param_.is_test = op_desc.GetAttr<OpAttrType::BOOLEAN>("is_test");
       break;
     default:
       LOG(FATAL) << "Unsupported attribute type: the type of attribute "
@@ -99,7 +99,8 @@ bool BatchNormOp::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
   }
 
   if (op_desc.HasAttr("use_global_stats")) {
-    param_.use_global_stats = op_desc.GetAttr<bool>("use_global_stats");
+    param_.use_global_stats =
+        op_desc.GetAttr<OpAttrType::BOOLEAN>("use_global_stats");
   }
   if (!param_.is_test) {
     param_.mean_out =
@@ -112,9 +113,9 @@ bool BatchNormOp::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
         scope->FindVar(op_desc.Output("SavedVariance").front())
             ->GetMutable<Tensor>();
   }
-  param_.epsilon = op_desc.GetAttr<float>("epsilon");
-  param_.momentum = op_desc.GetAttr<float>("momentum");
-  std::string data_layout = op_desc.GetAttr<std::string>("data_layout");
+  param_.epsilon = op_desc.GetAttr<OpAttrType::FLOAT>("epsilon");
+  param_.momentum = op_desc.GetAttr<OpAttrType::FLOAT>("momentum");
+  std::string data_layout = op_desc.GetAttr<OpAttrType::STRING>("data_layout");
   CHECK_EQ(data_layout, "NCHW") << "TODO(hong19860320): Only support NCHW.";
   // param_.data_layout = StringToDataLayout(data_layout);
   return true;

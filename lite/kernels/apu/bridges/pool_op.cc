@@ -39,10 +39,10 @@ int PoolConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto out_name = op_info->Output("Out").front();
   auto out = scope->FindMutableTensor(out_name);
   auto out_dims = out->dims();
-  auto pooling_type = op_info->GetAttr<std::string>("pooling_type");
-  auto global_pooling = op_info->GetAttr<bool>("global_pooling");
-  auto ksize = op_info->GetAttr<std::vector<int>>("ksize");
-  auto paddings = op_info->GetAttr<std::vector<int>>("paddings");
+  auto pooling_type = op_info->GetAttr<OpAttrType::STRING>("pooling_type");
+  auto global_pooling = op_info->GetAttr<OpAttrType::BOOLEAN>("global_pooling");
+  auto ksize = op_info->GetAttr<OpAttrType::INTS>("ksize");
+  auto paddings = op_info->GetAttr<OpAttrType::INTS>("paddings");
 
   // pool mode
   if ((pooling_type == "max") || (pooling_type == "avg")) {
@@ -55,7 +55,8 @@ int PoolConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   int pad_mode = 0;
   std::string padding_algorithm("");
   if (op_info->HasAttr("padding_algorithm")) {
-    padding_algorithm = op_info->GetAttr<std::string>("padding_algorithm");
+    padding_algorithm =
+        op_info->GetAttr<OpAttrType::STRING>("padding_algorithm");
   }
   if (padding_algorithm == "SAME") {
     pad_mode = 6;
@@ -75,9 +76,9 @@ int PoolConverter(void* ctx, OpLite* op, KernelBase* kernel) {
 
   bool adaptive = false;
   if (op_info->HasAttr("adaptive")) {
-    adaptive = op_info->GetAttr<bool>("adaptive");
+    adaptive = op_info->GetAttr<OpAttrType::BOOLEAN>("adaptive");
   }
-  auto strides = op_info->GetAttr<std::vector<int>>("strides");
+  auto strides = op_info->GetAttr<OpAttrType::INTS>("strides");
   lite::operators::UpdatePadding(&paddings,
                                  global_pooling,
                                  adaptive,
@@ -90,13 +91,13 @@ int PoolConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   float x_scale = 1.0f;
   float out_scale = 1.0f;
   if (op_info->HasAttr("enable_int8")) {
-    if (op_info->GetAttr<bool>("enable_int8")) {
+    if (op_info->GetAttr<OpAttrType::BOOLEAN>("enable_int8")) {
       auto x_name = op_info->Input("X").front();
       auto out_name = op_info->Output("Out").front();
       if (op_info->HasInputScale(x_name))
-        x_scale = op_info->GetInputScale<float>(x_name);
+        x_scale = op_info->GetInputScale<OpAttrType::FLOAT>(x_name);
       if (op_info->HasOutputScale(out_name))
-        out_scale = op_info->GetOutputScale<float>(out_name);
+        out_scale = op_info->GetOutputScale<OpAttrType::FLOAT>(out_name);
     } else {
       LOG(WARNING) << "Do not enable_int8";
       return FAILED;

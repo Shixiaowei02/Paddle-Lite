@@ -38,8 +38,8 @@ bool ClipOpLite::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
   AttachInput(op_desc, scope, "Max", true, &param_.max_tensor);
   AttachOutput(op_desc, scope, "Out", false, &param_.out);
 
-  param_.min = op_desc.GetAttr<float>("min");
-  param_.max = op_desc.GetAttr<float>("max");
+  param_.min = op_desc.GetAttr<OpAttrType::FLOAT>("min");
+  param_.max = op_desc.GetAttr<OpAttrType::FLOAT>("max");
 
   return true;
 }

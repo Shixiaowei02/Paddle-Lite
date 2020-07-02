@@ -51,12 +51,13 @@ class MaxPoolWithIndexOpLite : public OpLite {
     param_.x = scope->FindVar(x)->GetMutable<lite::Tensor>();
     param_.output = scope->FindVar(out)->GetMutable<lite::Tensor>();
 
-    param_.ksize = op_desc.GetAttr<std::vector<int>>("ksize");
-    param_.global_pooling = op_desc.GetAttr<bool>("global_pooling");
-    param_.strides = op_desc.GetAttr<std::vector<int>>("strides");
-    auto paddings = op_desc.GetAttr<std::vector<int>>("paddings");
+    param_.ksize = op_desc.GetAttr<OpAttrType::INTS>("ksize");
+    param_.global_pooling =
+        op_desc.GetAttr<OpAttrType::BOOLEAN>("global_pooling");
+    param_.strides = op_desc.GetAttr<OpAttrType::INTS>("strides");
+    auto paddings = op_desc.GetAttr<OpAttrType::INTS>("paddings");
     if (op_desc.HasAttr("adaptive")) {
-      param_.adaptive = op_desc.GetAttr<bool>("adaptive");
+      param_.adaptive = op_desc.GetAttr<OpAttrType::BOOLEAN>("adaptive");
     }
     // 2-pad to 4-pad
     if (paddings.size() == 2L) {

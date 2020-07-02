@@ -59,14 +59,14 @@ int MatMulConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto out = scope->FindTensor(out_name);
   auto out_dims = out->dims();
 
-  bool transpose_x = op_info->GetAttr<bool>("transpose_X");
+  bool transpose_x = op_info->GetAttr<OpAttrType::BOOLEAN>("transpose_X");
   if (x_dims.size() > 2 && transpose_x) {
     LOG(WARNING) << "[NPU] not support transpose_x == true if x_dims size "
                     "greater than 2.";
     return FAILED;
   }
-  bool transpose_y = op_info->GetAttr<bool>("transpose_Y");
-  float alpha = op_info->GetAttr<float>("alpha");
+  bool transpose_y = op_info->GetAttr<OpAttrType::BOOLEAN>("transpose_Y");
+  float alpha = op_info->GetAttr<OpAttrType::FLOAT>("alpha");
 
   std::shared_ptr<Node> x_node = nullptr;
   if (graph->Has(x_name)) {

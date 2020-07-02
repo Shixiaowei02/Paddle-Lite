@@ -29,9 +29,9 @@ void split_ref(const std::shared_ptr<operators::SplitOp> op) {
   Scope* scope = op->scope();
   const OpInfo* op_info = op->op_info();
   auto x = scope->FindVar(op_info->Input("X").front())->GetMutable<Tensor>();
-  int num = op_info->GetAttr<int>("num");
-  int axis = op_info->GetAttr<int>("axis");
-  std::vector<int> sections = op_info->GetAttr<std::vector<int>>("sections");
+  int num = op_info->GetAttr<OpAttrType::INT>("num");
+  int axis = op_info->GetAttr<OpAttrType::INT>("axis");
+  std::vector<int> sections = op_info->GetAttr<OpAttrType::INTS>("sections");
   std::vector<lite::Tensor*> output_vec;
   auto output = op_info->Output("Out");
   for (auto out_var : output) {

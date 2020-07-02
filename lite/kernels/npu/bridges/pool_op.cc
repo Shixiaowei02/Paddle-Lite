@@ -36,10 +36,10 @@ int PoolConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto x = scope->FindMutableTensor(x_name);
   auto x_dims = x->dims();
   auto out_name = op_info->Output("Out").front();
-  auto pooling_type = op_info->GetAttr<std::string>("pooling_type");
-  auto global_pooling = op_info->GetAttr<bool>("global_pooling");
-  auto ksize = op_info->GetAttr<std::vector<int>>("ksize");
-  auto paddings = op_info->GetAttr<std::vector<int>>("paddings");
+  auto pooling_type = op_info->GetAttr<OpAttrType::STRING>("pooling_type");
+  auto global_pooling = op_info->GetAttr<OpAttrType::BOOLEAN>("global_pooling");
+  auto ksize = op_info->GetAttr<OpAttrType::INTS>("ksize");
+  auto paddings = op_info->GetAttr<OpAttrType::INTS>("paddings");
 
   // X node
   std::shared_ptr<Node> x_node = nullptr;
@@ -55,7 +55,7 @@ int PoolConverter(void* ctx, OpLite* op, KernelBase* kernel) {
     mode = 0;
   } else if (pooling_type == "avg") {
     mode = 1;
-    if (!op_info->GetAttr<bool>("exclusive")) {
+    if (!op_info->GetAttr<OpAttrType::BOOLEAN>("exclusive")) {
       LOG(WARNING) << "[NPU] Only exclusive=true is supported for the pooling "
                       "type 'avg' by HiAI DDK";
     }
@@ -68,7 +68,8 @@ int PoolConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   int pad_mode = 0;
   std::string padding_algorithm("");
   if (op_info->HasAttr("padding_algorithm")) {
-    padding_algorithm = op_info->GetAttr<std::string>("padding_algorithm");
+    padding_algorithm =
+        op_info->GetAttr<OpAttrType::STRING>("padding_algorithm");
   }
   if (padding_algorithm == "SAME") {
     pad_mode = 6;
@@ -87,9 +88,9 @@ int PoolConverter(void* ctx, OpLite* op, KernelBase* kernel) {
       << "[NPU] Paddings size should be the same or twice as the inputs size.";
   bool adaptive = false;
   if (op_info->HasAttr("adaptive")) {
-    adaptive = op_info->GetAttr<bool>("adaptive");
+    adaptive = op_info->GetAttr<OpAttrType::BOOLEAN>("adaptive");
   }
-  auto strides = op_info->GetAttr<std::vector<int>>("strides");
+  auto strides = op_info->GetAttr<OpAttrType::INTS>("strides");
   lite::operators::UpdatePadding(&paddings,
                                  global_pooling,
                                  adaptive,
@@ -99,8 +100,8 @@ int PoolConverter(void* ctx, OpLite* op, KernelBase* kernel) {
                                  ksize);
 
   // ceil mode
-  bool ceil_mode =
-      op_info->HasAttr("ceil_mode") && op_info->GetAttr<bool>("ceil_mode");
+  bool ceil_mode = op_info->HasAttr("ceil_mode") &&
+                   op_info->GetAttr<OpAttrType::BOOLEAN>("ceil_mode");
 
   // Pooling node
   auto pool_node = graph->Add<ge::op::Pooling>(out_name);

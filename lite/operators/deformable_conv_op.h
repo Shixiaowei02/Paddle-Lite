@@ -77,15 +77,16 @@ class DeformableConvOpLite : public OpLite {
     param_.mask = scope->FindVar(Mask)->GetMutable<lite::Tensor>();
     param_.offset = scope->FindVar(Offset)->GetMutable<lite::Tensor>();
     param_.output = scope->FindVar(Out)->GetMutable<lite::Tensor>();
-    param_.deformable_groups = op_desc.GetAttr<int>("deformable_groups");
-    param_.im2col_step = op_desc.GetAttr<int>("im2col_step");
+    param_.deformable_groups =
+        op_desc.GetAttr<OpAttrType::INT>("deformable_groups");
+    param_.im2col_step = op_desc.GetAttr<OpAttrType::INT>("im2col_step");
 
     param_.conv_param.filter =
         scope->FindVar(Filter)->GetMutable<lite::Tensor>();
-    param_.conv_param.strides = op_desc.GetAttr<std::vector<int>>("strides");
-    auto paddings = op_desc.GetAttr<std::vector<int>>("paddings");
-    auto dilations = op_desc.GetAttr<std::vector<int>>("dilations");
-    param_.conv_param.groups = op_desc.GetAttr<int>("groups");
+    param_.conv_param.strides = op_desc.GetAttr<OpAttrType::INTS>("strides");
+    auto paddings = op_desc.GetAttr<OpAttrType::INTS>("paddings");
+    auto dilations = op_desc.GetAttr<OpAttrType::INTS>("dilations");
+    param_.conv_param.groups = op_desc.GetAttr<OpAttrType::INT>("groups");
     param_.conv_param.dilations = std::make_shared<std::vector<int>>(dilations);
 
     // 2-pad to 4-pad
@@ -115,9 +116,10 @@ class DeformableConvOpLite : public OpLite {
         }
       }
     }
-    if (op_desc.HasAttr("with_act") && op_desc.GetAttr<bool>("with_act")) {
+    if (op_desc.HasAttr("with_act") &&
+        op_desc.GetAttr<OpAttrType::BOOLEAN>("with_act")) {
       param_.conv_param.activation_param.has_active = true;
-      auto act_type = op_desc.GetAttr<std::string>("act_type");
+      auto act_type = op_desc.GetAttr<OpAttrType::STRING>("act_type");
       if (act_type == "relu") {
         param_.conv_param.activation_param.active_type =
             lite_api::ActivationType::kRelu;
@@ -126,12 +128,12 @@ class DeformableConvOpLite : public OpLite {
         param_.conv_param.activation_param.active_type =
             lite_api::ActivationType::kRelu6;
         param_.conv_param.activation_param.Relu_clipped_coef =
-            op_desc.GetAttr<float>("fuse_brelu_threshold");  // 6.f
+            op_desc.GetAttr<OpAttrType::FLOAT>("fuse_brelu_threshold");  // 6.f
       } else if (act_type == "leaky_relu") {
         param_.conv_param.activation_param.active_type =
             lite_api::ActivationType::kLeakyRelu;
         param_.conv_param.activation_param.Leaky_relu_alpha =
-            op_desc.GetAttr<float>("leaky_relu_alpha");
+            op_desc.GetAttr<OpAttrType::FLOAT>("leaky_relu_alpha");
       } else {
         CHECK(false) << "The fused DeformableConv only supports fuse with relu"
                         "and leaky relu";

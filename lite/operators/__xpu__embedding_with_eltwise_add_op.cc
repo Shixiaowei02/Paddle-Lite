@@ -64,7 +64,7 @@ bool XPUEmbeddingWithEltwiseAddOp::AttachImpl(const cpp::OpDesc& op_desc,
     param_.Tables.push_back(t);
   }
 
-  param_.padding_idx = op_desc.GetAttr<int64_t>("padding_idx");
+  param_.padding_idx = op_desc.GetAttr<OpAttrType::LONG>("padding_idx");
   return true;
 }
 

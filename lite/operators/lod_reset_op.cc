@@ -48,8 +48,8 @@ bool LodResetOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
       scope->FindVar(opdesc.Output("Out").front())->GetMutable<lite::Tensor>();
   CHECK(param_.X);
   CHECK(param_.Out);
-  param_.target_lod = opdesc.GetAttr<std::vector<int>>("target_lod");
-  // param_.append = opdesc.GetAttr<bool>("append");
+  param_.target_lod = opdesc.GetAttr<OpAttrType::INTS>("target_lod");
+  // param_.append = opdesc.GetAttr<OpAttrType::BOOLEAN>("append");
   return true;
 }
 

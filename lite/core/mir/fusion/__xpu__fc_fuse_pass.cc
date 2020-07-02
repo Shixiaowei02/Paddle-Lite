@@ -111,7 +111,8 @@ class XPUFcFuser : public FuseBase {
     op_desc.SetOutput("Out", {matched.at("Out")->arg()->name});
     op_desc.SetAttr(
         "in_num_col_dims",
-        matched.at("mul")->stmt()->op_info()->GetAttr<int>("x_num_col_dims"));
+        matched.at("mul")->stmt()->op_info()->GetAttr<OpAttrType::INT>(
+            "x_num_col_dims"));
     op_desc.SetAttr("w_max", w_max);
     op_desc.SetAttr("transpose_w", transpose_w);
     if (with_relu_) {

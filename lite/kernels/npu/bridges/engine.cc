@@ -39,7 +39,7 @@ int Engine::BuildOriginProgram() {
     std::unique_ptr<KernelBase> picked_kernel;
     if (op_desc->HasAttr(kKernelTypeAttr)) {
       // Create op and pick up kernel according to the kKernelTypeAttr attribute
-      auto kernel_type = op_desc->GetAttr<std::string>(kKernelTypeAttr);
+      auto kernel_type = op_desc->GetAttr<OpAttrType::STRING>(kKernelTypeAttr);
       std::string alias;
       Place place;
       KernelBase::ParseKernelType(kernel_type, &op_type, &alias, &place);

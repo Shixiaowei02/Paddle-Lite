@@ -64,11 +64,11 @@ bool GenerateProposalsOpLite::AttachImpl(const cpp::OpDesc &op_desc,
                          ->GetMutable<lite::Tensor>();
 
   // attrs
-  param_.pre_nms_topN = op_desc.GetAttr<int>("pre_nms_topN");
-  param_.post_nms_topN = op_desc.GetAttr<int>("post_nms_topN");
-  param_.nms_thresh = op_desc.GetAttr<float>("nms_thresh");
-  param_.min_size = op_desc.GetAttr<float>("min_size");
-  param_.eta = op_desc.GetAttr<float>("eta");
+  param_.pre_nms_topN = op_desc.GetAttr<OpAttrType::INT>("pre_nms_topN");
+  param_.post_nms_topN = op_desc.GetAttr<OpAttrType::INT>("post_nms_topN");
+  param_.nms_thresh = op_desc.GetAttr<OpAttrType::FLOAT>("nms_thresh");
+  param_.min_size = op_desc.GetAttr<OpAttrType::FLOAT>("min_size");
+  param_.eta = op_desc.GetAttr<OpAttrType::FLOAT>("eta");
 
   // outs
   param_.RpnRois = scope->FindVar(op_desc.Output("RpnRois").front())

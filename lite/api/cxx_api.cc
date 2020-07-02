@@ -189,11 +189,11 @@ void Predictor::PrepareFeedFetch() {
   input_names_.resize(feeds.size());
   output_names_.resize(fetchs.size());
   for (size_t i = 0; i < feeds.size(); i++) {
-    input_names_[feeds[i]->GetAttr<int>("col")] =
+    input_names_[feeds[i]->GetAttr<OpAttrType::INT>("col")] =
         feeds[i]->Output("Out").front();
   }
   for (size_t i = 0; i < fetchs.size(); i++) {
-    output_names_[fetchs[i]->GetAttr<int>("col")] =
+    output_names_[fetchs[i]->GetAttr<OpAttrType::INT>("col")] =
         fetchs[i]->Input("X").front();
   }
 }

@@ -160,19 +160,19 @@ int DensityPriorBoxConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto var_var_name = op_info->Output("Variances").front();
   // param
   st_priorbox_param param;
-  param.clip = op_info->GetAttr<bool>("clip");
-  param.flatten_to_2d = op_info->GetAttr<bool>("flatten_to_2d");
-  param.fixed_sizes = op_info->GetAttr<std::vector<float>>("fixed_sizes");
-  param.fixed_ratios = op_info->GetAttr<std::vector<float>>("fixed_ratios");
-  param.variances = op_info->GetAttr<std::vector<float>>("variances");
-  param.densities = op_info->GetAttr<std::vector<int>>("densities");
+  param.clip = op_info->GetAttr<OpAttrType::BOOLEAN>("clip");
+  param.flatten_to_2d = op_info->GetAttr<OpAttrType::BOOLEAN>("flatten_to_2d");
+  param.fixed_sizes = op_info->GetAttr<OpAttrType::FLOATS>("fixed_sizes");
+  param.fixed_ratios = op_info->GetAttr<OpAttrType::FLOATS>("fixed_ratios");
+  param.variances = op_info->GetAttr<OpAttrType::FLOATS>("variances");
+  param.densities = op_info->GetAttr<OpAttrType::INTS>("densities");
 
-  param.offset = op_info->GetAttr<float>("offset");
+  param.offset = op_info->GetAttr<OpAttrType::FLOAT>("offset");
   if (op_info->HasAttr("step_w")) {
-    param.step_w = op_info->GetAttr<float>("step_w");
+    param.step_w = op_info->GetAttr<OpAttrType::FLOAT>("step_w");
   }
   if (op_info->HasAttr("step_h")) {
-    param.step_h = op_info->GetAttr<float>("step_h");
+    param.step_h = op_info->GetAttr<OpAttrType::FLOAT>("step_h");
   }
   float* cpu_data = compute_density_priorbox_kernel(op, &param);
   auto boxes_dims = boxes->dims();

@@ -45,9 +45,9 @@ int ConvConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   const auto oc = filter_dims[0];
   CHECK_EQ(input_dims.size(), 4u);
   CHECK_EQ(filter_dims.size(), 4u);
-  const auto strides = op_info->GetAttr<std::vector<int>>("strides");
-  auto dilations = op_info->GetAttr<std::vector<int>>("dilations");
-  auto paddings = op_info->GetAttr<std::vector<int>>("paddings");
+  const auto strides = op_info->GetAttr<OpAttrType::INTS>("strides");
+  auto dilations = op_info->GetAttr<OpAttrType::INTS>("dilations");
+  auto paddings = op_info->GetAttr<OpAttrType::INTS>("paddings");
   CHECK_EQ(strides.size(), 2u);
   CHECK_EQ(dilations.size(), 2u);
   if (paddings.size() == 2u) {
@@ -61,7 +61,7 @@ int ConvConverter(void* ctx, OpLite* op, KernelBase* kernel) {
 
   const std::string padding_algorithm =
       op_info->HasAttr("padding_algorithm")
-          ? op_info->GetAttr<std::string>("padding_algorithm")
+          ? op_info->GetAttr<OpAttrType::STRING>("padding_algorithm")
           : "";
 
   operators::UpdatePaddingAndDilation(&paddings,
@@ -81,7 +81,7 @@ int ConvConverter(void* ctx, OpLite* op, KernelBase* kernel) {
                                             CNML_NCHW,
                                             graph->FPType());
   const auto weight_scale =
-      op_info->GetAttr<std::vector<float>>("weight_scale");
+      op_info->GetAttr<OpAttrType::FLOATS>("weight_scale");
 
   if (filter->precision() == PrecisionType::kUnk ||
       filter->precision() == PrecisionType::kInt8) {
@@ -138,7 +138,7 @@ int ConvConverter(void* ctx, OpLite* op, KernelBase* kernel) {
     graph->BindConstData(bias_var_name, bias);
   }
 
-  const auto input_scale = op_info->GetAttr<float>("input_scale");
+  const auto input_scale = op_info->GetAttr<OpAttrType::FLOAT>("input_scale");
 
   bool use_first_conv = false;
   if (lite::DeviceInfo::Global().UseFirstConv() && input_dims[1] == 3) {

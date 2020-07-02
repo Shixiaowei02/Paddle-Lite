@@ -35,9 +35,9 @@ int DropoutConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto x = scope->FindMutableTensor(x_name);
   auto x_dims = x->dims();
   auto out_name = op_info->Output("Out").front();
-  auto dropout_prob = op_info->GetAttr<float>("dropout_prob");
+  auto dropout_prob = op_info->GetAttr<OpAttrType::FLOAT>("dropout_prob");
   auto dropout_implementation =
-      op_info->GetAttr<std::string>("dropout_implementation");
+      op_info->GetAttr<OpAttrType::STRING>("dropout_implementation");
 
   // X node
   std::shared_ptr<Node> x_node = nullptr;

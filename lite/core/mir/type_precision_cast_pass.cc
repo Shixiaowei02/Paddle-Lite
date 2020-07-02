@@ -33,7 +33,7 @@ void UpdateInputsForSubgraph(OpLite* op,
                              const std::string& to) {
   auto* op_desc = op->mutable_op_info();
   auto input_data_names =
-      op_desc->GetAttr<std::vector<std::string>>("input_data_names");
+      op_desc->GetAttr<OpAttrType::STRINGS>("input_data_names");
   std::replace(input_data_names.begin(), input_data_names.end(), from, to);
   op_desc->SetAttr("input_data_names", input_data_names);
   auto* subblock_desc = static_cast<operators::SubgraphOp*>(op)->GetSubBlock();
@@ -73,11 +73,10 @@ static bool InferScaleFromSubgraph(std::string var_name,
                                    bool reverse = false) {
   std::string attr_name = reverse ? "output_data_names" : "input_data_names";
   if (!op_info->HasAttr(attr_name)) return false;
-  auto input_or_output_names =
-      op_info->GetAttr<std::vector<std::string>>(attr_name);
+  auto input_or_output_names = op_info->GetAttr<OpAttrType::STRINGS>(attr_name);
   attr_name = reverse ? "output_data_scales" : "input_data_scales";
   if (!op_info->HasAttr(attr_name)) return false;
-  auto input_or_output_scales = op_info->GetAttr<std::vector<float>>(attr_name);
+  auto input_or_output_scales = op_info->GetAttr<OpAttrType::FLOATS>(attr_name);
   auto size = input_or_output_names.size();
   CHECK(size == input_or_output_scales.size());
   for (size_t i = 0; i < size; i++) {
@@ -108,7 +107,7 @@ static bool InferScale(Node* var_node, Node* op_node, float* scale) {
     found = InferScaleFromSubgraph(var_name, op_info, scale, false);
   } else {
     if (op_info->HasInputScale(var_name)) {
-      *scale = op_info->GetInputScale<float>(var_name);
+      *scale = op_info->GetInputScale<OpAttrType::FLOAT>(var_name);
       found = true;
     } else {
       // Obtain the output_scale from one of its previous Ops
@@ -121,7 +120,7 @@ static bool InferScale(Node* var_node, Node* op_node, float* scale) {
         found = InferScaleFromSubgraph(var_name, prev_op_info, scale, true);
       } else {
         if (prev_op_info->HasOutputScale(var_name)) {
-          *scale = prev_op_info->GetOutputScale<float>(var_name);
+          *scale = prev_op_info->GetOutputScale<OpAttrType::FLOAT>(var_name);
           found = true;
         }
       }
@@ -171,8 +170,8 @@ void PrecisionCastPass::ComplementInputs(
   VLOG(4) << inst.picked_kernel().name();
   if (inst.op_info()->Type() == "fetch") {
     if (inst.op_info()->HasAttr("data_type")) {
-      auto data_type =
-          static_cast<PrecisionType>(inst.op_info()->GetAttr<int>("data_type"));
+      auto data_type = static_cast<PrecisionType>(
+          inst.op_info()->GetAttr<OpAttrType::INT>("data_type"));
       decl_arg_type = LiteType::GetTensorTy(
           decl_arg_type->target(), data_type, decl_arg_type->layout());
     }

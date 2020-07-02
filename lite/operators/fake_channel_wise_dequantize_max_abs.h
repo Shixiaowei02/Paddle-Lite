@@ -53,7 +53,7 @@ class FakeChannelWiseDequantizeMaxAbsOpLite : public OpLite {
     auto out = op_desc.Output("Out").front();
     param_.out = scope->FindVar(out)->GetMutable<lite::Tensor>();
 
-    param_.quant_bits = op_desc.GetAttr<std::vector<int>>("quant_bits");
+    param_.quant_bits = op_desc.GetAttr<OpAttrType::INTS>("quant_bits");
     return true;
   }
 

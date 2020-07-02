@@ -50,7 +50,7 @@ int SoftmaxConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   }
   int32_t axis = -1;
   if (op_info->HasAttr("axis")) {
-    axis = op_info->GetAttr<int>("axis");
+    axis = op_info->GetAttr<OpAttrType::INT>("axis");
   }
   if (axis < 0) {
     axis += x_dims.size();

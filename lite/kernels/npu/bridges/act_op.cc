@@ -87,21 +87,22 @@ int ActConverter<ge::op::Activation>(void* ctx,
   // clipped_relu etc.
   act_op->set_attr_mode(CvtActMode(op_type));
   if (op_type == "relu_clipped") {
-    auto Relu_clipped_coef = op_info->GetAttr<float>("Relu_clipped_coef");
+    auto Relu_clipped_coef =
+        op_info->GetAttr<OpAttrType::FLOAT>("Relu_clipped_coef");
     act_op->set_attr_coef(Relu_clipped_coef);
   } else if (op_type == "relu6") {
     float Relu_clipped_coef = 6.f;
     act_op->set_attr_coef(Relu_clipped_coef);
   } else if (op_type == "leaky_relu") {
-    auto alpha = op_info->GetAttr<float>("alpha");
+    auto alpha = op_info->GetAttr<OpAttrType::FLOAT>("alpha");
     act_op->set_attr_negative_slope(alpha);
   } else if (op_type == "hard_sigmoid") {
-    auto slope = op_info->GetAttr<float>("slope");
-    auto offset = op_info->GetAttr<float>("offset");
+    auto slope = op_info->GetAttr<OpAttrType::FLOAT>("slope");
+    auto offset = op_info->GetAttr<OpAttrType::FLOAT>("offset");
     act_op->set_attr_negative_slope(slope);
     act_op->set_attr_coef(offset);
   } else if (op_type == "thresholded_relu") {
-    auto threshold = op_info->GetAttr<float>("threshold");
+    auto threshold = op_info->GetAttr<OpAttrType::FLOAT>("threshold");
     act_op->set_attr_coef(threshold);
   }
   return SUCCESS;

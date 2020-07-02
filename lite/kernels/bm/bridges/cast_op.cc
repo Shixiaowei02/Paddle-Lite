@@ -60,8 +60,8 @@ int CastConverter(void* ctx, OpLite* op, KernelBase* kernel) {
     i_x_shape_data[i] = static_cast<int>(x_dims[i]);
   }
 
-  int in_dtype = op_info->GetAttr<int>("in_dtype");
-  int out_dtype = op_info->GetAttr<int>("out_dtype");
+  int in_dtype = op_info->GetAttr<OpAttrType::INT>("in_dtype");
+  int out_dtype = op_info->GetAttr<OpAttrType::INT>("out_dtype");
 
   if (in_dtype == out_dtype) {
     add_identity_layer(graph->GetCompilerHandle(),

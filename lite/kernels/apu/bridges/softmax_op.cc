@@ -40,7 +40,7 @@ int SoftmaxConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto out_name = op_info->Output("Out").front();
 
   // Check output shape
-  auto axis = op_info->GetAttr<int>("axis");
+  auto axis = op_info->GetAttr<OpAttrType::INT>("axis");
   if (axis < 0) {
     axis += x_rank;
   }
@@ -48,13 +48,13 @@ int SoftmaxConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   float input_scale = 1.0f;
   float out_scale = 1.0f;
   if (op_info->HasAttr("enable_int8")) {
-    if (op_info->GetAttr<bool>("enable_int8")) {
+    if (op_info->GetAttr<OpAttrType::BOOLEAN>("enable_int8")) {
       auto x_name = op_info->Input("X").front();
       auto out_name = op_info->Output("Out").front();
       if (op_info->HasInputScale(x_name))
-        input_scale = op_info->GetInputScale<float>(x_name);
+        input_scale = op_info->GetInputScale<OpAttrType::FLOAT>(x_name);
       if (op_info->HasOutputScale(out_name))
-        out_scale = op_info->GetOutputScale<float>(out_name);
+        out_scale = op_info->GetOutputScale<OpAttrType::FLOAT>(out_name);
     } else {
       LOG(WARNING) << "Do not enable_int8";
       return FAILED;

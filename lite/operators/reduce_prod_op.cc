@@ -86,9 +86,9 @@ bool ReduceProdOpLite::AttachImpl(const cpp::OpDesc &op_desc,
   auto output = op_desc.Output("Out").front();
   param_.output = scope->FindVar(output)->GetMutable<lite::Tensor>();
 
-  param_.dim = op_desc.GetAttr<std::vector<int>>("dim");
-  param_.keep_dim = op_desc.GetAttr<bool>("keep_dim");
-  param_.reduce_all = op_desc.GetAttr<bool>("reduce_all");
+  param_.dim = op_desc.GetAttr<OpAttrType::INTS>("dim");
+  param_.keep_dim = op_desc.GetAttr<OpAttrType::BOOLEAN>("keep_dim");
+  param_.reduce_all = op_desc.GetAttr<OpAttrType::BOOLEAN>("reduce_all");
   return true;
 }
 

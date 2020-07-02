@@ -42,26 +42,27 @@ bool ActivationOp::AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) {
     param_.active_type = lite_api::ActivationType::kRelu;
   } else if (opdesc.Type() == "leaky_relu") {
     // leaky_relu
-    param_.Leaky_relu_alpha = opdesc.GetAttr<float>("alpha");
+    param_.Leaky_relu_alpha = opdesc.GetAttr<OpAttrType::FLOAT>("alpha");
     param_.active_type = lite_api::ActivationType::kLeakyRelu;
   } else if (opdesc.Type() == "relu_clipped") {
     // relu_clipped
-    param_.Relu_clipped_coef = opdesc.GetAttr<float>("Relu_clipped_coef");
+    param_.Relu_clipped_coef =
+        opdesc.GetAttr<OpAttrType::FLOAT>("Relu_clipped_coef");
   } else if (opdesc.Type() == "prelu") {
     // prelu
-    param_.Prelu_mode = opdesc.GetAttr<std::string>("mode");
+    param_.Prelu_mode = opdesc.GetAttr<OpAttrType::STRING>("mode");
     auto prelu_alpha_name = opdesc.Input("Alpha").front();
     param_.Prelu_alpha =
         scope->FindVar(prelu_alpha_name)->GetMutable<lite::Tensor>();
     param_.active_type = lite_api::ActivationType::kPRelu;
   } else if (opdesc.Type() == "swish") {
     // swish
-    param_.Swish_beta = opdesc.GetAttr<float>("beta");
+    param_.Swish_beta = opdesc.GetAttr<OpAttrType::FLOAT>("beta");
     param_.active_type = lite_api::ActivationType::kSwish;
   } else if (opdesc.Type() == "hard_sigmoid") {
     // hard_sigomid
-    param_.hard_sigmoid_slope = opdesc.GetAttr<float>("slope");
-    param_.hard_sigmoid_offset = opdesc.GetAttr<float>("offset");
+    param_.hard_sigmoid_slope = opdesc.GetAttr<OpAttrType::FLOAT>("slope");
+    param_.hard_sigmoid_offset = opdesc.GetAttr<OpAttrType::FLOAT>("offset");
   } else if (opdesc.Type() == "sigmoid") {
     // sigmoid
     param_.active_type = lite_api::ActivationType::kSigmoid;
@@ -77,14 +78,15 @@ bool ActivationOp::AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) {
   } else if (opdesc.Type() == "hard_swish") {
     // hard_swish
     param_.active_type = lite_api::ActivationType::kHardSwish;
-    param_.hard_swish_threshold = opdesc.GetAttr<float>("threshold");
-    param_.hard_swish_scale = opdesc.GetAttr<float>("scale");
-    param_.hard_swish_offset = opdesc.GetAttr<float>("offset");
+    param_.hard_swish_threshold =
+        opdesc.GetAttr<OpAttrType::FLOAT>("threshold");
+    param_.hard_swish_scale = opdesc.GetAttr<OpAttrType::FLOAT>("scale");
+    param_.hard_swish_offset = opdesc.GetAttr<OpAttrType::FLOAT>("offset");
   } else if (opdesc.Type() == "reciprocal") {
     param_.active_type = lite_api::ActivationType::kReciprocal;
   } else if (opdesc.Type() == "thresholded_relu") {
     param_.active_type = lite_api::ActivationType::kThresholdedRelu;
-    param_.relu_threshold = opdesc.GetAttr<float>("threshold");
+    param_.relu_threshold = opdesc.GetAttr<OpAttrType::FLOAT>("threshold");
   }
 
   VLOG(4) << "opdesc.Type():" << opdesc.Type();

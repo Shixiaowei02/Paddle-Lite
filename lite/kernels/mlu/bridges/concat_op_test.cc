@@ -35,7 +35,7 @@ void concat_ref(const std::shared_ptr<operators::ConcatOpLite> op) {
   }
   auto out =
       scope->FindVar(op_info->Output("Out").front())->GetMutable<Tensor>();
-  int axis = op_info->GetAttr<int>("axis");
+  int axis = op_info->GetAttr<OpAttrType::INT>("axis");
   std::vector<lite::Tensor*> inputs_concat(inputs.size());
   for (size_t j = 0; j < inputs.size(); ++j) {
     inputs_concat[j] = inputs[j];

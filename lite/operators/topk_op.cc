@@ -47,7 +47,7 @@ bool TopkOp::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
   auto output1 = op_desc.Output("Indices").front();
   param_.Out = scope->FindMutableTensor(output0);
   param_.Indices = scope->FindMutableTensor(output1);
-  param_.K = op_desc.GetAttr<int>("k");
+  param_.K = op_desc.GetAttr<OpAttrType::INT>("k");
 
   CHECK_GE(param_.K, 1) << "topK param is not valid";
   return true;

@@ -36,7 +36,8 @@ int SoftmaxConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto x_dims = x->dims();
   auto x_rank = x_dims.size();
   auto out_name = op_info->Output("Out").front();
-  int axis = op_info->HasAttr("axis") ? op_info->GetAttr<int>("axis") : -1;
+  int axis =
+      op_info->HasAttr("axis") ? op_info->GetAttr<OpAttrType::INT>("axis") : -1;
   if (axis < 0) {
     axis += x_rank;
   }

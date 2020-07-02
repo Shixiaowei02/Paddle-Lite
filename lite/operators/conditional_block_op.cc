@@ -44,7 +44,8 @@ bool ConditionalBlockOpLite::AttachImpl(const cpp::OpDesc &op_desc,
     param_.outs.push_back(scope->FindVar(var)->GetMutable<lite::Tensor>());
   }
 
-  param_.is_scalar_condition = op_desc.GetAttr<bool>("is_scalar_condition");
+  param_.is_scalar_condition =
+      op_desc.GetAttr<OpAttrType::BOOLEAN>("is_scalar_condition");
   // obtain sub_block in core program.cc
   param_.sub_block = sub_block_;
   param_.scope = scope;

@@ -37,7 +37,7 @@ int TransposeConverter(void* ctx, OpLite* op, KernelBase* kernel) {
 
   auto out_name = op_info->Output("Out").front();
 
-  auto axis = op_info->GetAttr<std::vector<int>>("axis");
+  auto axis = op_info->GetAttr<OpAttrType::INTS>("axis");
 
   // X node
   std::shared_ptr<Node> x_node = nullptr;

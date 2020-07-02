@@ -89,8 +89,8 @@ bool MulGradOpLite::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
     CHECK(y_grad_var);
     param_.y_grad = y_grad_var->GetMutable<Tensor>();
   }
-  param_.x_num_col_dims = op_desc.GetAttr<int>("x_num_col_dims");
-  param_.y_num_col_dims = op_desc.GetAttr<int>("y_num_col_dims");
+  param_.x_num_col_dims = op_desc.GetAttr<OpAttrType::INT>("x_num_col_dims");
+  param_.y_num_col_dims = op_desc.GetAttr<OpAttrType::INT>("y_num_col_dims");
   return true;
 }
 

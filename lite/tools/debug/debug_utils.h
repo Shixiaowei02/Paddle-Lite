@@ -93,7 +93,8 @@ void CollectFeedVarsInfo(std::map<int, std::string>* feed_vars_info,
     auto op_type = op_desc.Type();
     if (op_type == "feed") {
       (*feed_vars_info)
-          .emplace(op_desc.GetAttr<int>("col"), op_desc.Output("Out").front());
+          .emplace(op_desc.GetAttr<OpAttrType::INT>("col"),
+                   op_desc.Output("Out").front());
     }
   }
 }

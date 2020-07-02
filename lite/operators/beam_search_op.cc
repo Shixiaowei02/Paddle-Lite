@@ -51,10 +51,10 @@ bool BeamSearchOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
   CHECK(param_.selected_ids) << "select ids null";
   CHECK(param_.selected_scores) << "select score null";
   CHECK(param_.parent_idx) << "parent idx null";
-  param_.level = opdesc.GetAttr<int>("level");
-  param_.beam_size = opdesc.GetAttr<int>("beam_size");
-  param_.end_id = opdesc.GetAttr<int>("end_id");
-  param_.is_accumulated = opdesc.GetAttr<bool>("is_accumulated");
+  param_.level = opdesc.GetAttr<OpAttrType::INT>("level");
+  param_.beam_size = opdesc.GetAttr<OpAttrType::INT>("beam_size");
+  param_.end_id = opdesc.GetAttr<OpAttrType::INT>("end_id");
+  param_.is_accumulated = opdesc.GetAttr<OpAttrType::BOOLEAN>("is_accumulated");
   return true;
 }
 

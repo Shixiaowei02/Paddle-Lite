@@ -54,8 +54,8 @@ bool AttentionPaddingMaskOp::AttachImpl(const cpp::OpDesc &op_desc,
   param_.pad_begin =
       scope->FindMutableTensor(op_desc.Output("pad_begin").front());
 
-  param_.pad_id = op_desc.GetAttr<int>("pad_id");
-  param_.mask = op_desc.GetAttr<float>("mask");
+  param_.pad_id = op_desc.GetAttr<OpAttrType::INT>("pad_id");
+  param_.mask = op_desc.GetAttr<OpAttrType::FLOAT>("mask");
 
   return true;
 }

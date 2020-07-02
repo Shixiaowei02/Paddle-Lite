@@ -30,10 +30,10 @@ class Eliminator : public FuseBase {
       if (op_info->HasAttr("is_test")) {
         auto attr_type = op_info->GetAttrType("is_test");
         if (attr_type == paddle::lite::OpDescAPI::AttrType::INT &&
-            op_info->GetAttr<int>("is_test") == 1) {
+            op_info->GetAttr<OpAttrType::INT>("is_test") == 1) {
           return true;
         } else if (attr_type == paddle::lite::OpDescAPI::AttrType::BOOLEAN &&
-                   op_info->GetAttr<bool>("is_test")) {
+                   op_info->GetAttr<OpAttrType::BOOLEAN>("is_test")) {
           return true;
         }
       }
@@ -48,7 +48,7 @@ class Eliminator : public FuseBase {
     auto* x = VarNode("x")->assert_is_op_input("dropout", "X");
     auto* dropout_op = OpNode("dropout", "dropout")
                            ->assert_node_satisfied(Eliminator::DropoutIsTest)
-                           ->assert_op_attr<std::string>(
+                           ->assert_op_attr<OpAttrType::STRING>(
                                "dropout_implementation", "upscale_in_train");
     auto* out = VarNode("out")->assert_is_op_output("dropout", "Out");
     auto* mask = VarNode("mask")->assert_is_op_output("dropout", "Mask");

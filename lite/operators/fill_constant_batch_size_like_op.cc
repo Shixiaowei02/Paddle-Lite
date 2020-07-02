@@ -47,16 +47,16 @@ bool FillConstantBatchSizeLikeOp::AttachImpl(const cpp::OpDesc& opdesc,
 
   param_.out = GetMutableVar<lite::Tensor>(scope, out_name);
   param_.input = GetMutableVar<lite::Tensor>(scope, input_name);
-  param_.dtype = opdesc.GetAttr<int>("dtype");
-  param_.shape = opdesc.GetAttr<std::vector<int>>("shape");
+  param_.dtype = opdesc.GetAttr<OpAttrType::INT>("dtype");
+  param_.shape = opdesc.GetAttr<OpAttrType::INTS>("shape");
   if (opdesc.HasAttr("value")) {
-    param_.value = opdesc.GetAttr<float>("value");
+    param_.value = opdesc.GetAttr<OpAttrType::FLOAT>("value");
   }
   if (opdesc.HasAttr("input_dim_idx")) {
-    param_.input_dim_idx = opdesc.GetAttr<int>("input_dim_idx");
+    param_.input_dim_idx = opdesc.GetAttr<OpAttrType::INT>("input_dim_idx");
   }
   if (opdesc.HasAttr("output_dim_idx")) {
-    param_.output_dim_idx = opdesc.GetAttr<int>("output_dim_idx");
+    param_.output_dim_idx = opdesc.GetAttr<OpAttrType::INT>("output_dim_idx");
   }
 
   return true;

@@ -38,7 +38,7 @@ bool IncrementOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
   param_.Out = scope->FindMutableTensor(opdesc.Output("Out").front());
   CHECK(param_.X);
   CHECK(param_.Out);
-  param_.step = opdesc.GetAttr<float>("step");
+  param_.step = opdesc.GetAttr<OpAttrType::FLOAT>("step");
   return true;
 }
 

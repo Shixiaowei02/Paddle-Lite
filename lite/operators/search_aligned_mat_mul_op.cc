@@ -87,9 +87,9 @@ bool SearchAlignedMatMulOpLite::AttachImpl(const cpp::OpDesc& op_desc,
   param_.X = GetVar<lite::Tensor>(scope, X);
   param_.Y = GetVar<lite::Tensor>(scope, Y);
   param_.Out = GetMutableVar<lite::Tensor>(scope, Out);
-  param_.transpose_X = op_desc.GetAttr<bool>("transpose_X");
-  param_.transpose_Y = op_desc.GetAttr<bool>("transpose_Y");
-  param_.alpha = op_desc.GetAttr<float>("alpha");
+  param_.transpose_X = op_desc.GetAttr<OpAttrType::BOOLEAN>("transpose_X");
+  param_.transpose_Y = op_desc.GetAttr<OpAttrType::BOOLEAN>("transpose_Y");
+  param_.alpha = op_desc.GetAttr<OpAttrType::FLOAT>("alpha");
   return true;
 }
 

@@ -51,7 +51,8 @@ void DeleteQuantOpFuser::InsertNewNode(SSAGraph* graph,
   auto* output_act_node = matched.at("output_act_node");
 
   // obtain scale, save attrs and relink node
-  int bit_length = quant_node->stmt()->op_info()->GetAttr<int>("bit_length");
+  int bit_length =
+      quant_node->stmt()->op_info()->GetAttr<OpAttrType::INT>("bit_length");
   int range = ((1 << (bit_length - 1)) - 1);
   auto* scope = quant_node->stmt()->op()->scope();
   auto* scale_tensor = scope->FindVar(output_scale_node->arg()->name)
@@ -134,9 +135,11 @@ void DequantOpFuser::InsertNewNode(SSAGraph* graph,
   // obtain weight_scale from max_range
   auto* scope = quantized_op->stmt()->op()->scope();
   auto& valid_places = quantized_op->stmt()->op()->valid_places();
-  int bit_length = quantized_op->stmt()->op_info()->GetAttr<int>("bit_length");
+  int bit_length =
+      quantized_op->stmt()->op_info()->GetAttr<OpAttrType::INT>("bit_length");
   int range = ((1 << (bit_length - 1)) - 1);
-  float max_range = dequant_op->stmt()->op_info()->GetAttr<float>("max_range");
+  float max_range =
+      dequant_op->stmt()->op_info()->GetAttr<OpAttrType::FLOAT>("max_range");
   float whole_weight_scale =
       static_cast<float>(range * range) / max_range / range;
   // As: max_range = range * range / max(abs(weight))
@@ -249,7 +252,7 @@ void ChannelWiseDequantOpFuser::InsertNewNode(SSAGraph* graph,
 
   std::vector<float> weight_scale;
   std::vector<int> quant_bits =
-      dequant_op->stmt()->op_info()->GetAttr<std::vector<int>>("quant_bits");
+      dequant_op->stmt()->op_info()->GetAttr<OpAttrType::INTS>("quant_bits");
   int weight_bit_length = quant_bits[0];
   int range = ((1 << (weight_bit_length - 1)) - 1);
   auto channel_scale_name = dequant_op_channel_scale->arg()->name;
@@ -336,7 +339,8 @@ void DeleteQuantDequantOpFuser::InsertNewNode(SSAGraph* graph,
 
   // Get scale value from scale var node
   int bit_length =
-      quant_dequant_node->stmt()->op_info()->GetAttr<int>("bit_length");
+      quant_dequant_node->stmt()->op_info()->GetAttr<OpAttrType::INT>(
+          "bit_length");
   int range = ((1 << (bit_length - 1)) - 1);
   auto* scope = quant_dequant_node->stmt()->op()->scope();
   auto* scale_tensor = scope->FindVar(output_scale_node->arg()->name)

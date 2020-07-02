@@ -25,7 +25,7 @@ namespace mir {
 bool IsAbsMaxQuantizedOp(const OpInfo& op_info) {
   bool result = false;
   if (op_info.HasAttr("quantization_type") &&
-      op_info.GetAttr<std::string>("quantization_type") ==
+      op_info.GetAttr<OpAttrType::STRING>("quantization_type") ==
           "post_weight_abs_max") {
     result = true;
   } else if (!op_info.HasAttr("quantization_type") &&
@@ -66,7 +66,7 @@ void WeightQuantizationPreprocessPass::Apply(
             } else {
               weight_out_channel = static_cast<int>(input_tensor->dims()[0]);
             }
-            auto input_scale = op_desc->GetAttr<std::vector<float>>(scale_name);
+            auto input_scale = op_desc->GetAttr<OpAttrType::FLOATS>(scale_name);
             // scale length is equal to weight out channel
             std::vector<float> scale_list(weight_out_channel, input_scale[0]);
             op_desc->SetAttr(scale_name, scale_list);

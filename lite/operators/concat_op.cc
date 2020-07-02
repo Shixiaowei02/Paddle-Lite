@@ -76,7 +76,7 @@ bool ConcatOpLite::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
   }
   CHECK(scope->FindVar(out));
   param_.output = scope->FindVar(out)->GetMutable<lite::Tensor>();
-  param_.axis = op_desc.GetAttr<int>("axis");
+  param_.axis = op_desc.GetAttr<OpAttrType::INT>("axis");
 
   std::vector<std::string> input_arg_names = op_desc.InputArgumentNames();
   if (std::find(input_arg_names.begin(), input_arg_names.end(), "AxisTensor") !=

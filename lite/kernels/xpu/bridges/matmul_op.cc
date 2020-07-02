@@ -43,9 +43,9 @@ int MatmulConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto out = scope->FindMutableTensor(out_name);
   auto out_dims = out->dims();
 
-  auto transpose_x = op_info->GetAttr<bool>("transpose_X");
-  auto transpose_y = op_info->GetAttr<bool>("transpose_Y");
-  auto alpha = op_info->GetAttr<float>("alpha");
+  auto transpose_x = op_info->GetAttr<OpAttrType::BOOLEAN>("transpose_X");
+  auto transpose_y = op_info->GetAttr<OpAttrType::BOOLEAN>("transpose_Y");
+  auto alpha = op_info->GetAttr<OpAttrType::FLOAT>("alpha");
 
   // X node
   std::shared_ptr<Node> x_node = nullptr;

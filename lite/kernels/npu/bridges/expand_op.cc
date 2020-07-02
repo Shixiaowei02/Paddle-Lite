@@ -37,7 +37,7 @@ int ExpandConverter(void* ctx, OpLite* op, KernelBase* kernel) {
 
   auto out_name = op_info->Output("Out").front();
 
-  auto expand_times = op_info->GetAttr<std::vector<int>>("expand_times");
+  auto expand_times = op_info->GetAttr<OpAttrType::INTS>("expand_times");
 
   // x node
   std::shared_ptr<Node> x_node = nullptr;

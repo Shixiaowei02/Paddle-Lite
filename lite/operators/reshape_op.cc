@@ -84,10 +84,10 @@ bool ReshapeOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
     }
   }
   if (opdesc.HasAttr("shape")) {
-    param_.shape_vct = opdesc.GetAttr<std::vector<int>>("shape");
+    param_.shape_vct = opdesc.GetAttr<OpAttrType::INTS>("shape");
   }
   if (opdesc.HasAttr("inplace")) {
-    param_.inplace = opdesc.GetAttr<bool>("inplace");
+    param_.inplace = opdesc.GetAttr<OpAttrType::BOOLEAN>("inplace");
   }
   return true;
 }

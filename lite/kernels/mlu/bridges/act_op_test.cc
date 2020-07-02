@@ -57,7 +57,8 @@ void act_ref(const std::shared_ptr<operators::ActivationOp> op) {
                     (std::exp(x_data[i]) + std::exp(-x_data[i]));
     }
   } else if (op_type == "relu_clipped") {
-    auto relu_clipped_coef = op_info->GetAttr<float>("Relu_clipped_coef");
+    auto relu_clipped_coef =
+        op_info->GetAttr<OpAttrType::FLOAT>("Relu_clipped_coef");
     for (int i = 0; i < out->numel(); i++) {
       out_data[i] = std::min(std::max(0.f, x_data[i]), relu_clipped_coef);
     }
@@ -66,7 +67,7 @@ void act_ref(const std::shared_ptr<operators::ActivationOp> op) {
       out_data[i] = std::min(std::max(0.f, x_data[i]), 6.f);
     }
   } else if (op_type == "leaky_relu") {
-    auto alpha = op_info->GetAttr<float>("alpha");
+    auto alpha = op_info->GetAttr<OpAttrType::FLOAT>("alpha");
     for (int i = 0; i < out->numel(); i++) {
       out_data[i] = std::max(x_data[i], x_data[i] * alpha);
     }
@@ -75,8 +76,8 @@ void act_ref(const std::shared_ptr<operators::ActivationOp> op) {
       out_data[i] = x_data[i] / (1 + std::abs(x_data[i]));
     }
   } else if (op_type == "hard_sigmoid") {
-    auto slope = op_info->GetAttr<float>("slope");
-    auto offset = op_info->GetAttr<float>("offset");
+    auto slope = op_info->GetAttr<OpAttrType::FLOAT>("slope");
+    auto offset = op_info->GetAttr<OpAttrType::FLOAT>("offset");
     for (int i = 0; i < out->numel(); i++) {
       out_data[i] = std::min(1.f, slope * x_data[i] + offset);
       out_data[i] = std::max(0.f, out_data[i]);

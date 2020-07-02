@@ -39,7 +39,7 @@ class ElementwiseMulConstantEliminator : public FuseBase {
 
     auto* fill_constant = OpNode("fill_constant", "fill_constant")
                               ->assert_is_op("fill_constant")
-                              ->assert_op_attr<float>("value", 1.)
+                              ->assert_op_attr<OpAttrType::FLOAT>("value", 1.)
                               ->AsIntermediate();
     // create output node
     auto* mul_out =

@@ -49,7 +49,7 @@ int BatchNormConverter(void* ctx, OpLite* op, KernelBase* kernel) {
 
   auto y_name = op_info->Output("Y").front();
 
-  auto epsilon = op_info->GetAttr<float>("epsilon");
+  auto epsilon = op_info->GetAttr<OpAttrType::FLOAT>("epsilon");
 
   // X node
   std::shared_ptr<Node> x_node = nullptr;

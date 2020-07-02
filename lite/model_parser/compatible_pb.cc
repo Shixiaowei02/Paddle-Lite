@@ -108,41 +108,43 @@ void OpAttrsAnyToCpp(const OpDescType &any_desc, cpp::OpDesc *cpp_desc) {
   auto set_attr = [&](const std::string &name, AttrType type) {
     switch (type) {
       case AttrType::INT:
-        cpp_desc->SetAttr<int32_t>(name,
-                                   any_desc.template GetAttr<int32_t>(name));
+        cpp_desc->SetAttr<int32_t>(
+            name, any_desc.template GetAttr<OpAttrType::INT>(name));
         break;
       case AttrType::FLOAT:
-        cpp_desc->SetAttr<float>(name, any_desc.template GetAttr<float>(name));
+        cpp_desc->SetAttr<float>(
+            name, any_desc.template GetAttr<OpAttrType::FLOAT>(name));
         break;
       case AttrType::STRING:
         cpp_desc->SetAttr<std::string>(
-            name, any_desc.template GetAttr<std::string>(name));
+            name, any_desc.template GetAttr<OpAttrType::STRING>(name));
         break;
       case AttrType::LONG:
-        cpp_desc->SetAttr<int64_t>(name,
-                                   any_desc.template GetAttr<int64_t>(name));
+        cpp_desc->SetAttr<int64_t>(
+            name, any_desc.template GetAttr<OpAttrType::LONG>(name));
         break;
       case AttrType::INTS:
         cpp_desc->SetAttr<std::vector<int>>(
-            name, any_desc.template GetAttr<std::vector<int>>(name));
+            name, any_desc.template GetAttr<OpAttrType::INTS>(name));
         break;
       case AttrType::FLOATS:
         cpp_desc->SetAttr<std::vector<float>>(
-            name, any_desc.template GetAttr<std::vector<float>>(name));
+            name, any_desc.template GetAttr<OpAttrType::FLOATS>(name));
         break;
       case AttrType::BOOLEAN:
-        cpp_desc->SetAttr<bool>(name, any_desc.template GetAttr<bool>(name));
+        cpp_desc->SetAttr<bool>(
+            name, any_desc.template GetAttr<OpAttrType::BOOLEAN>(name));
         break;
       case AttrType::STRINGS:
         cpp_desc->SetAttr<std::vector<std::string>>(
-            name, any_desc.template GetAttr<std::vector<std::string>>(name));
+            name, any_desc.template GetAttr<OpAttrType::STRINGS>(name));
         break;
       case AttrType::LONGS:
         cpp_desc->SetAttr<std::vector<int64_t>>(
-            name, any_desc.template GetAttr<std::vector<int64_t>>(name));
+            name, any_desc.template GetAttr<OpAttrType::LONGS>(name));
         break;
       case AttrType::BLOCK: {
-        auto i = any_desc.template GetAttr<int16_t>(name);
+        auto i = any_desc.template GetAttr<OpAttrType::BLOCK>(name);
         cpp_desc->SetAttr<int32_t>(name, i);
         // naive_buffer::BlockDesc* sub_block = any_desc.template
         // GetAttr<naive_buffer::BlockDesc*>(name);
@@ -165,9 +167,10 @@ void OpAttrsCppToAny(const cpp::OpDesc &cpp_desc, OpDescType *any_desc) {
   using AttrType = OpDescAPI::AttrType;
   auto set_attr = [&](const std::string &name, AttrType type) {
     switch (type) {
-#define IMPL_ONE(type__, T)                                         \
-  case AttrType::type__:                                            \
-    any_desc->template SetAttr<T>(name, cpp_desc.GetAttr<T>(name)); \
+#define IMPL_ONE(type__, T)                                                    \
+  case AttrType::type__:                                                       \
+    any_desc->template SetAttr<T>(name,                                        \
+                                  cpp_desc.GetAttr<OpAttrType::type__>(name)); \
     break;
       IMPL_ONE(INT, int32_t);
       IMPL_ONE(FLOAT, float);

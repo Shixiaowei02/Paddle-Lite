@@ -32,8 +32,8 @@ class Eliminator : public FuseBase {
     // TODO(Superjomn) check has only one output
     auto* x = VarNode("x")->assert_is_op_input("scale", "X");
     auto* scale_op = OpNode("scale", "scale")
-                         ->assert_op_attr<float>("scale", 1.)
-                         ->assert_op_attr<float>("bias", 0.);
+                         ->assert_op_attr<OpAttrType::FLOAT>("scale", 1.)
+                         ->assert_op_attr<OpAttrType::FLOAT>("bias", 0.);
     auto* out = VarNode("out")->assert_is_op_output("scale", "Out");
 
     *pre_op >> *x >> *scale_op >> *out;

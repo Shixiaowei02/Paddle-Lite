@@ -52,12 +52,12 @@ bool FillConstantOp::AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) {
   auto out_name = opdesc.Output("Out").front();
 
   param_.out = GetMutableVar<lite::Tensor>(scope, out_name);
-  param_.dtype = opdesc.GetAttr<int>("dtype");
+  param_.dtype = opdesc.GetAttr<OpAttrType::INT>("dtype");
   if (opdesc.HasAttr("shape")) {
-    param_.shape = opdesc.GetAttr<std::vector<int64_t>>("shape");
+    param_.shape = opdesc.GetAttr<OpAttrType::LONGS>("shape");
   }
-  param_.value = opdesc.GetAttr<float>("value");
-  param_.force_cpu = opdesc.GetAttr<bool>("force_cpu");
+  param_.value = opdesc.GetAttr<OpAttrType::FLOAT>("value");
+  param_.force_cpu = opdesc.GetAttr<OpAttrType::BOOLEAN>("force_cpu");
 
   if (opdesc.HasInput("ShapeTensor") && !opdesc.Input("ShapeTensor").empty()) {
     auto shape_tensor_name = opdesc.Input("ShapeTensor").front();

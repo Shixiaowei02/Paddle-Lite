@@ -39,8 +39,8 @@ bool CompareOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
       scope->FindVar(opdesc.Input("X").front())->GetMutable<lite::Tensor>();
   param_.Y =
       scope->FindVar(opdesc.Input("Y").front())->GetMutable<lite::Tensor>();
-  param_.axis = opdesc.GetAttr<int>("axis");
-  param_.force_cpu = opdesc.GetAttr<bool>("force_cpu");
+  param_.axis = opdesc.GetAttr<OpAttrType::INT>("axis");
+  param_.force_cpu = opdesc.GetAttr<OpAttrType::BOOLEAN>("force_cpu");
   param_.Out =
       scope->FindVar(opdesc.Output("Out").front())->GetMutable<lite::Tensor>();
   CHECK(param_.X);

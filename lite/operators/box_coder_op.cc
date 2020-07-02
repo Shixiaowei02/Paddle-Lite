@@ -87,14 +87,14 @@ bool BoxCoderOpLite::AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) {
     }
   }
 
-  param_.code_type = opdesc.GetAttr<std::string>("code_type");
-  param_.box_normalized = opdesc.GetAttr<bool>("box_normalized");
+  param_.code_type = opdesc.GetAttr<OpAttrType::STRING>("code_type");
+  param_.box_normalized = opdesc.GetAttr<OpAttrType::BOOLEAN>("box_normalized");
   if (opdesc.HasAttr("axis")) {
-    param_.axis = opdesc.GetAttr<int>("axis");
+    param_.axis = opdesc.GetAttr<OpAttrType::INT>("axis");
   }
 
   if (opdesc.HasAttr("variance")) {
-    param_.variance = opdesc.GetAttr<std::vector<float>>("variance");
+    param_.variance = opdesc.GetAttr<OpAttrType::FLOATS>("variance");
   }
   return true;
 }

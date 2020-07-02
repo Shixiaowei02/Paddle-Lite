@@ -66,7 +66,7 @@ int ElementwiseConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto out_name = op_info->Output("Out").front();
   auto out_type = kernel->GetOutputDeclType("Out");
   auto output = scope->FindMutableTensor(out_name);
-  auto axis = op_info->GetAttr<int>("axis");
+  auto axis = op_info->GetAttr<OpAttrType::INT>("axis");
 
   // for quantization
   bool enable_int8 = false;
@@ -77,10 +77,10 @@ int ElementwiseConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   PrecisionType precision = PRECISION(kFloat);
 
   if (op_info->HasAttr("enable_int8")) {
-    enable_int8 = op_info->GetAttr<bool>("enable_int8");
-    input_scale = op_info->GetAttr<float>("input_scale");
-    bit_length = op_info->GetAttr<int>("bit_length");
-    output_scale = op_info->GetAttr<float>("output_scale");
+    enable_int8 = op_info->GetAttr<OpAttrType::BOOLEAN>("enable_int8");
+    input_scale = op_info->GetAttr<OpAttrType::FLOAT>("input_scale");
+    bit_length = op_info->GetAttr<OpAttrType::INT>("bit_length");
+    output_scale = op_info->GetAttr<OpAttrType::FLOAT>("output_scale");
 
     if (enable_int8) {
       precision = PRECISION(kInt8);
@@ -98,7 +98,7 @@ int ElementwiseConverter(void* ctx, OpLite* op, KernelBase* kernel) {
     if (enable_int8) {
       qnt.scale.clear();
       qnt.scale.push_back(input_scale);
-      qnt.quant_bits = op_info->GetAttr<int>("bit_length");
+      qnt.quant_bits = op_info->GetAttr<OpAttrType::INT>("bit_length");
     }
     x_node = graph->Add(x_name, *x, x_type->precision(), x_type->layout(), qnt);
   }

@@ -40,8 +40,8 @@ bool NormOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
       scope->FindVar(opdesc.Output("Out").front())->GetMutable<lite::Tensor>();
   CHECK(param_.X);
   CHECK(param_.Out);
-  param_.axis = opdesc.GetAttr<int>("axis");
-  param_.epsilon = opdesc.GetAttr<float>("epsilon");
+  param_.axis = opdesc.GetAttr<OpAttrType::INT>("axis");
+  param_.epsilon = opdesc.GetAttr<OpAttrType::FLOAT>("epsilon");
   return true;
 }
 

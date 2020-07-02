@@ -43,7 +43,7 @@ int FCConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto out = scope->FindMutableTensor(out_name);
   auto out_dims = out->dims();
 
-  int in_num_col_dims = op_info->GetAttr<int>("in_num_col_dims");
+  int in_num_col_dims = op_info->GetAttr<OpAttrType::INT>("in_num_col_dims");
   int m = input_dims.Slice(0, in_num_col_dims).production();
   int k = input_dims.Slice(in_num_col_dims, input_dims.size()).production();
   int n = w_dims[1];
@@ -56,16 +56,16 @@ int FCConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   float out_scale = 1.0f;
   std::vector<float> w_scale;
   if (op_info->HasAttr("enable_int8")) {
-    if (op_info->GetAttr<bool>("enable_int8")) {
+    if (op_info->GetAttr<OpAttrType::BOOLEAN>("enable_int8")) {
       auto input_name = op_info->Input("Input").front();
       auto weight_name = op_info->Input("W").front();
       auto out_name = op_info->Output("Out").front();
       if (op_info->HasInputScale(input_name))
-        input_scale = op_info->GetInputScale<float>(input_name);
+        input_scale = op_info->GetInputScale<OpAttrType::FLOAT>(input_name);
       if (op_info->HasInputScale(weight_name))
-        w_scale = op_info->GetInputScale<std::vector<float>>(weight_name);
+        w_scale = op_info->GetInputScale<OpAttrType::FLOATS>(weight_name);
       if (op_info->HasOutputScale(out_name))
-        out_scale = op_info->GetOutputScale<float>(out_name);
+        out_scale = op_info->GetOutputScale<OpAttrType::FLOAT>(out_name);
     } else {
       return FAILED;
     }

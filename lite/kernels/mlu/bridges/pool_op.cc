@@ -49,12 +49,12 @@ int PoolConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto x = scope->FindTensor(x_var_name);
   auto output_var_name = op_info->Output("Out").front();
   auto output_shape = scope->FindTensor(output_var_name)->dims().Vectorize();
-  auto pooling_type = op_info->GetAttr<std::string>("pooling_type");
-  auto ceil_mode = op_info->GetAttr<bool>("ceil_mode");
-  auto paddings = op_info->GetAttr<std::vector<int>>("paddings");
-  auto global_pooling = op_info->GetAttr<bool>("global_pooling");
-  auto ksize = op_info->GetAttr<std::vector<int>>("ksize");
-  auto strides = op_info->GetAttr<std::vector<int>>("strides");
+  auto pooling_type = op_info->GetAttr<OpAttrType::STRING>("pooling_type");
+  auto ceil_mode = op_info->GetAttr<OpAttrType::BOOLEAN>("ceil_mode");
+  auto paddings = op_info->GetAttr<OpAttrType::INTS>("paddings");
+  auto global_pooling = op_info->GetAttr<OpAttrType::BOOLEAN>("global_pooling");
+  auto ksize = op_info->GetAttr<OpAttrType::INTS>("ksize");
+  auto strides = op_info->GetAttr<OpAttrType::INTS>("strides");
 
   if (paddings.size() == 2L) {
     for (size_t i = 0; i < 2L; ++i) {
@@ -66,11 +66,12 @@ int PoolConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   int pad_width = paddings[2];
   std::string padding_algorithm("");
   if (op_info->HasAttr("padding_algorithm")) {
-    padding_algorithm = op_info->GetAttr<std::string>("padding_algorithm");
+    padding_algorithm =
+        op_info->GetAttr<OpAttrType::STRING>("padding_algorithm");
   }
   bool adaptive = false;
   if (op_info->HasAttr("adaptive")) {
-    adaptive = op_info->GetAttr<bool>("adaptive");
+    adaptive = op_info->GetAttr<OpAttrType::BOOLEAN>("adaptive");
   }
   lite::operators::UpdatePadding(&paddings,
                                  global_pooling,

@@ -46,11 +46,11 @@ void batch_norm_ref(const std::shared_ptr<operators::BatchNormOp> op) {
   auto variance_data = variance->mutable_data<dtype>();
   DDim x_dims = x->dims();
 
-  float epsilon = op_info->GetAttr<float>("epsilon");
-  // float momentum = op_info->GetAttr<float>("momentum");
-  auto data_layout = op_info->GetAttr<std::string>("data_layout");
+  float epsilon = op_info->GetAttr<OpAttrType::FLOAT>("epsilon");
+  // float momentum = op_info->GetAttr<OpAttrType::FLOAT>("momentum");
+  auto data_layout = op_info->GetAttr<OpAttrType::STRING>("data_layout");
 
-  bool global_stats = op_info->GetAttr<bool>("use_global_stats");
+  bool global_stats = op_info->GetAttr<OpAttrType::BOOLEAN>("use_global_stats");
   if (global_stats) {
     int64_t outer_size = 0;
     int64_t channel_size = 0;

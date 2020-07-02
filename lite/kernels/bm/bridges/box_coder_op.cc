@@ -63,15 +63,15 @@ int BoxCoderConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   for (size_t i = 0; i < output_dims.size(); i++) {
     i_output_shape_data[i] = static_cast<int32_t>(output_dims[i]);
   }
-  auto code_type = op_info->GetAttr<std::string>("code_type");
-  auto box_normalized = op_info->GetAttr<bool>("box_normalized");
+  auto code_type = op_info->GetAttr<OpAttrType::STRING>("code_type");
+  auto box_normalized = op_info->GetAttr<OpAttrType::BOOLEAN>("box_normalized");
   int32_t axis = 0;
   if (op_info->HasAttr("axis")) {
-    axis = op_info->GetAttr<int32_t>("axis");
+    axis = op_info->GetAttr<OpAttrType::INT>("axis");
   }
   std::vector<float> variance;
   if (op_info->HasAttr("variance")) {
-    variance = op_info->GetAttr<std::vector<float>>("variance");
+    variance = op_info->GetAttr<OpAttrType::FLOATS>("variance");
   }
   user_cpu_param_t bm_param;
   bm_param.op_type = USER_PADDLE_BOX_CODER;

@@ -35,7 +35,7 @@ int FillConstantConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto out = scope->FindTensor(out_name);
   auto out_shape = out->dims().Vectorize();
 
-  auto value = op_info->GetAttr<float>("value");
+  auto value = op_info->GetAttr<OpAttrType::FLOAT>("value");
 
   // dims & value node
   std::shared_ptr<Node> dims_node = nullptr;

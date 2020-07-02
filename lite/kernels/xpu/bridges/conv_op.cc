@@ -43,11 +43,11 @@ int ConvConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto oc = filter_dims[0];
   CHECK_EQ(input_dims.size(), 4);
   CHECK_EQ(filter_dims.size(), 4);
-  auto strides = op_info->GetAttr<std::vector<int>>("strides");
-  auto paddings = op_info->GetAttr<std::vector<int>>("paddings");
-  auto groups = op_info->GetAttr<int>("groups");
-  auto dilations = op_info->GetAttr<std::vector<int>>("dilations");
-  auto fuse_relu = op_info->GetAttr<bool>("fuse_relu");
+  auto strides = op_info->GetAttr<OpAttrType::INTS>("strides");
+  auto paddings = op_info->GetAttr<OpAttrType::INTS>("paddings");
+  auto groups = op_info->GetAttr<OpAttrType::INT>("groups");
+  auto dilations = op_info->GetAttr<OpAttrType::INTS>("dilations");
+  auto fuse_relu = op_info->GetAttr<OpAttrType::BOOLEAN>("fuse_relu");
   CHECK_EQ(strides.size(), 2L);
   CHECK_EQ(dilations.size(), 2L);
 
@@ -70,7 +70,8 @@ int ConvConverter(void* ctx, OpLite* op, KernelBase* kernel) {
 
   std::string padding_algorithm("");
   if (op_info->HasAttr("padding_algorithm")) {
-    padding_algorithm = op_info->GetAttr<std::string>("padding_algorithm");
+    padding_algorithm =
+        op_info->GetAttr<OpAttrType::STRING>("padding_algorithm");
   }
   operators::UpdatePaddingAndDilation(&paddings,
                                       &dilations,

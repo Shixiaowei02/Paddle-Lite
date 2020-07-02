@@ -45,15 +45,15 @@ int MultiClassNMSConverter(void* ctx, OpLite* op, KernelBase* kernel) {
     i_score_shape_data[i] = static_cast<int32_t>(score_dims[i]);
   }
 
-  auto background_label = op_info->GetAttr<int>("background_label");
-  auto keep_top_k = op_info->GetAttr<int>("keep_top_k");
-  auto nms_top_k = op_info->GetAttr<int>("nms_top_k");
-  auto score_threshold = op_info->GetAttr<float>("score_threshold");
-  auto nms_threshold = op_info->GetAttr<float>("nms_threshold");
-  auto nms_eta = op_info->GetAttr<float>("nms_eta");
+  auto background_label = op_info->GetAttr<OpAttrType::INT>("background_label");
+  auto keep_top_k = op_info->GetAttr<OpAttrType::INT>("keep_top_k");
+  auto nms_top_k = op_info->GetAttr<OpAttrType::INT>("nms_top_k");
+  auto score_threshold = op_info->GetAttr<OpAttrType::FLOAT>("score_threshold");
+  auto nms_threshold = op_info->GetAttr<OpAttrType::FLOAT>("nms_threshold");
+  auto nms_eta = op_info->GetAttr<OpAttrType::FLOAT>("nms_eta");
   bool normalized;
   if (op_info->HasAttr("normalized")) {
-    normalized = op_info->GetAttr<bool>("normalized");
+    normalized = op_info->GetAttr<OpAttrType::BOOLEAN>("normalized");
   }
 
   auto out_var_name = op_info->Output("Out").front();

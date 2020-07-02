@@ -38,10 +38,10 @@ void conv_ref(const std::shared_ptr<operators::ConvOpLite> op) {
       op_info->GetAttr<std::vector<int32_t>>("strides");
   std::vector<int32_t> paddings =
       op_info->GetAttr<std::vector<int32_t>>("paddings");
-  int32_t groups = op_info->GetAttr<int32_t>("groups");
+  int32_t groups = op_info->GetAttr<OpAttrType::INT>("groups");
   std::vector<int32_t> dilations =
       op_info->GetAttr<std::vector<int32_t>>("dilations");
-  bool fuse_relu = op_info->GetAttr<bool>("fuse_relu");
+  bool fuse_relu = op_info->GetAttr<OpAttrType::BOOLEAN>("fuse_relu");
   auto input_dims = input->dims();
   auto filter_dims = filter->dims();
   auto output_dims = output->dims();

@@ -42,7 +42,7 @@ int FillConstantConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   float* const_data =
       reinterpret_cast<float*>(malloc(buffer_size * sizeof(float)));
   CHECK(const_data != nullptr);
-  auto value = op_info->GetAttr<float>("value");
+  auto value = op_info->GetAttr<OpAttrType::FLOAT>("value");
   for (size_t i = 0; i < buffer_size; i++) {
     const_data[i] = value;
   }

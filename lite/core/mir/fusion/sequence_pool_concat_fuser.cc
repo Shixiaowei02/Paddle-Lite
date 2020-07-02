@@ -115,31 +115,31 @@ cpp::OpDesc SequencePoolConcatFuser::GenOpDesc(const key2nodes_t& matched) {
   pooltypes.push_back(matched.at("sequence_pool_1")
                           ->stmt()
                           ->op_info()
-                          ->GetAttr<std::string>("pooltype"));
+                          ->GetAttr<OpAttrType::STRING>("pooltype"));
   pooltypes.push_back(matched.at("sequence_pool_2")
                           ->stmt()
                           ->op_info()
-                          ->GetAttr<std::string>("pooltype"));
+                          ->GetAttr<OpAttrType::STRING>("pooltype"));
   pooltypes.push_back(matched.at("sequence_pool_3")
                           ->stmt()
                           ->op_info()
-                          ->GetAttr<std::string>("pooltype"));
+                          ->GetAttr<OpAttrType::STRING>("pooltype"));
   pooltypes.push_back(matched.at("sequence_pool_4")
                           ->stmt()
                           ->op_info()
-                          ->GetAttr<std::string>("pooltype"));
+                          ->GetAttr<OpAttrType::STRING>("pooltype"));
   pooltypes.push_back(matched.at("sequence_pool_5")
                           ->stmt()
                           ->op_info()
-                          ->GetAttr<std::string>("pooltype"));
+                          ->GetAttr<OpAttrType::STRING>("pooltype"));
   pooltypes.push_back(matched.at("sequence_pool_6")
                           ->stmt()
                           ->op_info()
-                          ->GetAttr<std::string>("pooltype"));
+                          ->GetAttr<OpAttrType::STRING>("pooltype"));
   pooltypes.push_back(matched.at("sequence_pool_7")
                           ->stmt()
                           ->op_info()
-                          ->GetAttr<std::string>("pooltype"));
+                          ->GetAttr<OpAttrType::STRING>("pooltype"));
   op_desc.SetAttr("pooltype", pooltypes);
 
   op_desc.SetOutput("Out", {matched.at("concat_out")->arg()->name});

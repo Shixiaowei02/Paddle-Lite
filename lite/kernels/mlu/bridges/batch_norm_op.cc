@@ -37,7 +37,7 @@ int BatchNormConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto mean_var_name = op_info->Input("Mean").front();
   auto variance_var_name = op_info->Input("Variance").front();
   auto y_var_name = op_info->Output("Y").front();
-  auto epsilon = op_info->GetAttr<float>("epsilon");
+  auto epsilon = op_info->GetAttr<OpAttrType::FLOAT>("epsilon");
 
   auto output = scope->FindVar(y_var_name)->GetMutable<Tensor>();
   auto output_dims = output->dims().Vectorize();

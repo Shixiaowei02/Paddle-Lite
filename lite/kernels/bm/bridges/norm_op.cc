@@ -49,7 +49,7 @@ int NormConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   }
 
   float one = 1.f;
-  auto epsilon = op_info->GetAttr<float>("epsilon");
+  auto epsilon = op_info->GetAttr<OpAttrType::FLOAT>("epsilon");
   add_normalize_layer(graph->GetCompilerHandle(),
                       const_cast<const int*>(&i_x_shape_data[0]),
                       x_dims.size(),

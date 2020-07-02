@@ -218,33 +218,33 @@ int PriorBoxConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto var_var_name = op_info->Output("Variances").front();
   // param
   st_priorbox_param param;
-  param.clip = op_info->GetAttr<bool>("clip");
-  param.min_sizes = op_info->GetAttr<std::vector<float>>("min_sizes");
-  param.max_sizes = op_info->GetAttr<std::vector<float>>("max_sizes");
-  param.aspect_ratios = op_info->GetAttr<std::vector<float>>("aspect_ratios");
-  param.variances = op_info->GetAttr<std::vector<float>>("variances");
-  param.offset = op_info->GetAttr<float>("offset");
+  param.clip = op_info->GetAttr<OpAttrType::BOOLEAN>("clip");
+  param.min_sizes = op_info->GetAttr<OpAttrType::FLOATS>("min_sizes");
+  param.max_sizes = op_info->GetAttr<OpAttrType::FLOATS>("max_sizes");
+  param.aspect_ratios = op_info->GetAttr<OpAttrType::FLOATS>("aspect_ratios");
+  param.variances = op_info->GetAttr<OpAttrType::FLOATS>("variances");
+  param.offset = op_info->GetAttr<OpAttrType::FLOAT>("offset");
   if (op_info->HasAttr("flip")) {
-    param.flip = op_info->GetAttr<bool>("flip");
+    param.flip = op_info->GetAttr<OpAttrType::BOOLEAN>("flip");
   }
   if (op_info->HasAttr("img_w")) {
-    param.img_w = op_info->GetAttr<int32_t>("img_w");
+    param.img_w = op_info->GetAttr<OpAttrType::INT>("img_w");
   }
   if (op_info->HasAttr("img_h")) {
-    param.img_h = op_info->GetAttr<int32_t>("img_h");
+    param.img_h = op_info->GetAttr<OpAttrType::INT>("img_h");
   }
   if (op_info->HasAttr("step_w")) {
-    param.step_w = op_info->GetAttr<float>("step_w");
+    param.step_w = op_info->GetAttr<OpAttrType::FLOAT>("step_w");
   }
   if (op_info->HasAttr("step_h")) {
-    param.step_h = op_info->GetAttr<float>("step_h");
+    param.step_h = op_info->GetAttr<OpAttrType::FLOAT>("step_h");
   }
   if (op_info->HasAttr("prior_num")) {
-    param.prior_num = op_info->GetAttr<int32_t>("prior_num");
+    param.prior_num = op_info->GetAttr<OpAttrType::INT>("prior_num");
   }
   if (op_info->HasAttr("min_max_aspect_ratios_order")) {
     param.min_max_aspect_ratios_order =
-        op_info->GetAttr<bool>("min_max_aspect_ratios_order");
+        op_info->GetAttr<OpAttrType::BOOLEAN>("min_max_aspect_ratios_order");
   }
   float* cpu_data = compute_priorbox_kernel(op, &param);
   auto boxes_dims = boxes->dims();

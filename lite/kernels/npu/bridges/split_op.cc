@@ -35,9 +35,9 @@ int SplitConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto x = scope->FindMutableTensor(x_name);
   auto x_dims = x->dims();
   auto out_names = op_info->Output("Out");
-  auto axis = op_info->GetAttr<int>("axis");
-  auto num = op_info->GetAttr<int>("num");
-  auto sections = op_info->GetAttr<std::vector<int>>("sections");
+  auto axis = op_info->GetAttr<OpAttrType::INT>("axis");
+  auto num = op_info->GetAttr<OpAttrType::INT>("num");
+  auto sections = op_info->GetAttr<OpAttrType::INTS>("sections");
   int64_t sections_num = static_cast<int64_t>(sections.size());
 
   // X node

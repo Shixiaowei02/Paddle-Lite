@@ -35,7 +35,7 @@ void softmax_ref(const std::shared_ptr<operators::SoftmaxOp> op) {
   DDim x_dims = x->dims();
 
   auto x_rank = x_dims.size();
-  int axis = op_info->GetAttr<int>("axis");
+  int axis = op_info->GetAttr<OpAttrType::INT>("axis");
   if (axis < 0) {
     axis += x_rank;
   }

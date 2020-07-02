@@ -94,7 +94,7 @@ bool UnsqueezeOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
   param_.Out = scope->FindMutableTensor(opdesc.Output("Out").front());
 
   if (opdesc.HasAttr("axes")) {
-    param_.axes = opdesc.GetAttr<std::vector<int>>("axes");
+    param_.axes = opdesc.GetAttr<OpAttrType::INTS>("axes");
   }
 
   if (opdesc.HasInput("AxesTensor") && opdesc.Input("AxesTensor").size() > 0) {

@@ -55,7 +55,7 @@ bool FlattenOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
   CHECK(output_var);
   param_.x = const_cast<lite::Tensor *>(&(x_var->Get<lite::Tensor>()));
   param_.output = output_var->GetMutable<lite::Tensor>();
-  axis_ = opdesc.GetAttr<int>("axis");
+  axis_ = opdesc.GetAttr<OpAttrType::INT>("axis");
 
   param_.inplace = false;
 

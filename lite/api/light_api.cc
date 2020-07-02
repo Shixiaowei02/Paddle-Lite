@@ -123,11 +123,11 @@ void LightPredictor::PrepareFeedFetch() {
   input_names_.resize(feeds.size());
   output_names_.resize(fetchs.size());
   for (size_t i = 0; i < feeds.size(); i++) {
-    input_names_[feeds[i]->GetAttr<int>("col")] =
+    input_names_[feeds[i]->GetAttr<OpAttrType::INT>("col")] =
         feeds[i]->Output("Out").front();
   }
   for (size_t i = 0; i < fetchs.size(); i++) {
-    output_names_[fetchs[i]->GetAttr<int>("col")] =
+    output_names_[fetchs[i]->GetAttr<OpAttrType::INT>("col")] =
         fetchs[i]->Input("X").front();
   }
 }
@@ -147,7 +147,8 @@ void LightPredictor::BuildRuntimeProgram(const cpp::ProgramDesc& prog) {
   // Create the kernels of the target places, and filter out the specific
   // kernel with the target alias.
   for (auto& op : program.ops()) {
-    auto kernel_type = op->op_info()->GetAttr<std::string>(kKernelTypeAttr);
+    auto kernel_type =
+        op->op_info()->GetAttr<OpAttrType::STRING>(kKernelTypeAttr);
     std::string op_type, alias;
     Place place;
     KernelBase::ParseKernelType(kernel_type, &op_type, &alias, &place);
@@ -197,7 +198,8 @@ void LightPredictor::DequantizeWeight() {
   auto is_weight_quantized_op = [](const cpp::OpDesc* op_desc) {
     bool result = false;
     if (op_desc->HasAttr("quantization_type")) {
-      std::string type = op_desc->GetAttr<std::string>("quantization_type");
+      std::string type =
+          op_desc->GetAttr<OpAttrType::STRING>("quantization_type");
       result = (type == "post_weight_abs_max") ||
                (type == "post_weight_channel_wise_abs_max");
     } else {
@@ -220,10 +222,10 @@ void LightPredictor::DequantizeWeight() {
                 scope_->FindVar(input_name)->GetMutable<lite::Tensor>();
             tmp_tensor.CopyDataFrom(*input_tensor);
             auto scale_list =
-                op_desc->GetAttr<std::vector<float>>(input_scale_name);
+                op_desc->GetAttr<OpAttrType::FLOATS>(input_scale_name);
 
             int quantize_weight_bits =
-                op_desc->GetAttr<int>("quantize_weight_bits");
+                op_desc->GetAttr<OpAttrType::INT>("quantize_weight_bits");
             CHECK(quantize_weight_bits == 8 || quantize_weight_bits == 16);
             float* fp_data = input_tensor->mutable_data<float>();
 

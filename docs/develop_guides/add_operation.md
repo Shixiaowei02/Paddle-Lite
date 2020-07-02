@@ -89,7 +89,7 @@
     
     param_.X = scope->FindVar(x)->GetMutable<lite::Tensor>();
         param_.Out = scope->FindVar(out)->GetMutable<lite::Tensor>();
-        param_.Axis = op_desc.GetAttr<int>("Axis");
+        param_.Axis = op_desc.GetAttr<OpAttrType::INT>("Axis");
     
     return true;
     }

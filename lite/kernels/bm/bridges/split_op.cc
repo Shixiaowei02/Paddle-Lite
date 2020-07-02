@@ -42,9 +42,9 @@ int SplitConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   }
   // output
   auto output_names = op_info->Output("Out");
-  auto axis = op_info->GetAttr<int>("axis");
-  auto num = op_info->GetAttr<int>("num");
-  auto sections = op_info->GetAttr<std::vector<int>>("sections");
+  auto axis = op_info->GetAttr<OpAttrType::INT>("axis");
+  auto num = op_info->GetAttr<OpAttrType::INT>("num");
+  auto sections = op_info->GetAttr<OpAttrType::INTS>("sections");
   if (0 == num) {
     num = sections.size();
   }

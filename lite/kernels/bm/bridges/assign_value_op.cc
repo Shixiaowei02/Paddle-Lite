@@ -46,13 +46,13 @@ int AssignValueConverter(void* ctx, OpLite* op, KernelBase* kernel) {
       reinterpret_cast<float*>(malloc(buffer_size * sizeof(float)));
   CHECK(assign_data != nullptr);
   bm_data_type_t data_type = static_cast<bm_data_type_t>(DTYPE_FP32);
-  fp32_values = op_info->GetAttr<std::vector<float>>("fp32_values");
+  fp32_values = op_info->GetAttr<OpAttrType::FLOATS>("fp32_values");
   if (0 != fp32_values.size()) {
     for (int i = 0; i < fp32_values.size(); i++) {
       assign_data[i] = fp32_values[i];
     }
   } else {
-    int32_values = op_info->GetAttr<std::vector<int>>("int32_values");
+    int32_values = op_info->GetAttr<OpAttrType::INTS>("int32_values");
     data_type = static_cast<bm_data_type_t>(DTYPE_INT32);
     CHECK_EQ(buffer_size, int32_values.size());
     for (int i = 0; i < int32_values.size(); i++) {

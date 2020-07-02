@@ -68,7 +68,7 @@ bool SearchFcOpLite::AttachImpl(const cpp::OpDesc &op_desc,
   param_.W = scope->FindVar(W)->GetMutable<lite::Tensor>();
   param_.b = scope->FindVar(b)->GetMutable<lite::Tensor>();
   param_.Out = scope->FindVar(Out)->GetMutable<lite::Tensor>();
-  param_.out_size = op_desc.GetAttr<int>("out_size");
+  param_.out_size = op_desc.GetAttr<OpAttrType::INT>("out_size");
 
   return true;
 }

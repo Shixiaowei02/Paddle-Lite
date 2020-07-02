@@ -34,7 +34,7 @@ int FCConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto w_var_name = op_info->Input("W").front();
   auto output_var_name = op_info->Output("Out").front();
 
-  // int in_num_col_dims = op_info->GetAttr<int>("in_num_col_dims");
+  // int in_num_col_dims = op_info->GetAttr<OpAttrType::INT>("in_num_col_dims");
   auto x = scope->FindVar(x_var_name)->GetMutable<Tensor>();
   auto w = scope->FindVar(w_var_name)->GetMutable<Tensor>();
   auto output = scope->FindVar(output_var_name)->GetMutable<Tensor>();
@@ -49,7 +49,7 @@ int FCConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto w_tensor = graph->AddNode(
       w_var_name, w_shape, CNML_FILTER, CNML_NCHW, graph->FPType());
 
-  auto input_scale = op_info->GetAttr<float>("input_scale");
+  auto input_scale = op_info->GetAttr<OpAttrType::FLOAT>("input_scale");
 
   auto output_tensor = graph->AddNode(output_var_name,
                                       output->dims().Vectorize(),
@@ -82,7 +82,7 @@ int FCConverter(void* ctx, OpLite* op, KernelBase* kernel) {
                             bias_tensor ? bias_tensor->mlu_tensor() : nullptr));
   graph->SetComputingDataType(
       fc_op, graph->GetNode(x_var_name)->mlu_tensor(), 1 / input_scale);
-  auto weight_scale = op_info->GetAttr<std::vector<float>>("weight_scale");
+  auto weight_scale = op_info->GetAttr<OpAttrType::FLOATS>("weight_scale");
 
   // LOG(INFO) << "W precision " << int(w->precision());
   if (w->precision() == PrecisionType::kUnk ||

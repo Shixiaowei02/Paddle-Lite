@@ -32,7 +32,8 @@ void fc_ref(const std::shared_ptr<operators::FcOpLite> op) {
   auto w = scope->FindVar(op_info->Input("W").front())->GetMutable<Tensor>();
   auto out =
       scope->FindVar(op_info->Output("Out").front())->GetMutable<Tensor>();
-  int32_t in_num_col_dims = op_info->GetAttr<int32_t>("in_num_col_dims");
+  int32_t in_num_col_dims =
+      op_info->GetAttr<OpAttrType::INT>("in_num_col_dims");
   Tensor* bias = nullptr;
   float* bias_data = nullptr;
   if (op_info->HasInput("Bias")) {

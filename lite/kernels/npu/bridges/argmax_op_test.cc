@@ -32,7 +32,7 @@ void argmax_ref(const std::shared_ptr<operators::ArgmaxOpLite> op) {
 
   auto x = scope->FindTensor("x");
   auto out = scope->FindMutableTensor("out_ref");
-  int axis = op_info->GetAttr<int64_t>("axis");
+  int axis = op_info->GetAttr<OpAttrType::LONG>("axis");
   auto x_dims = x->dims();
   if (axis < 0) {
     axis += x_dims.size();

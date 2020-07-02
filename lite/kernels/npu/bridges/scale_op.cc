@@ -40,9 +40,10 @@ int ScaleConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   // HiAI only support [n, c, 1, 1] for the shape of scale and bias
   std::vector<int64_t> scale_bias_shape = {
       1, x_rank < 3 ? 1 : x_dims[x_rank - 3], 1, 1};
-  float scale = op_info->GetAttr<float>("scale");
-  float bias = op_info->GetAttr<float>("bias");
-  bool bias_after_scale = op_info->GetAttr<bool>("bias_after_scale");
+  float scale = op_info->GetAttr<OpAttrType::FLOAT>("scale");
+  float bias = op_info->GetAttr<OpAttrType::FLOAT>("bias");
+  bool bias_after_scale =
+      op_info->GetAttr<OpAttrType::BOOLEAN>("bias_after_scale");
   if (!bias_after_scale) {
     bias *= scale;
   }

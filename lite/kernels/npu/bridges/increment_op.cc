@@ -37,7 +37,7 @@ int IncrementConverter(void* ctx, OpLite* op, KernelBase* kernel) {
 
   auto out_name = op_info->Output("Out").front();
 
-  float step = op_info->GetAttr<float>("step");
+  float step = op_info->GetAttr<OpAttrType::FLOAT>("step");
 
   // X node
   std::shared_ptr<Node> x_node = nullptr;

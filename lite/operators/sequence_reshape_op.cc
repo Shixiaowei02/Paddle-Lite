@@ -43,7 +43,7 @@ bool SequenceReshapeOp::AttachImpl(const cpp::OpDesc &opdesc,
   param_.output =
       scope->FindVar(opdesc.Output("Out").front())->GetMutable<lite::Tensor>();
 
-  param_.new_dim = opdesc.GetAttr<int>("new_dim");
+  param_.new_dim = opdesc.GetAttr<OpAttrType::INT>("new_dim");
   return true;
 }
 

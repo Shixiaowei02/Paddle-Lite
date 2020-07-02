@@ -63,8 +63,8 @@ bool SearchSeqFcOpLite::AttachImpl(const cpp::OpDesc& op_desc,
   param_.x = scope->FindVar(x)->GetMutable<lite::Tensor>();
   param_.w = scope->FindVar(w)->GetMutable<lite::Tensor>();
   param_.out = scope->FindVar(out)->GetMutable<lite::Tensor>();
-  param_.out_size = op_desc.GetAttr<int>("out_size");
-  bool has_bias = op_desc.GetAttr<bool>("has_bias");
+  param_.out_size = op_desc.GetAttr<OpAttrType::INT>("out_size");
+  bool has_bias = op_desc.GetAttr<OpAttrType::BOOLEAN>("has_bias");
   if (has_bias) {
     CHECK(!op_desc.Input("b").empty());
     auto b = op_desc.Input("b").front();

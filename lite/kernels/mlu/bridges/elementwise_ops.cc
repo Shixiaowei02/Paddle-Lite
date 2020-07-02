@@ -57,7 +57,7 @@ int ElementwiseConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto x_var_name = op_info->Input("X").front();
   auto y_var_name = op_info->Input("Y").front();
   auto out_var_name = op_info->Output("Out").front();
-  auto axis = op_info->GetAttr<int>("axis");
+  auto axis = op_info->GetAttr<OpAttrType::INT>("axis");
 
   auto x_tensor = graph->GetNode(x_var_name);
   auto x = scope->FindTensor(x_var_name);
@@ -120,7 +120,7 @@ int ElementwiseConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   cnmlBaseOp_t act_op;
   if (op_type == "fusion_elementwise_add_activation") {
     auto mid_tensor = graph->GetNode(out_var_name + "_mid");
-    auto type_string = op_info->GetAttr<std::string>("act_type");
+    auto type_string = op_info->GetAttr<OpAttrType::STRING>("act_type");
     cnmlActiveFunction_t act_type = OpTypeToCNMLActType(type_string);
     CNML_CALL(cnmlCreateActiveOp(&act_op,
                                  act_type,

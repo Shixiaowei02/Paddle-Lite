@@ -46,31 +46,32 @@ std::string Visualize(mir::SSAGraph* graph) {
     auto attr_type = op_info->GetAttrType(attr_name);
     switch (attr_type) {
       case AttrType::INT:
-        os << ":int:"
-           << paddle::lite::to_string(op_info->GetAttr<int>(attr_name));
+        os << ":int:" << paddle::lite::to_string(
+                             op_info->GetAttr<OpAttrType::INT>(attr_name));
         break;
       case AttrType::FLOAT:
-        os << ":float:"
-           << paddle::lite::to_string(op_info->GetAttr<float>(attr_name));
+        os << ":float:" << paddle::lite::to_string(
+                               op_info->GetAttr<OpAttrType::FLOAT>(attr_name));
         break;
       case AttrType::BOOLEAN:
-        os << ":int:"
-           << paddle::lite::to_string(op_info->GetAttr<bool>(attr_name));
+        os << ":int:" << paddle::lite::to_string(
+                             op_info->GetAttr<OpAttrType::BOOLEAN>(attr_name));
         break;
       case AttrType::STRING:
         os << ":string: \""
-           << string_trunc(op_info->GetAttr<std::string>(attr_name)) << "\"";
+           << string_trunc(op_info->GetAttr<OpAttrType::STRING>(attr_name))
+           << "\"";
         break;
       case AttrType::FLOATS: {
-        auto vals = op_info->GetAttr<std::vector<float>>(attr_name);
+        auto vals = op_info->GetAttr<OpAttrType::FLOATS>(attr_name);
         os << ":floats: {" + Join(vals, ",") << "}";
       } break;
       case AttrType::INTS: {
-        auto vals = op_info->GetAttr<std::vector<int>>(attr_name);
+        auto vals = op_info->GetAttr<OpAttrType::INTS>(attr_name);
         os << ":ints: {" + Join(vals, ",") + "}";
       } break;
       case AttrType::STRINGS: {
-        auto vals = op_info->GetAttr<std::vector<std::string>>(attr_name);
+        auto vals = op_info->GetAttr<OpAttrType::STRINGS>(attr_name);
         os << ":strings: {" + string_trunc(Join(vals, ",")) << "}";
       } break;
       default:

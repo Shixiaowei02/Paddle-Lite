@@ -35,9 +35,9 @@ int SliceConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto input = scope->FindMutableTensor(input_name);
   auto input_dims = input->dims();
   auto out_name = op_info->Output("Out").front();
-  auto axes = op_info->GetAttr<std::vector<int>>("axes");
-  auto starts = op_info->GetAttr<std::vector<int>>("starts");
-  auto ends = op_info->GetAttr<std::vector<int>>("ends");
+  auto axes = op_info->GetAttr<OpAttrType::INTS>("axes");
+  auto starts = op_info->GetAttr<OpAttrType::INTS>("starts");
+  auto ends = op_info->GetAttr<OpAttrType::INTS>("ends");
 
   // Input node
   std::shared_ptr<Node> input_node = nullptr;

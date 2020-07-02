@@ -59,7 +59,7 @@ bool LookupTableDequantOpLite::AttachImpl(const cpp::OpDesc& op_desc,
   param_.Ids = scope->FindVar(ids)->GetMutable<lite::Tensor>();
   param_.Out = scope->FindVar(out)->GetMutable<lite::Tensor>();
 
-  param_.padding_idx = op_desc.GetAttr<int64_t>("padding_idx");
+  param_.padding_idx = op_desc.GetAttr<OpAttrType::LONG>("padding_idx");
 
   return true;
 }

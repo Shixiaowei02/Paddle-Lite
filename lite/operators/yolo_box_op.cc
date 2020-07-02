@@ -68,10 +68,11 @@ bool YoloBoxOp::AttachImpl(const cpp::OpDesc& op_desc, lite::Scope* scope) {
   param_.ImgSize = scope->FindVar(ImgSize)->GetMutable<lite::Tensor>();
   param_.Boxes = scope->FindVar(Boxes)->GetMutable<lite::Tensor>();
   param_.Scores = scope->FindVar(Scores)->GetMutable<lite::Tensor>();
-  param_.anchors = op_desc.GetAttr<std::vector<int>>("anchors");
-  param_.class_num = op_desc.GetAttr<int>("class_num");
-  param_.conf_thresh = op_desc.GetAttr<float>("conf_thresh");
-  param_.downsample_ratio = op_desc.GetAttr<int>("downsample_ratio");
+  param_.anchors = op_desc.GetAttr<OpAttrType::INTS>("anchors");
+  param_.class_num = op_desc.GetAttr<OpAttrType::INT>("class_num");
+  param_.conf_thresh = op_desc.GetAttr<OpAttrType::FLOAT>("conf_thresh");
+  param_.downsample_ratio =
+      op_desc.GetAttr<OpAttrType::INT>("downsample_ratio");
   return true;
 }
 

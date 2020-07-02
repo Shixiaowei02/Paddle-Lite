@@ -92,7 +92,7 @@ bool MatchMatrixTensorOpLite::AttachImpl(const cpp::OpDesc& op_desc,
   param_.out = scope->FindVar(out)->GetMutable<lite::Tensor>();
   param_.tmp = scope->FindVar(tmp)->GetMutable<lite::Tensor>();
 
-  param_.dim_t = op_desc.GetAttr<int32_t>("dim_t");
+  param_.dim_t = op_desc.GetAttr<OpAttrType::INT>("dim_t");
 
   return true;
 }

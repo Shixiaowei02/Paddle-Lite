@@ -64,9 +64,9 @@ bool SequenceConvOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
       &scope->FindVar(opdesc.Input("Filter").front())->Get<lite::Tensor>());
   param_.Out =
       scope->FindVar(opdesc.Output("Out").front())->GetMutable<lite::Tensor>();
-  param_.contextStart = opdesc.GetAttr<int>("contextStart");
-  param_.contextStride = opdesc.GetAttr<int>("contextStride");
-  param_.contextLength = opdesc.GetAttr<int>("contextLength");
+  param_.contextStart = opdesc.GetAttr<OpAttrType::INT>("contextStart");
+  param_.contextStride = opdesc.GetAttr<OpAttrType::INT>("contextStride");
+  param_.contextLength = opdesc.GetAttr<OpAttrType::INT>("contextLength");
 
   // PaddingData is not supported for now
   std::vector<std::string> input_arg_names = opdesc.InputArgumentNames();
@@ -79,7 +79,7 @@ bool SequenceConvOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
 
   // paddingTrainable == True is not supported for now.
   if (opdesc.HasAttr("paddingTrainable")) {
-    CHECK_OR_FALSE(!opdesc.GetAttr<bool>("paddingTrainable"));
+    CHECK_OR_FALSE(!opdesc.GetAttr<OpAttrType::BOOLEAN>("paddingTrainable"));
   }
   CHECK(param_.X);
   CHECK(param_.Filter);

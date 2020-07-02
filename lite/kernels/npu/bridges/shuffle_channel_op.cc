@@ -35,7 +35,7 @@ int ShuffleChannelConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto x = scope->FindMutableTensor(x_name);
   auto x_dims = x->dims();
   auto out_name = op_info->Output("Out").front();
-  auto group = op_info->GetAttr<int>("group");
+  auto group = op_info->GetAttr<OpAttrType::INT>("group");
 
   // X node
   std::shared_ptr<Node> x_node = nullptr;

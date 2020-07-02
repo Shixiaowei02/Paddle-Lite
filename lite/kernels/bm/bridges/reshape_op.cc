@@ -42,7 +42,7 @@ int ReshapeConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   for (size_t i = 0; i < output_dims.size(); i++) {
     i_output_shape_data[i] = static_cast<int32_t>(output_dims[i]);
   }
-  // auto axis = op_info->GetAttr<int>("axis");
+  // auto axis = op_info->GetAttr<OpAttrType::INT>("axis");
   add_reshape_layer_v2(graph->GetCompilerHandle(),
                        static_cast<const char*>(x_var_name.c_str()),
                        const_cast<const int*>(&i_x_shape_data[0]),

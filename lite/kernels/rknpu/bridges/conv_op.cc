@@ -50,16 +50,16 @@ int ConvConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   CHECK_EQ(filter_dims.size(), 4L);
   CHECK_EQ(output_dims[0], bs);
   CHECK_EQ(output_dims[1], oc);
-  auto strides = op_info->GetAttr<std::vector<int>>("strides");
-  auto paddings = op_info->GetAttr<std::vector<int>>("paddings");
-  auto groups = op_info->GetAttr<int>("groups");
-  auto dilations = op_info->GetAttr<std::vector<int>>("dilations");
-  auto fuse_relu = op_info->GetAttr<bool>("fuse_relu");
+  auto strides = op_info->GetAttr<OpAttrType::INTS>("strides");
+  auto paddings = op_info->GetAttr<OpAttrType::INTS>("paddings");
+  auto groups = op_info->GetAttr<OpAttrType::INT>("groups");
+  auto dilations = op_info->GetAttr<OpAttrType::INTS>("dilations");
+  auto fuse_relu = op_info->GetAttr<OpAttrType::BOOLEAN>("fuse_relu");
   CHECK_EQ(strides.size(), 2L);
   CHECK_EQ(dilations.size(), 2L);
   // Check depthwise mode
   bool is_depthwise_mode = (ic == groups && oc == groups && groups != 1);
-  auto weight_scale = op_info->GetAttr<std::vector<float>>("weight_scale");
+  auto weight_scale = op_info->GetAttr<OpAttrType::FLOATS>("weight_scale");
 
   // for quantization
   bool enable_int8 = false;
@@ -70,10 +70,10 @@ int ConvConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   PrecisionType precision = PRECISION(kFloat);
 
   if (op_info->HasAttr("enable_int8")) {
-    enable_int8 = op_info->GetAttr<bool>("enable_int8");
-    input_scale = op_info->GetAttr<float>("input_scale");
-    bit_length = op_info->GetAttr<int>("bit_length");
-    output_scale = op_info->GetAttr<float>("output_scale");
+    enable_int8 = op_info->GetAttr<OpAttrType::BOOLEAN>("enable_int8");
+    input_scale = op_info->GetAttr<OpAttrType::FLOAT>("input_scale");
+    bit_length = op_info->GetAttr<OpAttrType::INT>("bit_length");
+    output_scale = op_info->GetAttr<OpAttrType::FLOAT>("output_scale");
 
     if (enable_int8) {
       precision = PRECISION(kInt8);
@@ -108,7 +108,8 @@ int ConvConverter(void* ctx, OpLite* op, KernelBase* kernel) {
 
   std::string padding_algorithm("");
   if (op_info->HasAttr("padding_algorithm")) {
-    padding_algorithm = op_info->GetAttr<std::string>("padding_algorithm");
+    padding_algorithm =
+        op_info->GetAttr<OpAttrType::STRING>("padding_algorithm");
   }
   operators::UpdatePaddingAndDilation(&paddings,
                                       &dilations,

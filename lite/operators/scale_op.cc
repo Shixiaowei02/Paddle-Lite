@@ -35,18 +35,19 @@ bool ScaleOp::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
   auto output = op_desc.Output("Out").front();
   param_.x = scope->FindVar(x)->GetMutable<Tensor>();
   param_.output = scope->FindMutableTensor(output);
-  param_.scale = op_desc.GetAttr<float>("scale");
-  param_.bias = op_desc.GetAttr<float>("bias");
-  param_.bias_after_scale = op_desc.GetAttr<bool>("bias_after_scale");
+  param_.scale = op_desc.GetAttr<OpAttrType::FLOAT>("scale");
+  param_.bias = op_desc.GetAttr<OpAttrType::FLOAT>("bias");
+  param_.bias_after_scale =
+      op_desc.GetAttr<OpAttrType::BOOLEAN>("bias_after_scale");
   if (op_desc.HasAttr("activation_type")) {
-    auto act_type = op_desc.GetAttr<std::string>("activation_type");
+    auto act_type = op_desc.GetAttr<OpAttrType::STRING>("activation_type");
     param_.activation_type = act_type;
     if (act_type == "relu") {
       param_.fuse_relu = true;
     } else if (act_type == "relu6") {
-      param_.alpha = op_desc.GetAttr<float>("alpha");  // 6.f
+      param_.alpha = op_desc.GetAttr<OpAttrType::FLOAT>("alpha");  // 6.f
     } else if (act_type == "leaky_relu") {
-      param_.alpha = op_desc.GetAttr<float>("alpha");
+      param_.alpha = op_desc.GetAttr<OpAttrType::FLOAT>("alpha");
     } else {
       CHECK(false)
           << "The fused conv only supports fuse with relu and leaky relu";

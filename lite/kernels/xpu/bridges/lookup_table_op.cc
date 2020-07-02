@@ -41,7 +41,7 @@ int LookupTableConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto out_name = op_info->Output("Out").front();
   auto out = scope->FindMutableTensor(out_name);
   auto out_dims = out->dims();
-  auto padding_idx = op_info->GetAttr<int64_t>("padding_idx");
+  auto padding_idx = op_info->GetAttr<OpAttrType::LONG>("padding_idx");
   if (padding_idx != -1) {
     LOG(WARNING) << "[XPU] Only padding_idx=-1 is supported.";
     return FAILED;

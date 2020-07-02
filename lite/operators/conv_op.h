@@ -73,10 +73,10 @@ class ConvOpLite : public OpLite {
     param_.filter = scope->FindVar(Filter)->GetMutable<lite::Tensor>();
     param_.output = scope->FindVar(Out)->GetMutable<lite::Tensor>();
 
-    param_.strides = op_desc.GetAttr<std::vector<int>>("strides");
-    auto paddings = op_desc.GetAttr<std::vector<int>>("paddings");
-    param_.groups = op_desc.GetAttr<int>("groups");
-    auto dilations = op_desc.GetAttr<std::vector<int>>("dilations");
+    param_.strides = op_desc.GetAttr<OpAttrType::INTS>("strides");
+    auto paddings = op_desc.GetAttr<OpAttrType::INTS>("paddings");
+    param_.groups = op_desc.GetAttr<OpAttrType::INT>("groups");
+    auto dilations = op_desc.GetAttr<OpAttrType::INTS>("dilations");
     param_.dilations = std::make_shared<std::vector<int>>(dilations);
 
     // optional params
@@ -105,21 +105,22 @@ class ConvOpLite : public OpLite {
       }
     }
 
-    if (op_desc.HasAttr("with_act") && op_desc.GetAttr<bool>("with_act")) {
+    if (op_desc.HasAttr("with_act") &&
+        op_desc.GetAttr<OpAttrType::BOOLEAN>("with_act")) {
       param_.activation_param.has_active = true;
-      auto act_type = op_desc.GetAttr<std::string>("act_type");
+      auto act_type = op_desc.GetAttr<OpAttrType::STRING>("act_type");
       if (act_type == "relu") {
         param_.activation_param.active_type = lite_api::ActivationType::kRelu;
         param_.fuse_relu = true;
       } else if (act_type == "relu6") {
         param_.activation_param.active_type = lite_api::ActivationType::kRelu6;
         param_.activation_param.Relu_clipped_coef =
-            op_desc.GetAttr<float>("fuse_brelu_threshold");  // 6.f
+            op_desc.GetAttr<OpAttrType::FLOAT>("fuse_brelu_threshold");  // 6.f
       } else if (act_type == "leaky_relu") {
         param_.activation_param.active_type =
             lite_api::ActivationType::kLeakyRelu;
         param_.activation_param.Leaky_relu_alpha =
-            op_desc.GetAttr<float>("leaky_relu_alpha");
+            op_desc.GetAttr<OpAttrType::FLOAT>("leaky_relu_alpha");
       } else {
         CHECK(false)
             << "The fused conv only supports fuse with relu and leaky relu";
@@ -127,22 +128,25 @@ class ConvOpLite : public OpLite {
     }
 
     if (op_desc.HasAttr("padding_algorithm")) {
-      padding_algorithm_ = op_desc.GetAttr<std::string>("padding_algorithm");
+      padding_algorithm_ =
+          op_desc.GetAttr<OpAttrType::STRING>("padding_algorithm");
     }
     // For Int8
     const OpInfo* op_info = dynamic_cast<const OpInfo*>(&op_desc);
     if (op_info != nullptr && op_info->HasAttr("enable_int8")) {
-      param_.enable_int8 = op_info->GetAttr<bool>("enable_int8");
+      param_.enable_int8 = op_info->GetAttr<OpAttrType::BOOLEAN>("enable_int8");
       auto input_name = op_info->Input("Input").front();
       auto filter_name = op_info->Input("Filter").front();
       auto output_name = op_info->Output("Output").front();
       if (op_info->HasInputScale(input_name))
-        param_.input_scale = op_info->GetInputScale<float>(input_name);
+        param_.input_scale =
+            op_info->GetInputScale<OpAttrType::FLOAT>(input_name);
       if (op_info->HasInputScale(filter_name))
         param_.weight_scale =
-            op_info->GetInputScale<std::vector<float>>(filter_name);
+            op_info->GetInputScale<OpAttrType::FLOATS>(filter_name);
       if (op_info->HasOutputScale(output_name)) {
-        param_.output_scale = op_info->GetOutputScale<float>(output_name);
+        param_.output_scale =
+            op_info->GetOutputScale<OpAttrType::FLOAT>(output_name);
       }
     }
 

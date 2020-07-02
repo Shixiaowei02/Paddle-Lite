@@ -90,13 +90,15 @@ bool FcOpLite::AttachImpl(const cpp::OpDesc& op_desc, lite::Scope* scope) {
   }
   CHECK(scope->FindVar(out));
   param_.output = scope->FindVar(out)->GetMutable<lite::Tensor>();
-  param_.in_num_col_dims = op_desc.GetAttr<int>("in_num_col_dims");
+  param_.in_num_col_dims = op_desc.GetAttr<OpAttrType::INT>("in_num_col_dims");
 
   if (op_desc.HasAttr("activation_type")) {
-    param_.activation_type = op_desc.GetAttr<std::string>("activation_type");
+    param_.activation_type =
+        op_desc.GetAttr<OpAttrType::STRING>("activation_type");
   }
   if (op_desc.HasAttr("padding_weights")) {
-    param_.padding_weights = op_desc.GetAttr<bool>("padding_weights");
+    param_.padding_weights =
+        op_desc.GetAttr<OpAttrType::BOOLEAN>("padding_weights");
   } else {
     param_.padding_weights = false;
   }
@@ -104,17 +106,19 @@ bool FcOpLite::AttachImpl(const cpp::OpDesc& op_desc, lite::Scope* scope) {
   // For Int8
   const OpInfo* op_info = dynamic_cast<const OpInfo*>(&op_desc);
   if (op_info != nullptr && op_info->HasAttr("enable_int8")) {
-    param_.enable_int8 = op_info->GetAttr<bool>("enable_int8");
+    param_.enable_int8 = op_info->GetAttr<OpAttrType::BOOLEAN>("enable_int8");
     auto input_name = op_info->Input("Input").front();
     auto weight_name = op_info->Input("W").front();
     auto out_name = op_info->Output("Out").front();
     if (op_info->HasInputScale(input_name))
-      param_.input_scale = op_info->GetInputScale<float>(input_name);
+      param_.input_scale =
+          op_info->GetInputScale<OpAttrType::FLOAT>(input_name);
     if (op_info->HasInputScale(weight_name))
       param_.weight_scale =
-          op_info->GetInputScale<std::vector<float>>(weight_name);
+          op_info->GetInputScale<OpAttrType::FLOATS>(weight_name);
     if (op_info->HasOutputScale(out_name))
-      param_.output_scale = op_info->GetOutputScale<float>(out_name);
+      param_.output_scale =
+          op_info->GetOutputScale<OpAttrType::FLOAT>(out_name);
   }
   return true;
 }

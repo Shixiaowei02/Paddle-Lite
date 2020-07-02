@@ -79,12 +79,12 @@ bool TransposeOp::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
   param_.x = GetVar<lite::Tensor>(scope, x);
   param_.output = GetMutableVar<lite::Tensor>(scope, out);
 
-  param_.axis = op_desc.GetAttr<std::vector<int>>("axis");
+  param_.axis = op_desc.GetAttr<OpAttrType::INTS>("axis");
   if (op_desc.HasAttr("use_mkldnn")) {
-    param_.use_mkldnn = op_desc.GetAttr<bool>("use_mkldnn");
+    param_.use_mkldnn = op_desc.GetAttr<OpAttrType::BOOLEAN>("use_mkldnn");
   }
   if (op_desc.HasAttr("data_format")) {
-    param_.data_format = op_desc.GetAttr<std::string>("data_format");
+    param_.data_format = op_desc.GetAttr<OpAttrType::STRING>("data_format");
   }
   return true;
 }
@@ -157,12 +157,12 @@ bool Transpose2Op::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
   param_.x = GetVar<lite::Tensor>(scope, x);
   param_.output = GetMutableVar<lite::Tensor>(scope, out);
 
-  param_.axis = op_desc.GetAttr<std::vector<int>>("axis");
+  param_.axis = op_desc.GetAttr<OpAttrType::INTS>("axis");
   if (op_desc.HasAttr("use_mkldnn")) {
-    param_.use_mkldnn = op_desc.GetAttr<bool>("use_mkldnn");
+    param_.use_mkldnn = op_desc.GetAttr<OpAttrType::BOOLEAN>("use_mkldnn");
   }
   if (op_desc.HasAttr("data_format")) {
-    param_.data_format = op_desc.GetAttr<std::string>("data_format");
+    param_.data_format = op_desc.GetAttr<OpAttrType::STRING>("data_format");
   }
   if (op_desc.HasOutput("XShape")) {
     auto xshape_var = scope->FindVar(op_desc.Output("XShape").front());

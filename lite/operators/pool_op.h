@@ -50,26 +50,29 @@ class PoolOpLite : public OpLite {
     param_.x = scope->FindVar(x)->GetMutable<lite::Tensor>();
     param_.output = scope->FindVar(out)->GetMutable<lite::Tensor>();
 
-    param_.pooling_type = op_desc.GetAttr<std::string>("pooling_type");
-    param_.ksize = op_desc.GetAttr<std::vector<int>>("ksize");
-    param_.global_pooling = op_desc.GetAttr<bool>("global_pooling");
-    param_.strides = op_desc.GetAttr<std::vector<int>>("strides");
-    auto paddings = op_desc.GetAttr<std::vector<int>>("paddings");
+    param_.pooling_type = op_desc.GetAttr<OpAttrType::STRING>("pooling_type");
+    param_.ksize = op_desc.GetAttr<OpAttrType::INTS>("ksize");
+    param_.global_pooling =
+        op_desc.GetAttr<OpAttrType::BOOLEAN>("global_pooling");
+    param_.strides = op_desc.GetAttr<OpAttrType::INTS>("strides");
+    auto paddings = op_desc.GetAttr<OpAttrType::INTS>("paddings");
 
     if (op_desc.HasAttr("exclusive")) {
-      param_.exclusive = op_desc.GetAttr<bool>("exclusive");
+      param_.exclusive = op_desc.GetAttr<OpAttrType::BOOLEAN>("exclusive");
     }
     if (op_desc.HasAttr("adaptive")) {
-      param_.adaptive = op_desc.GetAttr<bool>("adaptive");
+      param_.adaptive = op_desc.GetAttr<OpAttrType::BOOLEAN>("adaptive");
     }
     if (op_desc.HasAttr("ceil_mode")) {
-      param_.ceil_mode = op_desc.GetAttr<bool>("ceil_mode");
+      param_.ceil_mode = op_desc.GetAttr<OpAttrType::BOOLEAN>("ceil_mode");
     }
     if (op_desc.HasAttr("use_quantizer")) {
-      param_.use_quantizer = op_desc.GetAttr<bool>("use_quantizer");
+      param_.use_quantizer =
+          op_desc.GetAttr<OpAttrType::BOOLEAN>("use_quantizer");
     }
     if (op_desc.HasAttr("padding_algorithm")) {
-      padding_algorithm_ = op_desc.GetAttr<std::string>("padding_algorithm");
+      padding_algorithm_ =
+          op_desc.GetAttr<OpAttrType::STRING>("padding_algorithm");
     }
     // 2-pad to 4-pad
     if (paddings.size() == 2L) {

@@ -61,13 +61,13 @@ int CastConverter(void* ctx, OpLite* op, KernelBase* kernel) {
 
   // BOOL = 0;INT16 = 1;INT32 = 2;INT64 = 3;FP16 = 4;FP32 = 5;FP64 = 6;
   // SIZE_T = 19;UINT8 = 20;INT8 = 21;
-  int in_dtype = op_info->GetAttr<int>("in_dtype");
+  int in_dtype = op_info->GetAttr<OpAttrType::INT>("in_dtype");
   PrecisionType in_ptype;
   if (!CvtDtype(in_dtype, &in_ptype)) {
     return FAILED;
   }
 
-  int out_dtype = op_info->GetAttr<int>("out_dtype");
+  int out_dtype = op_info->GetAttr<OpAttrType::INT>("out_dtype");
   PrecisionType out_ptype;
   if (!CvtDtype(out_dtype, &out_ptype)) {
     return FAILED;

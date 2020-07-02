@@ -39,7 +39,7 @@ bool CalibOpLite::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
   param_.output = output_var->GetMutable<lite::Tensor>();
   std::vector<std::string> input_arg_names = opdesc.InputArgumentNames();
   if (opdesc.HasAttr("scale")) {
-    param_.scale = opdesc.GetAttr<float>("scale");
+    param_.scale = opdesc.GetAttr<OpAttrType::FLOAT>("scale");
   }
   CHECK(param_.input) << "Input(X) of CalibOp should not be null.";
   CHECK(param_.output) << "Output(Out) of CalibOp should not be null.";

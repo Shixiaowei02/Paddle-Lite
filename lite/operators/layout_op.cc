@@ -37,7 +37,7 @@ bool LayoutOp::AttachImpl(const cpp::OpDesc &opdesc,
   param_.x = GetTensor(scope, x);
   param_.y = GetMutableTensor(scope, out);
   if (opdesc.HasAttr("process_type")) {
-    param_.process_type = opdesc.GetAttr<int>("process_type");
+    param_.process_type = opdesc.GetAttr<OpAttrType::INT>("process_type");
   }
   return true;
 }

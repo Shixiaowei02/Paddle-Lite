@@ -48,7 +48,7 @@ class FeedOp : public OpLite {
 
     // NOTE need boost here
     // TODO(Superjomn) drop the need of framework::op_desc
-    param_.col = opdesc.GetAttr<int>("col");
+    param_.col = opdesc.GetAttr<OpAttrType::INT>("col");
     return true;
   }
 

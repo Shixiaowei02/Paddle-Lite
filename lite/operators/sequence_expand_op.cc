@@ -75,7 +75,7 @@ bool SequenceExpandOp::AttachImpl(const cpp::OpDesc &opdesc,
       &scope->FindVar(opdesc.Input("Y").front())->Get<lite::Tensor>());
   param_.Out =
       scope->FindVar(opdesc.Output("Out").front())->GetMutable<lite::Tensor>();
-  param_.ref_level = opdesc.GetAttr<int>("ref_level");
+  param_.ref_level = opdesc.GetAttr<OpAttrType::INT>("ref_level");
   return true;
 }
 

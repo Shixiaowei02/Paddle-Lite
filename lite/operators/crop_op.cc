@@ -43,8 +43,8 @@ bool CropOpLite::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
   param_.X = scope->FindVar(op_desc.Input("X").front())->GetMutable<Tensor>();
   param_.Out =
       scope->FindVar(op_desc.Output("Out").front())->GetMutable<Tensor>();
-  param_.offsets = op_desc.GetAttr<std::vector<int>>("offsets");
-  param_.shape = op_desc.GetAttr<std::vector<int>>("shape");
+  param_.offsets = op_desc.GetAttr<OpAttrType::INTS>("offsets");
+  param_.shape = op_desc.GetAttr<OpAttrType::INTS>("shape");
   return true;
 }
 

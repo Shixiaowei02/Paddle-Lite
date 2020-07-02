@@ -104,7 +104,7 @@ void MemoryOptimizePass::CollectLifeCycleByDevice(
     if (inplace_op_node != inplace_op_nodes.end()) {
       bool inplace = false;
       if (op_info->HasAttr("inplace")) {
-        inplace = op_info->GetAttr<bool>("inplace");
+        inplace = op_info->GetAttr<OpAttrType::BOOLEAN>("inplace");
       }
       if (inplace) {
         for (auto& in_param_name : inplace_op_node->second.first) {

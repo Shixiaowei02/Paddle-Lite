@@ -43,7 +43,7 @@ int ReduceFullConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   // output
   auto output_var_name = op_info->Output("Out").front();
   auto dim = op_info->GetAttr<std::vector<int32_t>>("dim");
-  auto keep_dim = op_info->GetAttr<bool>("keep_dim");
+  auto keep_dim = op_info->GetAttr<OpAttrType::BOOLEAN>("keep_dim");
   int op_code = -1;
   if (op_type == "reduce_sum") {
     op_code = REDUCE_SUM;

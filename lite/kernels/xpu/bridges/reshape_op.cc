@@ -68,7 +68,7 @@ int ReshapeConverter(void* ctx, OpLite* op, KernelBase* kernel) {
     auto shape = std::vector<int>(
         actual_shape_data, actual_shape_data + actual_shape_dims.production());
   } else if (op_info->HasAttr("shape")) {
-    shape = op_info->GetAttr<std::vector<int>>("shape");
+    shape = op_info->GetAttr<OpAttrType::INTS>("shape");
   } else {
     LOG(WARNING) << "[XPU] No new shape for reshape op";
     return FAILED;

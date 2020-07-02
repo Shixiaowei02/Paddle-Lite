@@ -41,18 +41,18 @@ void ShuffleChannelFuser::BuildPattern() {
   }
 
   auto* reshape1 = OpNode("reshape1", reshape_type_)
-                       ->assert_op_attr_satisfied<std::vector<int>>(
+                       ->assert_op_attr_satisfied<OpAttrType::INTS>(
                            "shape", [](const std::vector<int>& attr) {
                              return attr.size() >= 5 && attr[1] > 0;
                            });
   auto* transpose =
       OpNode("transpose_op", transpose_type_)
-          ->assert_op_attr_satisfied<std::vector<int>>(
+          ->assert_op_attr_satisfied<OpAttrType::INTS>(
               "axis", [](const std::vector<int>& attr) {
                 return attr.size() >= 5 && attr[1] == 2 && attr[2] == 1;
               });
   auto* reshape2 = OpNode("reshape2", reshape_type_)
-                       ->assert_op_attr_satisfied<std::vector<int>>(
+                       ->assert_op_attr_satisfied<OpAttrType::INTS>(
                            "shape", [](const std::vector<int>& attr) {
                              return attr.size() >= 4;
                            });
@@ -99,7 +99,7 @@ cpp::OpDesc ShuffleChannelFuser::GenOpDesc(const key2nodes_t& matched) {
                   matched.at("reshape1")
                       ->stmt()
                       ->op_info()
-                      ->GetAttr<std::vector<int>>("shape")[1]);
+                      ->GetAttr<OpAttrType::INTS>("shape")[1]);
   return op_desc;
 }
 

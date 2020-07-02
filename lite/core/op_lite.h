@@ -245,22 +245,24 @@ class OpInfo : public cpp::OpDesc {
   template <typename T>
   void SetOutputScale(const std::string &output_name, const T &scale_value);
 
-  template <typename T>
-  T GetInputScale(const std::string &input_name) const {
+  template <OpAttrType Type>
+  typename OpAttrTypeTrait<Type, Standard>::RT GetInputScale(
+      const std::string &input_name) const {
     std::string argname;
     int index;
     CHECK(GetInputArgname(input_name, &argname));
     CHECK(GetInputIndex(input_name, &index));
-    return GetAttr<T>(argname + int2string(index) + "_scale");
+    return GetAttr<Type>(argname + int2string(index) + "_scale");
   }
 
-  template <typename T>
-  T GetOutputScale(const std::string &output_name) const {
+  template <OpAttrType Type>
+  typename OpAttrTypeTrait<Type, Standard>::RT GetOutputScale(
+      const std::string &output_name) const {
     std::string argname;
     int index;
     CHECK(GetOutputArgname(output_name, &argname));
     CHECK(GetOutputIndex(output_name, &index));
-    return GetAttr<T>(argname + int2string(index) + "_scale");
+    return GetAttr<Type>(argname + int2string(index) + "_scale");
   }
 
   void UpdateAllInputs(const std::string &from, const std::string &to) {

@@ -111,25 +111,25 @@ void Module::AddOpDescHelper(const std::string &op_id,
 
     switch (type) {
       case AttrType::INT:
-        return paddle::lite::to_string(desc.GetAttr<int>(name));
+        return paddle::lite::to_string(desc.GetAttr<OpAttrType::INT>(name));
       case AttrType::FLOAT:
-        return paddle::lite::to_string(desc.GetAttr<float>(name));
+        return paddle::lite::to_string(desc.GetAttr<OpAttrType::FLOAT>(name));
       case AttrType::BOOLEAN:
-        return paddle::lite::to_string(desc.GetAttr<bool>(name));
+        return paddle::lite::to_string(desc.GetAttr<OpAttrType::BOOLEAN>(name));
       case AttrType::STRING:
-        return "\"" + desc.GetAttr<std::string>(name) + "\"";
+        return "\"" + desc.GetAttr<OpAttrType::STRING>(name) + "\"";
       case AttrType::FLOATS: {
-        auto vals = desc.GetAttr<std::vector<float>>(name);
+        auto vals = desc.GetAttr<OpAttrType::FLOATS>(name);
         return "{" + Join(vals, ",") + "}";
       }
       case AttrType::INTS: {
-        auto vals = desc.GetAttr<std::vector<int>>(name);
+        auto vals = desc.GetAttr<OpAttrType::INTS>(name);
         return "{" + Join(vals, ",") + "}";
       }
 
       case AttrType::STRINGS: {
         std::vector<std::string> tmp;
-        auto vals = desc.GetAttr<std::vector<std::string>>(name);
+        auto vals = desc.GetAttr<OpAttrType::STRINGS>(name);
         std::transform(vals.begin(),
                        vals.end(),
                        std::back_inserter(tmp),
@@ -194,7 +194,7 @@ void Module::AddOp(const cpp::OpDesc &op) {
 
   CHECK(op.HasAttr(kKernelTypeAttr))
       << "the kernel type should be specified before generate code.";
-  auto kernel_type = op.GetAttr<std::string>(kKernelTypeAttr);
+  auto kernel_type = op.GetAttr<OpAttrType::STRING>(kKernelTypeAttr);
   Line(string_format("%s->Attach(%s, exec_scope);",
                      op_name.c_str(),
                      (op_name + "_desc").c_str()));

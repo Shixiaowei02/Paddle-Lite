@@ -42,7 +42,7 @@ int InterpolateConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   for (size_t i = 0; i < output_dims.size(); i++) {
     i_output_shape_data[i] = static_cast<int32_t>(output_dims[i]);
   }
-  auto scale = op_info->GetAttr<float>("scale");
+  auto scale = op_info->GetAttr<OpAttrType::FLOAT>("scale");
   int32_t i_scale = static_cast<int32_t>(scale);
   bool is_int = false;
   if ((scale - i_scale) < 0.000001f) {

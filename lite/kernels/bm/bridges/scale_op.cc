@@ -43,9 +43,10 @@ int ScaleConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   }
   // output
   auto output_var_name = op_info->Output("Out").front();
-  auto scale = op_info->GetAttr<float>("scale");
-  auto bias = op_info->GetAttr<float>("bias");
-  auto bias_after_scale = op_info->GetAttr<bool>("bias_after_scale");
+  auto scale = op_info->GetAttr<OpAttrType::FLOAT>("scale");
+  auto bias = op_info->GetAttr<OpAttrType::FLOAT>("bias");
+  auto bias_after_scale =
+      op_info->GetAttr<OpAttrType::BOOLEAN>("bias_after_scale");
   if (!bias_after_scale) {
     bias *= scale;
   }

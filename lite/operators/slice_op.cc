@@ -94,27 +94,27 @@ bool SliceOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
       scope->FindVar(opdesc.Output("Out").front())->GetMutable<lite::Tensor>();
   CHECK(param_.X);
   CHECK(param_.Out);
-  param_.axes = opdesc.GetAttr<std::vector<int>>("axes");
+  param_.axes = opdesc.GetAttr<OpAttrType::INTS>("axes");
 
   if (opdesc.HasAttr("infer_flags")) {
-    param_.infer_flags = opdesc.GetAttr<std::vector<int>>("infer_flags");
+    param_.infer_flags = opdesc.GetAttr<OpAttrType::INTS>("infer_flags");
   } else {
     // Initialize infer_flags with 1.
     // To be compatible with other op tests in which infer_flags is not set.
     param_.infer_flags = std::vector<int>(param_.axes.size(), 1);
   }
   if (opdesc.HasAttr("decrease_axis")) {
-    param_.decrease_axis = opdesc.GetAttr<std::vector<int>>("decrease_axis");
+    param_.decrease_axis = opdesc.GetAttr<OpAttrType::INTS>("decrease_axis");
   }
 
   // The priority: StartsTensor > StartsTensorList > attr(starts).
   // The priority: EndsTensor > EndsTensorList > attr(ends).
   size_t starts_size, ends_size;
   if (opdesc.HasAttr("starts")) {
-    param_.starts = opdesc.GetAttr<std::vector<int>>("starts");
+    param_.starts = opdesc.GetAttr<OpAttrType::INTS>("starts");
   }
   if (opdesc.HasAttr("ends")) {
-    param_.ends = opdesc.GetAttr<std::vector<int>>("ends");
+    param_.ends = opdesc.GetAttr<OpAttrType::INTS>("ends");
   }
   starts_size = param_.starts.size();
   ends_size = param_.ends.size();

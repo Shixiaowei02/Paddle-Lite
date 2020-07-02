@@ -38,13 +38,14 @@ int InterpolateConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto x_w = x_dims[3];
   CHECK_EQ(x_dims.size(), 4);
   auto out_name = op_info->Output("Out").front();
-  auto scale = op_info->GetAttr<float>("scale");
-  auto out_w = op_info->GetAttr<int>("out_w");
-  auto out_h = op_info->GetAttr<int>("out_h");
-  auto align_corners = op_info->GetAttr<bool>("align_corners");
-  int align_mode =
-      op_info->HasAttr("align_mode") ? op_info->GetAttr<int>("align_mode") : 1;
-  auto interp_method = op_info->GetAttr<std::string>("interp_method");
+  auto scale = op_info->GetAttr<OpAttrType::FLOAT>("scale");
+  auto out_w = op_info->GetAttr<OpAttrType::INT>("out_w");
+  auto out_h = op_info->GetAttr<OpAttrType::INT>("out_h");
+  auto align_corners = op_info->GetAttr<OpAttrType::BOOLEAN>("align_corners");
+  int align_mode = op_info->HasAttr("align_mode")
+                       ? op_info->GetAttr<OpAttrType::INT>("align_mode")
+                       : 1;
+  auto interp_method = op_info->GetAttr<OpAttrType::STRING>("interp_method");
   if (align_mode == 0 && !align_corners) {
     LOG(WARNING) << "[NPU] align_mode = 0 && "
                     "align_corners = false isn't "

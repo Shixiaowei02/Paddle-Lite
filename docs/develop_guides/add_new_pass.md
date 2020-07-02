@@ -322,7 +322,7 @@ cpp::OpDesc FcFuser::GenOpDesc(const key2nodes_t& matched) {
   op_desc.SetOutput("Out", {matched.at("Out")->arg()->name});
   op_desc.SetAttr(
       "in_num_col_dims",
-      matched.at("mul")->stmt()->op_info()->GetAttr<int>("x_num_col_dims"));
+      matched.at("mul")->stmt()->op_info()->GetAttr<OpAttrType::INT>("x_num_col_dims"));
   return op_desc;
 }
 

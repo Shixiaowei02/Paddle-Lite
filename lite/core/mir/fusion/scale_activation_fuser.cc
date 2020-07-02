@@ -69,10 +69,10 @@ cpp::OpDesc ScaleActivationFuser::GenOpDesc(const key2nodes_t& matched) {
   if (act_type_ == "relu") {
     op_desc.SetAttr("fuse_relu", true);
   } else if (act_type_ == "relu6") {
-    float alpha = act_op_desc.GetAttr<float>("threshold");
+    float alpha = act_op_desc.GetAttr<OpAttrType::FLOAT>("threshold");
     op_desc.SetAttr("alpha", alpha);
   } else if (act_type_ == "leaky_relu") {
-    float alpha = act_op_desc.GetAttr<float>("alpha");
+    float alpha = act_op_desc.GetAttr<OpAttrType::FLOAT>("alpha");
     op_desc.SetAttr("alpha", alpha);
   }
   return op_desc;

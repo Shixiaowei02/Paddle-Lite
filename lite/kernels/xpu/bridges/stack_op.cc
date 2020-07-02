@@ -33,7 +33,7 @@ int StackConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   // Get input and output vars and op attributes
   auto x_names = op_info->Input("X");
   auto y_name = op_info->Output("Y").front();
-  int axis = op_info->GetAttr<int>("axis");
+  int axis = op_info->GetAttr<OpAttrType::INT>("axis");
 
   // X nodes
   xtcl::Array<xtcl::xExpr> x_nodes;

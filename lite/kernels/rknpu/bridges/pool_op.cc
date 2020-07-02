@@ -39,10 +39,10 @@ int PoolConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto out_name = op_info->Output("Out").front();
   auto output = scope->FindMutableTensor(out_name);
 
-  auto pooling_type = op_info->GetAttr<std::string>("pooling_type");
-  auto global_pooling = op_info->GetAttr<bool>("global_pooling");
-  auto ksize = op_info->GetAttr<std::vector<int>>("ksize");
-  auto paddings = op_info->GetAttr<std::vector<int>>("paddings");
+  auto pooling_type = op_info->GetAttr<OpAttrType::STRING>("pooling_type");
+  auto global_pooling = op_info->GetAttr<OpAttrType::BOOLEAN>("global_pooling");
+  auto ksize = op_info->GetAttr<OpAttrType::INTS>("ksize");
+  auto paddings = op_info->GetAttr<OpAttrType::INTS>("paddings");
 
   // for quantization
   bool enable_int8 = false;
@@ -53,11 +53,11 @@ int PoolConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   PrecisionType precision = PRECISION(kFloat);
 
   if (x->precision() == PRECISION(kInt8)) {
-    // enable_int8 = op_info->GetAttr<bool>("enable_int8");
+    // enable_int8 = op_info->GetAttr<OpAttrType::BOOLEAN>("enable_int8");
     enable_int8 = true;
-    input_scale = op_info->GetAttr<float>("input_scale");
-    bit_length = op_info->GetAttr<int>("bit_length");
-    output_scale = op_info->GetAttr<float>("output_scale");
+    input_scale = op_info->GetAttr<OpAttrType::FLOAT>("input_scale");
+    bit_length = op_info->GetAttr<OpAttrType::INT>("bit_length");
+    output_scale = op_info->GetAttr<OpAttrType::FLOAT>("output_scale");
 
     if (enable_int8) {
       precision = PRECISION(kInt8);
@@ -95,7 +95,8 @@ int PoolConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   rk::nn::PadType pad_mode = rk::nn::PadType::AUTO;
   std::string padding_algorithm("");
   if (op_info->HasAttr("padding_algorithm")) {
-    padding_algorithm = op_info->GetAttr<std::string>("padding_algorithm");
+    padding_algorithm =
+        op_info->GetAttr<OpAttrType::STRING>("padding_algorithm");
   }
   if (padding_algorithm == "SAME") {
     pad_mode = rk::nn::PadType::SAME;
@@ -115,9 +116,9 @@ int PoolConverter(void* ctx, OpLite* op, KernelBase* kernel) {
 
   bool adaptive = false;
   if (op_info->HasAttr("adaptive")) {
-    adaptive = op_info->GetAttr<bool>("adaptive");
+    adaptive = op_info->GetAttr<OpAttrType::BOOLEAN>("adaptive");
   }
-  auto strides = op_info->GetAttr<std::vector<int>>("strides");
+  auto strides = op_info->GetAttr<OpAttrType::INTS>("strides");
   lite::operators::UpdatePadding(&paddings,
                                  global_pooling,
                                  adaptive,
@@ -129,7 +130,7 @@ int PoolConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   // ceil mode
   int ceil_mode = 0;
   if (op_info->HasAttr("ceil_mode")) {
-    ceil_mode = op_info->GetAttr<bool>("ceil_mode") ? 1 : 0;
+    ceil_mode = op_info->GetAttr<OpAttrType::BOOLEAN>("ceil_mode") ? 1 : 0;
   }
 
   std::shared_ptr<Node> output_node = nullptr;

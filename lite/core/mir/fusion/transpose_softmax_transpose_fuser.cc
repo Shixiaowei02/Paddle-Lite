@@ -41,7 +41,7 @@ void TransposeSoftmaxTransposeFuser::BuildPattern() {
       OpNode("transpose1", transpose_type_)->assert_is_op(transpose_type_);
 
   auto* softmax = OpNode("softmax", softmax_type_)
-                      ->assert_op_attr_satisfied<int>(
+                      ->assert_op_attr_satisfied<OpAttrType::INT>(
                           "axis", [](int attr) { return attr == -1; });
 
   auto* transpose2 =
@@ -87,7 +87,7 @@ cpp::OpDesc TransposeSoftmaxTransposeFuser::GenOpDesc(
                   matched.at("transpose1")
                       ->stmt()
                       ->op_info()
-                      ->GetAttr<std::vector<int>>("axis")
+                      ->GetAttr<OpAttrType::INTS>("axis")
                       .back());
 
   return op_desc;

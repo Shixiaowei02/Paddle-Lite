@@ -48,8 +48,8 @@ int MulConverter(void* ctx, OpLite* op, KernelBase* kernel) {
     return FAILED;
   }
 
-  int x_num_col_dims = op_info->GetAttr<int>("x_num_col_dims");
-  int y_num_col_dims = op_info->GetAttr<int>("y_num_col_dims");
+  int x_num_col_dims = op_info->GetAttr<OpAttrType::INT>("x_num_col_dims");
+  int y_num_col_dims = op_info->GetAttr<OpAttrType::INT>("y_num_col_dims");
   int m = x_dims.Slice(0, x_num_col_dims).production();
   int k = x_dims.Slice(x_num_col_dims, x_dims.size()).production();
   CHECK_EQ(k, y_dims.Slice(0, y_num_col_dims).production())

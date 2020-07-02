@@ -40,7 +40,8 @@ void RuntimeProgram::SaveOpInfosToProgram(cpp::ProgramDesc* desc) {
     if (op_type == "subgraph") {
       auto subgraph_op = const_cast<operators::SubgraphOp*>(
           static_cast<const operators::SubgraphOp*>(node.op()));
-      int sub_block_idx = subgraph_op->op_info()->GetAttr<int32_t>("sub_block");
+      int sub_block_idx =
+          subgraph_op->op_info()->GetAttr<OpAttrType::INT>("sub_block");
       if (sub_block_idx < 0) {
         // It's a new subgraph op when its sub_block_idx < 0, Now we add its
         // subblock desc to the program desc, Then update its sub_block_idx to
@@ -209,7 +210,7 @@ void Program::Build(const cpp::ProgramDesc& prog) {
     CHECK(op) << "no Op found for " << op_type;
     if (op_type == "while" || op_type == "conditional_block" ||
         op_type == "subgraph") {
-      auto sub_block_idx = op_desc.GetAttr<int32_t>("sub_block");
+      auto sub_block_idx = op_desc.GetAttr<OpAttrType::INT>("sub_block");
       CHECK(sub_block_idx >= 0 && sub_block_idx < program.BlocksSize())
           << "Invalid attribute sub_block(" << sub_block_idx << ") for "
           << op_type;

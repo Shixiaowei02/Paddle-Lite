@@ -64,14 +64,14 @@ int ConvTransposeConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   }
   const float* filter_data =
       const_cast<const float*>(filter->mutable_data<float>());
-  auto groups = op_info->GetAttr<int>("groups");
-  auto paddings = op_info->GetAttr<std::vector<int>>("paddings");
-  auto strides = op_info->GetAttr<std::vector<int>>("strides");
-  auto dilations = op_info->GetAttr<std::vector<int>>("dilations");
+  auto groups = op_info->GetAttr<OpAttrType::INT>("groups");
+  auto paddings = op_info->GetAttr<OpAttrType::INTS>("paddings");
+  auto strides = op_info->GetAttr<OpAttrType::INTS>("strides");
+  auto dilations = op_info->GetAttr<OpAttrType::INTS>("dilations");
 
   bool fuse_relu = false;
   if (op_info->HasAttr("fuse_relu")) {
-    fuse_relu = op_info->GetAttr<bool>("fuse_relu");
+    fuse_relu = op_info->GetAttr<OpAttrType::BOOLEAN>("fuse_relu");
   }
   CHECK_EQ(fuse_relu, false);
   add_deconv_layer(graph->GetCompilerHandle(),

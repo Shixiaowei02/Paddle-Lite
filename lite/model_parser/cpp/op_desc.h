@@ -123,7 +123,8 @@ class OpDesc : public OpDescAPI {
     CHECK(pair.second->second == Type) << "required type is "
                                        << OpAttrTypeTrait<Type, Standard>::ATN
                                        << " not match the true type";
-    return pair.first->second.get<OpAttrTypeTrait<Type, Standard>::DT>();
+    return pair.first->second
+        .get<typename OpAttrTypeTrait<Type, Standard>::DT>();
   }
 
   const std::map<std::string, Any>& attrs() const { return attrs_; }

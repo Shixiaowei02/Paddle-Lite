@@ -42,15 +42,15 @@ bool VarConv2dOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
   CHECK(param_.W) << "W(Input) of VarConv2dOP should not be null.";
   CHECK(param_.Out) << "Out(Output) of VarConv2dOP should not be null.";
   CHECK(param_.Col) << "Col(Output) of VarConv2dOP should not be null.";
-  param_.output_channel = opdesc.GetAttr<int>("OutputChannel");
-  param_.input_channel = opdesc.GetAttr<int>("InputChannel");
-  param_.kernel_h = opdesc.GetAttr<int>("KernelH");
-  param_.kernel_w = opdesc.GetAttr<int>("KernelW");
-  param_.stride_h = opdesc.GetAttr<int>("StrideH");
-  param_.stride_w = opdesc.GetAttr<int>("StrideW");
+  param_.output_channel = opdesc.GetAttr<OpAttrType::INT>("OutputChannel");
+  param_.input_channel = opdesc.GetAttr<OpAttrType::INT>("InputChannel");
+  param_.kernel_h = opdesc.GetAttr<OpAttrType::INT>("KernelH");
+  param_.kernel_w = opdesc.GetAttr<OpAttrType::INT>("KernelW");
+  param_.stride_h = opdesc.GetAttr<OpAttrType::INT>("StrideH");
+  param_.stride_w = opdesc.GetAttr<OpAttrType::INT>("StrideW");
 
   if (opdesc.HasAttr("fuse_relu")) {
-    param_.fuse_relu = opdesc.GetAttr<bool>("fuse_relu");
+    param_.fuse_relu = opdesc.GetAttr<OpAttrType::BOOLEAN>("fuse_relu");
   }
   return true;
 }

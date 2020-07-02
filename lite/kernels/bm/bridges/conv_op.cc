@@ -64,10 +64,10 @@ int ConvConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   }
   const float* filter_data =
       const_cast<const float*>(filter->mutable_data<float>());
-  auto groups = op_info->GetAttr<int>("groups");
-  auto paddings = op_info->GetAttr<std::vector<int>>("paddings");
-  auto strides = op_info->GetAttr<std::vector<int>>("strides");
-  auto dilations = op_info->GetAttr<std::vector<int>>("dilations");
+  auto groups = op_info->GetAttr<OpAttrType::INT>("groups");
+  auto paddings = op_info->GetAttr<OpAttrType::INTS>("paddings");
+  auto strides = op_info->GetAttr<OpAttrType::INTS>("strides");
+  auto dilations = op_info->GetAttr<OpAttrType::INTS>("dilations");
   add_conv_layer(graph->GetCompilerHandle(),
                  const_cast<const int*>(&i_input_shape_data[0]),
                  input_dims.size(),

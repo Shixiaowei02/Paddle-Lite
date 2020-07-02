@@ -60,8 +60,8 @@ bool LayerNormOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
     param_.Bias = scope->FindVar(opdesc.Input("Bias").front())
                       ->GetMutable<lite::Tensor>();
   }
-  param_.begin_norm_axis = opdesc.GetAttr<int>("begin_norm_axis");
-  param_.epsilon = opdesc.GetAttr<float>("epsilon");
+  param_.begin_norm_axis = opdesc.GetAttr<OpAttrType::INT>("begin_norm_axis");
+  param_.epsilon = opdesc.GetAttr<OpAttrType::FLOAT>("epsilon");
   return true;
 }
 

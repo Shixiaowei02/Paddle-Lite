@@ -56,8 +56,8 @@ class MulOpLite : public OpLite {
     var = scope->FindVar(out);
     CHECK(var) << "no var called " << out;
     param_.output = var->GetMutable<Tensor>();
-    param_.x_num_col_dims = op_desc.GetAttr<int>("x_num_col_dims");
-    param_.y_num_col_dims = op_desc.GetAttr<int>("y_num_col_dims");
+    param_.x_num_col_dims = op_desc.GetAttr<OpAttrType::INT>("x_num_col_dims");
+    param_.y_num_col_dims = op_desc.GetAttr<OpAttrType::INT>("y_num_col_dims");
     return true;
   }
 

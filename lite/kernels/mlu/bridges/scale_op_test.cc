@@ -30,9 +30,10 @@ void scale_ref(const std::shared_ptr<operators::ScaleOp> op) {
   auto x = scope->FindVar(op_info->Input("X").front())->GetMutable<Tensor>();
   auto out =
       scope->FindVar(op_info->Output("Out").front())->GetMutable<Tensor>();
-  float scale = op_info->GetAttr<float>("scale");
-  float bias = op_info->GetAttr<float>("bias");
-  bool bias_after_scale = op_info->GetAttr<bool>("bias_after_scale");
+  float scale = op_info->GetAttr<OpAttrType::FLOAT>("scale");
+  float bias = op_info->GetAttr<OpAttrType::FLOAT>("bias");
+  bool bias_after_scale =
+      op_info->GetAttr<OpAttrType::BOOLEAN>("bias_after_scale");
   if (!bias_after_scale) {
     bias *= scale;
   }

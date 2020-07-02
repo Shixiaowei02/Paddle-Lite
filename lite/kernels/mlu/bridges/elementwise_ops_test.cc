@@ -39,7 +39,7 @@ void elementwise_add_ref(const std::shared_ptr<operators::ElementwiseOp> op) {
 
   auto x_dims = x->dims();
   auto y_dims = y->dims();
-  int axis = op_info->GetAttr<int>("axis");
+  int axis = op_info->GetAttr<OpAttrType::INT>("axis");
 
   if (axis < 0) {
     axis += x_dims.size();

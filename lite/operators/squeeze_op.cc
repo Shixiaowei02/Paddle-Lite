@@ -89,7 +89,7 @@ bool SqueezeOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
   param_.Out = scope->FindMutableTensor(opdesc.Output("Out").front());
 
   if (opdesc.HasAttr("axes")) {
-    param_.axes = opdesc.GetAttr<std::vector<int>>("axes");
+    param_.axes = opdesc.GetAttr<OpAttrType::INTS>("axes");
   }
   CHECK(param_.X) << "Input(X) of SqueezeOp should not be null.";
   CHECK(param_.Out) << "Output(Out) of SqueezeOp should not be null.";

@@ -91,7 +91,7 @@ bool SequencePadOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
                       ->GetMutable<lite::Tensor>();
   param_.Out =
       scope->FindVar(opdesc.Output("Out").front())->GetMutable<lite::Tensor>();
-  param_.padded_length = opdesc.GetAttr<int>("padded_length");
+  param_.padded_length = opdesc.GetAttr<OpAttrType::INT>("padded_length");
   return true;
 }
 

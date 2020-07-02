@@ -40,7 +40,7 @@ int InstanceNormConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto spatial_size = x_dims[2] * x_dims[3];
   DDim scale_bias_dims({1, channel_size, 1, 1});
   auto y_name = op_info->Output("Y").front();
-  float epsilon = op_info->GetAttr<float>("epsilon");
+  float epsilon = op_info->GetAttr<OpAttrType::FLOAT>("epsilon");
 
   // X node
   std::shared_ptr<Node> x_node = nullptr;

@@ -52,7 +52,7 @@ bool SearchGroupPaddingOp::AttachImpl(const cpp::OpDesc &op_desc,
       scope->FindVar(out_emb_padding)->GetMutable<lite::Tensor>();
   param_.out_new = scope->FindVar(out_new)->GetMutable<lite::Tensor>();
   param_.out_padding = scope->FindVar(out_padding)->GetMutable<lite::Tensor>();
-  param_.pad_id = op_desc.GetAttr<int>("pad_id");
+  param_.pad_id = op_desc.GetAttr<OpAttrType::INT>("pad_id");
 
   CHECK(param_.out_emb_padding)
       << "Output(Out_emb_padding) of SearchGroupPadding Op should not be null.";

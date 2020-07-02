@@ -49,7 +49,7 @@ int ActConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   int active_type_id = 0;
   if (op_type == "relu") {
   } else if (op_type == "leaky_relu") {
-    alpha = op_info->GetAttr<float>("alpha");
+    alpha = op_info->GetAttr<OpAttrType::FLOAT>("alpha");
   } else if (op_type == "sqrt") {
     active_type_id = ACTIVE_SQRT;
   } else if (op_type == "square") {

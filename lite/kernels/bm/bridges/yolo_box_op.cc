@@ -63,10 +63,10 @@ int YoloBoxConverter(void* ctx, OpLite* op, KernelBase* kernel) {
     i_scores_shape_data[i] = static_cast<int32_t>(scores_dims[i]);
   }
 
-  auto class_num = op_info->GetAttr<int>("class_num");
-  auto downsample_ratio = op_info->GetAttr<int>("downsample_ratio");
-  auto conf_thresh = op_info->GetAttr<float>("conf_thresh");
-  auto anchors = op_info->GetAttr<std::vector<int>>("anchors");
+  auto class_num = op_info->GetAttr<OpAttrType::INT>("class_num");
+  auto downsample_ratio = op_info->GetAttr<OpAttrType::INT>("downsample_ratio");
+  auto conf_thresh = op_info->GetAttr<OpAttrType::FLOAT>("conf_thresh");
+  auto anchors = op_info->GetAttr<OpAttrType::INTS>("anchors");
   int* anchors_buffer = static_cast<int*>(malloc(sizeof(int) * anchors.size()));
   CHECK(anchors_buffer != nullptr);
   memcpy(anchors_buffer, &anchors[0], sizeof(int) * anchors.size());

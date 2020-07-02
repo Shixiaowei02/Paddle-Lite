@@ -38,7 +38,7 @@ bool ShuffleChannelOpLite::AttachImpl(const cpp::OpDesc& op_desc,
   auto Out = op_desc.Output("Out").front();
   param_.X = scope->FindVar(X)->GetMutable<lite::Tensor>();
   param_.Out = scope->FindVar(Out)->GetMutable<lite::Tensor>();
-  param_.group = op_desc.GetAttr<int>("group");
+  param_.group = op_desc.GetAttr<OpAttrType::INT>("group");
   CHECK(param_.X);
   CHECK(param_.Out);
   return true;

@@ -43,7 +43,7 @@ int FCConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto out = scope->FindTensor(out_name);
   auto out_dims = out->dims();
 
-  int in_num_col_dims = op_info->GetAttr<int>("in_num_col_dims");
+  int in_num_col_dims = op_info->GetAttr<OpAttrType::INT>("in_num_col_dims");
   int m = input_dims.Slice(0, in_num_col_dims).production();
   int k = input_dims.Slice(in_num_col_dims, input_dims.size()).production();
   int n = w_dims[1];

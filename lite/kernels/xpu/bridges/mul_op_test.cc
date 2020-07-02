@@ -31,8 +31,8 @@ void mul_ref(const std::shared_ptr<operators::MulOpLite> op) {
   auto y = scope->FindVar(op_info->Input("Y").front())->GetMutable<Tensor>();
   auto out =
       scope->FindVar(op_info->Output("Out").front())->GetMutable<Tensor>();
-  int32_t x_num_col_dims = op_info->GetAttr<int32_t>("x_num_col_dims");
-  int32_t y_num_col_dims = op_info->GetAttr<int32_t>("y_num_col_dims");
+  int32_t x_num_col_dims = op_info->GetAttr<OpAttrType::INT>("x_num_col_dims");
+  int32_t y_num_col_dims = op_info->GetAttr<OpAttrType::INT>("y_num_col_dims");
   auto x_data = x->mutable_data<float>();
   auto y_data = y->mutable_data<float>();
   auto out_data = out->mutable_data<float>();

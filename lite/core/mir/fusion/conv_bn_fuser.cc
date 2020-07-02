@@ -97,13 +97,14 @@ void ConvBNFuser::InsertNewNode(SSAGraph* graph, const key2nodes_t& matched) {
   auto bn_bias_t = scope->FindVar(matched.at("bn_bias")->arg()->name)
                        ->GetMutable<lite::Tensor>();
   auto bn_bias_d = bn_bias_t->mutable_data<float>();
-  auto eps = matched.at("bn")->stmt()->op_info()->GetAttr<float>("epsilon");
+  auto eps = matched.at("bn")->stmt()->op_info()->GetAttr<OpAttrType::FLOAT>(
+      "epsilon");
 
   // conv
   std::string conv_weight_name = matched.at("conv_weight")->arg()->name;
   auto conv_weight_t =
       scope->FindVar(conv_weight_name)->GetMutable<lite::Tensor>();
-  auto groups = conv_op_desc->GetAttr<int>("groups");
+  auto groups = conv_op_desc->GetAttr<OpAttrType::INT>("groups");
   bool depthwise = false;
   if (conv_type_ == "conv2d_transpose") {
     depthwise = (conv_weight_t->dims()[0] == conv_weight_t->dims()[1] * groups);
@@ -162,7 +163,7 @@ void ConvBNFuser::InsertNewNode(SSAGraph* graph, const key2nodes_t& matched) {
     auto conv_weight_d = conv_weight_t->mutable_data<int8_t>();
     // compute new conv_weight for int8
     auto weight_scale =
-        conv_op_desc->GetInputScale<std::vector<float>>(weight_name);
+        conv_op_desc->GetInputScale<OpAttrType::FLOATS>(weight_name);
     if (conv_type_ == "conv2d_transpose" && !depthwise) {
       int c_size = conv_weight_t->dims()[1] * conv_weight_t->dims()[2] *
                    conv_weight_t->dims()[3];
@@ -193,7 +194,7 @@ void ConvBNFuser::InsertNewNode(SSAGraph* graph, const key2nodes_t& matched) {
   } else if (is_weight_quantization) {
     std::string scale_name = conv_weight_name + "_quant_scale";
     if (conv_op_desc->HasAttr(scale_name)) {
-      auto scale = conv_op_desc->GetAttr<std::vector<float>>(scale_name);
+      auto scale = conv_op_desc->GetAttr<OpAttrType::FLOATS>(scale_name);
       CHECK_EQ(scale.size(), alpha_tensor.numel());
       for (size_t i = 0; i < scale.size(); i++) {
         scale[i] *= alpha_data[i];

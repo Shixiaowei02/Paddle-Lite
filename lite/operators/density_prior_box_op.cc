@@ -41,47 +41,47 @@ bool DensityPriorBoxOpLite::AttachImpl(const cpp::OpDesc& opdesc,
   param_.boxes = scope->FindVar(boxes)->GetMutable<lite::Tensor>();
   param_.variances = scope->FindVar(variances)->GetMutable<lite::Tensor>();
 
-  param_.clip = opdesc.GetAttr<bool>("clip");
-  param_.fixed_sizes = opdesc.GetAttr<std::vector<float>>("fixed_sizes");
-  param_.fixed_ratios = opdesc.GetAttr<std::vector<float>>("fixed_ratios");
-  param_.variances_ = opdesc.GetAttr<std::vector<float>>("variances");
+  param_.clip = opdesc.GetAttr<OpAttrType::BOOLEAN>("clip");
+  param_.fixed_sizes = opdesc.GetAttr<OpAttrType::FLOATS>("fixed_sizes");
+  param_.fixed_ratios = opdesc.GetAttr<OpAttrType::FLOATS>("fixed_ratios");
+  param_.variances_ = opdesc.GetAttr<OpAttrType::FLOATS>("variances");
 
   if (opdesc.HasAttr("aspect_ratios")) {
-    param_.aspect_ratios = opdesc.GetAttr<std::vector<float>>("aspect_ratios");
+    param_.aspect_ratios = opdesc.GetAttr<OpAttrType::FLOATS>("aspect_ratios");
   }
   if (opdesc.HasAttr("max_sizes")) {
-    param_.max_sizes = opdesc.GetAttr<std::vector<float>>("max_sizes");
+    param_.max_sizes = opdesc.GetAttr<OpAttrType::FLOATS>("max_sizes");
   }
   if (opdesc.HasAttr("density_sizes")) {
-    param_.density_sizes = opdesc.GetAttr<std::vector<int>>("density_sizes");
+    param_.density_sizes = opdesc.GetAttr<OpAttrType::INTS>("density_sizes");
   }
   if (opdesc.HasAttr("densities")) {
-    param_.density_sizes = opdesc.GetAttr<std::vector<int>>("densities");
+    param_.density_sizes = opdesc.GetAttr<OpAttrType::INTS>("densities");
   }
   if (opdesc.HasAttr("min_sizes")) {
-    param_.min_sizes = opdesc.GetAttr<std::vector<float>>("min_sizes");
+    param_.min_sizes = opdesc.GetAttr<OpAttrType::FLOATS>("min_sizes");
   }
   if (opdesc.HasAttr("flip")) {
-    param_.flip = opdesc.GetAttr<bool>("flip");
+    param_.flip = opdesc.GetAttr<OpAttrType::BOOLEAN>("flip");
   }
   if (opdesc.HasAttr("img_w")) {
-    param_.img_w = opdesc.GetAttr<int>("img_w");
+    param_.img_w = opdesc.GetAttr<OpAttrType::INT>("img_w");
   }
   if (opdesc.HasAttr("img_h")) {
-    param_.img_h = opdesc.GetAttr<int>("img_h");
+    param_.img_h = opdesc.GetAttr<OpAttrType::INT>("img_h");
   }
   if (opdesc.HasAttr("step_w")) {
-    param_.step_w = opdesc.GetAttr<float>("step_w");
+    param_.step_w = opdesc.GetAttr<OpAttrType::FLOAT>("step_w");
   }
   if (opdesc.HasAttr("step_h")) {
-    param_.step_h = opdesc.GetAttr<float>("step_h");
+    param_.step_h = opdesc.GetAttr<OpAttrType::FLOAT>("step_h");
   }
-  param_.offset = opdesc.GetAttr<float>("offset");
+  param_.offset = opdesc.GetAttr<OpAttrType::FLOAT>("offset");
   if (opdesc.HasAttr("prior_num")) {
-    param_.prior_num = opdesc.GetAttr<int>("prior_num");
+    param_.prior_num = opdesc.GetAttr<OpAttrType::INT>("prior_num");
   }
   if (opdesc.HasAttr("order")) {
-    param_.order = opdesc.GetAttr<std::vector<std::string>>("order");
+    param_.order = opdesc.GetAttr<OpAttrType::STRINGS>("order");
   }
   return true;
 }

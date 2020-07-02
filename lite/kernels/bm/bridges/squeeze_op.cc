@@ -44,7 +44,7 @@ int SqueezeConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto output_var_name = op_info->Output("Out").front();
   std::vector<int> axes;
   if (op_info->HasAttr("axes")) {
-    axes = op_info->GetAttr<std::vector<int>>("axes");
+    axes = op_info->GetAttr<OpAttrType::INTS>("axes");
   }
   auto unique_op_scale_name = lite::subgraph::bm::UniqueName(op_type);
   add_squeeze_layer(graph->GetCompilerHandle(),

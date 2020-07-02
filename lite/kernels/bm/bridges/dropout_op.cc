@@ -48,9 +48,9 @@ int DropoutConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   for (size_t i = 0; i < output_dims.size(); i++) {
     i_output_shape_data[i] = static_cast<int>(output_shape_data[i]);
   }
-  auto dropout_prob = op_info->GetAttr<float>("dropout_prob");
+  auto dropout_prob = op_info->GetAttr<OpAttrType::FLOAT>("dropout_prob");
   auto dropout_implementation =
-      op_info->GetAttr<std::string>("dropout_implementation");
+      op_info->GetAttr<OpAttrType::STRING>("dropout_implementation");
 
   if (dropout_implementation == "downgrade_in_infer") {
     add_const_binary_layer(graph->GetCompilerHandle(),

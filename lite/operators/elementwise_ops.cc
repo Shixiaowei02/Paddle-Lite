@@ -96,7 +96,7 @@ bool ElementwiseOp::AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) {
   param_.X = GetVar<lite::Tensor>(scope, X_name);
   param_.Y = GetVar<lite::Tensor>(scope, Y_name);
   param_.Out = GetMutableVar<lite::Tensor>(scope, Out_name);
-  param_.axis = opdesc.GetAttr<int>("axis");
+  param_.axis = opdesc.GetAttr<OpAttrType::INT>("axis");
   return true;
 }
 
@@ -128,7 +128,7 @@ bool ElementwiseOp::AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) {
 //   param_.Y = GetVar<lite::Tensor>(scope, Y_name);
 //   param_.Out_grad = GetVar<lite::Tensor>(scope, Out_name);
 //   param_.X_grad = GetMutableVar<lite::Tensor>(scope, X_grad);
-//   param_.axis = opdesc.GetAttr<int>("axis");
+//   param_.axis = opdesc.GetAttr<OpAttrType::INT>("axis");
 
 //   return true;
 // }

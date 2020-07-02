@@ -90,9 +90,9 @@ bool GRUUnitOpLite::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
     param_.bias = scope->FindVar(bias)->GetMutable<lite::Tensor>();
   }
 
-  param_.gate_activation = op_desc.GetAttr<int>("gate_activation");
-  param_.activation = op_desc.GetAttr<int>("activation");
-  param_.origin_mode = op_desc.GetAttr<bool>("origin_mode");
+  param_.gate_activation = op_desc.GetAttr<OpAttrType::INT>("gate_activation");
+  param_.activation = op_desc.GetAttr<OpAttrType::INT>("activation");
+  param_.origin_mode = op_desc.GetAttr<OpAttrType::BOOLEAN>("origin_mode");
 
   return true;
 }

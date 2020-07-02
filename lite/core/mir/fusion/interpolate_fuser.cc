@@ -29,17 +29,17 @@ void InterpolateFuser::BuildPattern() {
   auto* shape = OpNode("shape", "shape")->AsIntermediate();
   auto* shape_out = VarNode("shape_out")->AsIntermediate();
   auto* slice = OpNode("slice", "slice")
-                    ->assert_op_attr_satisfied<std::vector<int>>(
+                    ->assert_op_attr_satisfied<OpAttrType::INTS>(
                         "axes",
                         [](const std::vector<int>& attr) {
                           return attr.size() == 1 && attr[0] == 0;
                         })
-                    ->assert_op_attr_satisfied<std::vector<int>>(
+                    ->assert_op_attr_satisfied<OpAttrType::INTS>(
                         "starts",
                         [](const std::vector<int>& attr) {
                           return attr.size() == 1 && attr[0] == 2;
                         })
-                    ->assert_op_attr_satisfied<std::vector<int>>(
+                    ->assert_op_attr_satisfied<OpAttrType::INTS>(
                         "ends",
                         [](const std::vector<int>& attr) {
                           return attr.size() == 1 && attr[0] == 4;
@@ -53,7 +53,7 @@ void InterpolateFuser::BuildPattern() {
   auto* fill_constant_out = VarNode("fill_constant_out")->AsIntermediate();
   auto* elementwise_mul =
       OpNode("elementwise_mul", "elementwise_mul")
-          ->assert_op_attr_satisfied<int>(
+          ->assert_op_attr_satisfied<OpAttrType::INT>(
               "axis", [](int attr) { return attr == -1 || attr == 0; })
           ->AsIntermediate();
   auto* elementwise_mul_out = VarNode("elementwise_mul_out")->AsIntermediate();
@@ -86,9 +86,11 @@ void InterpolateFuser::InsertNewNode(SSAGraph* graph,
 cpp::OpDesc InterpolateFuser::GenOpDesc(const key2nodes_t& matched) {
   auto op_desc = *matched.at("interpolate")->stmt()->op_info();
   op_desc.SetInput("OutSize", {});
-  op_desc.SetAttr(
-      "scale",
-      matched.at("fill_constant")->stmt()->op_info()->GetAttr<float>("value"));
+  op_desc.SetAttr("scale",
+                  matched.at("fill_constant")
+                      ->stmt()
+                      ->op_info()
+                      ->GetAttr<OpAttrType::FLOAT>("value"));
   return op_desc;
 }
 
@@ -99,17 +101,17 @@ void InterpolateFuser2::BuildPattern() {
   auto* shape = OpNode("shape", "shape")->AsIntermediate();
   auto* shape_out = VarNode("shape_out")->AsIntermediate();
   auto* slice = OpNode("slice", "slice")
-                    ->assert_op_attr_satisfied<std::vector<int>>(
+                    ->assert_op_attr_satisfied<OpAttrType::INTS>(
                         "axes",
                         [](const std::vector<int>& attr) {
                           return attr.size() == 1 && attr[0] == 0;
                         })
-                    ->assert_op_attr_satisfied<std::vector<int>>(
+                    ->assert_op_attr_satisfied<OpAttrType::INTS>(
                         "starts",
                         [](const std::vector<int>& attr) {
                           return attr.size() == 1 && attr[0] == 2;
                         })
-                    ->assert_op_attr_satisfied<std::vector<int>>(
+                    ->assert_op_attr_satisfied<OpAttrType::INTS>(
                         "ends",
                         [](const std::vector<int>& attr) {
                           return attr.size() == 1 && attr[0] == 4;

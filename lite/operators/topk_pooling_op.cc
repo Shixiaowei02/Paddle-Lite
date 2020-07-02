@@ -42,8 +42,8 @@ bool TopkPoolingOp::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
   param_.Y = scope->FindTensor(y);
   auto output = op_desc.Output("Out").front();
   param_.Out = scope->FindMutableTensor(output);
-  param_.top_k = op_desc.GetAttr<int>("top_k");
-  param_.feat_map_num = op_desc.GetAttr<int>("feat_map_num");
+  param_.top_k = op_desc.GetAttr<OpAttrType::INT>("top_k");
+  param_.feat_map_num = op_desc.GetAttr<OpAttrType::INT>("feat_map_num");
 
   return true;
 }

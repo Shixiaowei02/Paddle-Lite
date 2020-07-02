@@ -36,8 +36,7 @@ static void UpdateInputTo(cpp::OpDesc* desc,
     }
   }
   if (desc->Type() != "subgraph") return;
-  auto input_names =
-      desc->GetAttr<std::vector<std::string>>("input_data_names");
+  auto input_names = desc->GetAttr<OpAttrType::STRINGS>("input_data_names");
   for (size_t i = 0; i < input_names.size(); ++i) {
     if (input_names[i] == from) {
       input_names[i] = to;
@@ -57,8 +56,7 @@ static void UpdateOutputTo(cpp::OpDesc* desc,
     }
   }
   if (desc->Type() != "subgraph") return;
-  auto output_names =
-      desc->GetAttr<std::vector<std::string>>("output_data_names");
+  auto output_names = desc->GetAttr<OpAttrType::STRINGS>("output_data_names");
   for (size_t i = 0; i < output_names.size(); ++i) {
     if (output_names[i] == from) {
       output_names[i] = to;

@@ -38,7 +38,7 @@ int ElementwiseConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto y = scope->FindMutableTensor(y_name);
   auto y_dims = y->dims();
   auto out_name = op_info->Output("Out").front();
-  auto axis = op_info->GetAttr<int>("axis");
+  auto axis = op_info->GetAttr<OpAttrType::INT>("axis");
 
   // X node
   std::shared_ptr<Node> x_node = nullptr;

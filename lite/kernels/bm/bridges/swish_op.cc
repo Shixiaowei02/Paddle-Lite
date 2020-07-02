@@ -49,7 +49,7 @@ int SwishConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   }
   auto unique_sigmoid_name =
       lite::subgraph::bm::UniqueName(op_type + "_sigmoid");
-  auto beta = op_info->GetAttr<float>("beta");
+  auto beta = op_info->GetAttr<OpAttrType::FLOAT>("beta");
   CHECK_EQ(beta, 1.f);
   add_active_layer(graph->GetCompilerHandle(),
                    const_cast<const int*>(&i_x_shape_data[0]),

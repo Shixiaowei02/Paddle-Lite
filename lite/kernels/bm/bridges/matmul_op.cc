@@ -55,9 +55,9 @@ int MatMulConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   for (size_t i = 0; i < out_dims.size(); i++) {
     i_out_shape_data[i] = static_cast<int>(out_dims[i]);
   }
-  bool transpose_x = op_info->GetAttr<bool>("transpose_X");
-  bool transpose_y = op_info->GetAttr<bool>("transpose_Y");
-  float alpha = op_info->GetAttr<float>("alpha");
+  bool transpose_x = op_info->GetAttr<OpAttrType::BOOLEAN>("transpose_X");
+  bool transpose_y = op_info->GetAttr<OpAttrType::BOOLEAN>("transpose_Y");
+  float alpha = op_info->GetAttr<OpAttrType::FLOAT>("alpha");
   CHECK_EQ(alpha, 1.f);
   CHECK_EQ(transpose_x, 0);
   CHECK_EQ(transpose_y, 0);

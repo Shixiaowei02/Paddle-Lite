@@ -110,7 +110,7 @@ int ElementwiseConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   for (size_t i = 0; i < output_dims.size(); i++) {
     i_output_shape_data[i] = static_cast<int>(output_shape_data[i]);
   }
-  auto axis = op_info->GetAttr<int>("axis");
+  auto axis = op_info->GetAttr<OpAttrType::INT>("axis");
   int op_code{-1};
   if (op_type == "elementwise_mul") {
     op_code = BINARY_MUL;

@@ -58,7 +58,7 @@ bool ElementwiseGradOp::AttachImpl(const cpp::OpDesc& opdesc,
   param_.X = GetVar<lite::Tensor>(scope, X_name);
   param_.Y = GetVar<lite::Tensor>(scope, Y_name);
   param_.OutGrad = GetVar<lite::Tensor>(scope, Out_name);
-  param_.axis = opdesc.GetAttr<int>("axis");
+  param_.axis = opdesc.GetAttr<OpAttrType::INT>("axis");
   return true;
 }
 

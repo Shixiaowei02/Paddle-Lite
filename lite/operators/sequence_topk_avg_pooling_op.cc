@@ -71,8 +71,8 @@ bool SequenceTopkAvgPoolingOpLite::AttachImpl(const cpp::OpDesc &op_desc,
   param_.COLUMN = scope->FindVar(COLUMN)->GetMutable<lite::Tensor>();
   param_.Out = scope->FindVar(Out)->GetMutable<lite::Tensor>();
   param_.pos = scope->FindVar(pos)->GetMutable<lite::Tensor>();
-  param_.channel_num = op_desc.GetAttr<int>("channel_num");
-  param_.topks = op_desc.GetAttr<std::vector<int>>("topks");
+  param_.channel_num = op_desc.GetAttr<OpAttrType::INT>("channel_num");
+  param_.topks = op_desc.GetAttr<OpAttrType::INTS>("topks");
 
   return true;
 }

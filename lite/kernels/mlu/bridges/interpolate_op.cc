@@ -37,10 +37,10 @@ int InterpolateConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto out = scope->FindVar(out_var_name)->GetMutable<Tensor>();
   auto x_dims = x->dims();
   CHECK_EQ(x_dims.size(), 4u);
-  auto scale = op_info->GetAttr<float>("scale");
-  auto out_w = op_info->GetAttr<int>("out_w");
-  auto out_h = op_info->GetAttr<int>("out_h");
-  auto align_corners = op_info->GetAttr<bool>("align_corners");
+  auto scale = op_info->GetAttr<OpAttrType::FLOAT>("scale");
+  auto out_w = op_info->GetAttr<OpAttrType::INT>("out_w");
+  auto out_h = op_info->GetAttr<OpAttrType::INT>("out_h");
+  auto align_corners = op_info->GetAttr<OpAttrType::BOOLEAN>("align_corners");
 
   CHECK(graph->HasNode(x_var_name));
   auto input_tensor = graph->GetNode(x_var_name);

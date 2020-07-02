@@ -89,14 +89,15 @@ bool XPUFcOp::AttachImpl(const cpp::OpDesc& op_desc, lite::Scope* scope) {
   }
   CHECK(scope->FindVar(out));
   param_.output = scope->FindVar(out)->GetMutable<lite::Tensor>();
-  param_.in_num_col_dims = op_desc.GetAttr<int>("in_num_col_dims");
-  param_.w_max = op_desc.GetAttr<float>("w_max");
+  param_.in_num_col_dims = op_desc.GetAttr<OpAttrType::INT>("in_num_col_dims");
+  param_.w_max = op_desc.GetAttr<OpAttrType::FLOAT>("w_max");
 
   if (op_desc.HasAttr("activation_type")) {
-    param_.activation_type = op_desc.GetAttr<std::string>("activation_type");
+    param_.activation_type =
+        op_desc.GetAttr<OpAttrType::STRING>("activation_type");
   }
   if (op_desc.HasAttr("transpose_w")) {
-    param_.transpose_w = op_desc.GetAttr<bool>("transpose_w");
+    param_.transpose_w = op_desc.GetAttr<OpAttrType::BOOLEAN>("transpose_w");
   }
 
   return true;

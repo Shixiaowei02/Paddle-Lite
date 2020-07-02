@@ -35,13 +35,13 @@ int PoolConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto x = scope->FindMutableTensor(x_name);
   auto x_dims = x->dims();
   auto out_name = op_info->Output("Out").front();
-  auto pooling_type = op_info->GetAttr<std::string>("pooling_type");
-  auto ceil_mode = op_info->GetAttr<bool>("ceil_mode");
-  auto paddings = op_info->GetAttr<std::vector<int>>("paddings");
-  auto global_pooling = op_info->GetAttr<bool>("global_pooling");
-  auto ksize = op_info->GetAttr<std::vector<int>>("ksize");
-  auto strides = op_info->GetAttr<std::vector<int>>("strides");
-  auto exclusive = op_info->GetAttr<bool>("exclusive");
+  auto pooling_type = op_info->GetAttr<OpAttrType::STRING>("pooling_type");
+  auto ceil_mode = op_info->GetAttr<OpAttrType::BOOLEAN>("ceil_mode");
+  auto paddings = op_info->GetAttr<OpAttrType::INTS>("paddings");
+  auto global_pooling = op_info->GetAttr<OpAttrType::BOOLEAN>("global_pooling");
+  auto ksize = op_info->GetAttr<OpAttrType::INTS>("ksize");
+  auto strides = op_info->GetAttr<OpAttrType::INTS>("strides");
+  auto exclusive = op_info->GetAttr<OpAttrType::BOOLEAN>("exclusive");
 
   // X node
   std::shared_ptr<Node> x_node = nullptr;

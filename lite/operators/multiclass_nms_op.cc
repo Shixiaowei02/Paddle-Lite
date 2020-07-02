@@ -61,14 +61,14 @@ bool MulticlassNmsOpLite::AttachImpl(const cpp::OpDesc& opdesc,
   param_.bboxes = GetVar<lite::Tensor>(scope, bboxes_name);
   param_.scores = GetVar<lite::Tensor>(scope, scores_name);
   param_.out = GetMutableVar<lite::Tensor>(scope, out_name);
-  param_.background_label = opdesc.GetAttr<int>("background_label");
-  param_.keep_top_k = opdesc.GetAttr<int>("keep_top_k");
-  param_.nms_top_k = opdesc.GetAttr<int>("nms_top_k");
-  param_.score_threshold = opdesc.GetAttr<float>("score_threshold");
-  param_.nms_threshold = opdesc.GetAttr<float>("nms_threshold");
-  param_.nms_eta = opdesc.GetAttr<float>("nms_eta");
+  param_.background_label = opdesc.GetAttr<OpAttrType::INT>("background_label");
+  param_.keep_top_k = opdesc.GetAttr<OpAttrType::INT>("keep_top_k");
+  param_.nms_top_k = opdesc.GetAttr<OpAttrType::INT>("nms_top_k");
+  param_.score_threshold = opdesc.GetAttr<OpAttrType::FLOAT>("score_threshold");
+  param_.nms_threshold = opdesc.GetAttr<OpAttrType::FLOAT>("nms_threshold");
+  param_.nms_eta = opdesc.GetAttr<OpAttrType::FLOAT>("nms_eta");
   if (opdesc.HasAttr("normalized")) {
-    param_.normalized = opdesc.GetAttr<bool>("normalized");
+    param_.normalized = opdesc.GetAttr<OpAttrType::BOOLEAN>("normalized");
   }
   return true;
 }

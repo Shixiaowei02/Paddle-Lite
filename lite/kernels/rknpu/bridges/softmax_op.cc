@@ -41,7 +41,7 @@ int SoftmaxConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto out_type = kernel->GetOutputDeclType("Out");
   CHECK(out_type->layout() == DATALAYOUT(kNCHW));
   auto output = scope->FindMutableTensor(out_name);
-  auto axis = op_info->GetAttr<int>("axis");
+  auto axis = op_info->GetAttr<OpAttrType::INT>("axis");
   if (axis < 0) {
     axis += x_rank;
   }
@@ -55,10 +55,10 @@ int SoftmaxConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   PrecisionType precision = PRECISION(kFloat);
 
   if (op_info->HasAttr("enable_int8")) {
-    enable_int8 = op_info->GetAttr<bool>("enable_int8");
-    input_scale = op_info->GetAttr<float>("input_scale");
-    bit_length = op_info->GetAttr<int>("bit_length");
-    output_scale = op_info->GetAttr<float>("output_scale");
+    enable_int8 = op_info->GetAttr<OpAttrType::BOOLEAN>("enable_int8");
+    input_scale = op_info->GetAttr<OpAttrType::FLOAT>("input_scale");
+    bit_length = op_info->GetAttr<OpAttrType::INT>("bit_length");
+    output_scale = op_info->GetAttr<OpAttrType::FLOAT>("output_scale");
 
     if (enable_int8) {
       precision = PRECISION(kInt8);

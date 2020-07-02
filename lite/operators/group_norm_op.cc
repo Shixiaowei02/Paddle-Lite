@@ -69,9 +69,9 @@ bool GroupNormOp::AttachImpl(const cpp::OpDesc& op_desc, lite::Scope* scope) {
           ->GetMutable<Tensor>();
   param_.out =
       scope->FindVar(op_desc.Output("Y").front())->GetMutable<Tensor>();
-  param_.epsilon = op_desc.GetAttr<float>("epsilon");
-  param_.groups = op_desc.GetAttr<int>("groups");
-  param_.channels = op_desc.GetAttr<int>("channels");
+  param_.epsilon = op_desc.GetAttr<OpAttrType::FLOAT>("epsilon");
+  param_.groups = op_desc.GetAttr<OpAttrType::INT>("groups");
+  param_.channels = op_desc.GetAttr<OpAttrType::INT>("channels");
   return true;
 }
 

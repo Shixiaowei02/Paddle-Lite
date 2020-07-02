@@ -92,7 +92,7 @@ cpp::OpDesc ElementwiseActivationFuser::GenOpDesc(const key2nodes_t& matched) {
   op_desc.SetInput("Y", {matched.at("y")->arg()->name});
   op_desc.SetOutput("Out", {matched.at("output")->arg()->name});
 
-  op_desc.SetAttr("axis", desc->GetAttr<int>("axis"));
+  op_desc.SetAttr("axis", desc->GetAttr<OpAttrType::INT>("axis"));
   op_desc.SetAttr("act_type", act_type_);
   return op_desc;
 }

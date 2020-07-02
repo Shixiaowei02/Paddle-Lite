@@ -47,17 +47,17 @@ bool DropoutOp::AttachImpl(const cpp::OpDesc& op_desc, lite::Scope* scope) {
   param_.output = GetMutableVar<lite::Tensor>(scope, out);
   param_.mask = GetMutableVar<lite::Tensor>(scope, Mask);
 
-  param_.dropout_prob = op_desc.GetAttr<float>("dropout_prob");
+  param_.dropout_prob = op_desc.GetAttr<OpAttrType::FLOAT>("dropout_prob");
   param_.is_test = true;
   // TODO(sangoly): `is_test` has different attr type in x86 and arm, set
   // `true` now.
   // if (op_desc.HasAttr("is_test")) {
-  //   param_.is_test = op_desc.GetAttr<bool>("is_test");
+  //   param_.is_test = op_desc.GetAttr<OpAttrType::BOOLEAN>("is_test");
   // }
-  param_.fix_seed = op_desc.GetAttr<bool>("fix_seed");
-  param_.seed = op_desc.GetAttr<int>("seed");
+  param_.fix_seed = op_desc.GetAttr<OpAttrType::BOOLEAN>("fix_seed");
+  param_.seed = op_desc.GetAttr<OpAttrType::INT>("seed");
   param_.dropout_implementation =
-      op_desc.GetAttr<std::string>("dropout_implementation");
+      op_desc.GetAttr<OpAttrType::STRING>("dropout_implementation");
   return true;
 }
 

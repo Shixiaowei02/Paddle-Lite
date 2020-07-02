@@ -70,8 +70,8 @@ bool SearchGrnnOpLite::AttachImpl(const cpp::OpDesc& op_desc,
   param_.wi = scope->FindVar(wi)->GetMutable<lite::Tensor>();
   param_.wh = scope->FindVar(wh)->GetMutable<lite::Tensor>();
 
-  param_.num_input = op_desc.GetAttr<int>("num_input");
-  param_.num_hidden = op_desc.GetAttr<int>("num_hidden");
+  param_.num_input = op_desc.GetAttr<OpAttrType::INT>("num_input");
+  param_.num_hidden = op_desc.GetAttr<OpAttrType::INT>("num_hidden");
 
   auto out = op_desc.Output("Out").front();
   auto tmp_buffer = op_desc.Output("tmp_buffer").front();

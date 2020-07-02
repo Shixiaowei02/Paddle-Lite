@@ -65,7 +65,7 @@ bool CollectFpnProposalsOpLite::AttachImpl(const cpp::OpDesc& op_desc,
   auto fpn_rois = op_desc.Output("FpnRois").front();
   param_.fpn_rois = scope->FindVar(fpn_rois)->GetMutable<lite::Tensor>();
 
-  param_.post_nms_topN = op_desc.GetAttr<int>("post_nms_topN");
+  param_.post_nms_topN = op_desc.GetAttr<OpAttrType::INT>("post_nms_topN");
   return true;
 }
 

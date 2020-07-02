@@ -59,7 +59,7 @@ bool AffineGridOpLite::AttachImpl(const cpp::OpDesc &op_desc,
   auto output = op_desc.Output("Output").front();
 
   param_.X = scope->FindVar(x)->GetMutable<lite::Tensor>();
-  param_.output_shape = op_desc.GetAttr<std::vector<int>>("output_shape");
+  param_.output_shape = op_desc.GetAttr<OpAttrType::INTS>("output_shape");
 
   param_.Out = scope->FindVar(output)->GetMutable<lite::Tensor>();
 

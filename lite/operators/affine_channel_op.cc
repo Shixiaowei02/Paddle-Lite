@@ -62,7 +62,7 @@ bool AffineChannelOpLite::AttachImpl(const cpp::OpDesc &op_desc,
   param_.Scale = scope->FindVar(scale)->GetMutable<lite::Tensor>();
   param_.Bias = scope->FindVar(bias)->GetMutable<lite::Tensor>();
   if (op_desc.HasAttr("data_layout")) {
-    param_.data_layout = op_desc.GetAttr<std::string>("data_layout");
+    param_.data_layout = op_desc.GetAttr<OpAttrType::STRING>("data_layout");
   }
   param_.Out = scope->FindVar(output)->GetMutable<lite::Tensor>();
 

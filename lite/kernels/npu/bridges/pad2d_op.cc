@@ -35,7 +35,7 @@ int Pad2dConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto x = scope->FindMutableTensor(x_name);
   auto x_dims = x->dims();
   auto out_name = op_info->Output("Out").front();
-  auto padding = op_info->GetAttr<std::vector<int>>("paddings");
+  auto padding = op_info->GetAttr<OpAttrType::INTS>("paddings");
   CHECK_EQ(padding.size(), 4);
 
   // X node
@@ -52,14 +52,14 @@ int Pad2dConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto padding_node = graph->Add(out_name + "/padding", padding, {xds, 2});
 
   // Pad node
-  auto mode = op_info->GetAttr<std::string>("mode");
+  auto mode = op_info->GetAttr<OpAttrType::STRING>("mode");
   if (mode == "constant") {
     auto pad2d_node = graph->Add<ge::op::PadV2>(out_name);
     auto pad2d_op = pad2d_node->data<ge::op::PadV2>();
     pad2d_op->set_input_x(*x_node->data());
     pad2d_op->set_input_paddings(*padding_node->data());
     // Pad value node
-    auto pad_value = op_info->GetAttr<float>("pad_value");
+    auto pad_value = op_info->GetAttr<OpAttrType::FLOAT>("pad_value");
     auto pad_value_node = graph->Add(out_name + "/pad_value", pad_value);
     pad2d_op->set_input_constant_values(*pad_value_node->data());
   } else {

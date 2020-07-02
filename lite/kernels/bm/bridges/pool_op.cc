@@ -59,26 +59,26 @@ int PoolConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   dim[0] = output_dims.size();
   std::string pooling_type;
   if (op_info->HasAttr("pooling_type")) {
-    pooling_type = op_info->GetAttr<std::string>("pooling_type");
+    pooling_type = op_info->GetAttr<OpAttrType::STRING>("pooling_type");
   } else if (op_type == "max_pool2d_with_index") {
     pooling_type = "max";
   }
   CHECK(pooling_type == "max" || pooling_type == "avg");
-  auto ksize = op_info->GetAttr<std::vector<int>>("ksize");
-  auto paddings = op_info->GetAttr<std::vector<int>>("paddings");
-  auto strides = op_info->GetAttr<std::vector<int>>("strides");
-  auto global_pooling = op_info->GetAttr<bool>("global_pooling");
+  auto ksize = op_info->GetAttr<OpAttrType::INTS>("ksize");
+  auto paddings = op_info->GetAttr<OpAttrType::INTS>("paddings");
+  auto strides = op_info->GetAttr<OpAttrType::INTS>("strides");
+  auto global_pooling = op_info->GetAttr<OpAttrType::BOOLEAN>("global_pooling");
   bool ceil_mode = false;
   if (op_info->HasAttr("ceil_mode")) {
-    ceil_mode = op_info->GetAttr<bool>("ceil_mode");
+    ceil_mode = op_info->GetAttr<OpAttrType::BOOLEAN>("ceil_mode");
   }
   bool adaptive = false;
   if (op_info->HasAttr("adaptive")) {
-    adaptive = op_info->GetAttr<bool>("adaptive");
+    adaptive = op_info->GetAttr<OpAttrType::BOOLEAN>("adaptive");
   }
   bool average_exclusive = false;
   if (pooling_type == "avg") {
-    average_exclusive = op_info->GetAttr<bool>("exclusive");
+    average_exclusive = op_info->GetAttr<OpAttrType::BOOLEAN>("exclusive");
   }
   if (output_dims[2] == 1 && output_dims[3] == 1) {
     global_pooling = true;

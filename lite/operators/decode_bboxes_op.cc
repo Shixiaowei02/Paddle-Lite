@@ -43,13 +43,13 @@ bool DecodeBboxesOpLite::AttachImpl(const cpp::OpDesc& opdesc,
   param_.prior_data = GetVar<lite::Tensor>(scope, Prior_name);
   param_.bbox_data = GetMutableVar<lite::Tensor>(scope, Bbox_name);
 
-  param_.batch_num = opdesc.GetAttr<int>("batch_num");
-  param_.num_priors = opdesc.GetAttr<int>("num_priors");
-  param_.num_loc_classes = opdesc.GetAttr<int>("num_loc_classes");
-  param_.share_location = opdesc.GetAttr<bool>("share_location");
+  param_.batch_num = opdesc.GetAttr<OpAttrType::INT>("batch_num");
+  param_.num_priors = opdesc.GetAttr<OpAttrType::INT>("num_priors");
+  param_.num_loc_classes = opdesc.GetAttr<OpAttrType::INT>("num_loc_classes");
+  param_.share_location = opdesc.GetAttr<OpAttrType::BOOLEAN>("share_location");
   param_.variance_encoded_in_target =
-      opdesc.GetAttr<bool>("variance_encoded_in_target");
-  param_.code_type = opdesc.GetAttr<std::string>("code_type");
+      opdesc.GetAttr<OpAttrType::BOOLEAN>("variance_encoded_in_target");
+  param_.code_type = opdesc.GetAttr<OpAttrType::STRING>("code_type");
   return true;
 }
 

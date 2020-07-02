@@ -59,10 +59,10 @@ TEST(NaiveBufferWrapper, OpDesc) {
   ASSERT_EQ(out.size(), 1);
   ASSERT_EQ(out[0], "c");
   ASSERT_TRUE(nb_desc1.HasAttr("x_num_col_dims"));
-  ASSERT_EQ(nb_desc1.GetAttr<int32_t>("x_num_col_dims"), 0);
+  ASSERT_EQ(nb_desc1.GetAttr<OpAttrType::INT>("x_num_col_dims"), 0);
   ASSERT_EQ(nb_desc1.GetAttrType("x_num_col_dims"), OpDescAPI::AttrType::INT);
   ASSERT_TRUE(nb_desc1.HasAttr("y_num_col_dims"));
-  ASSERT_EQ(nb_desc1.GetAttr<int32_t>("y_num_col_dims"), 1);
+  ASSERT_EQ(nb_desc1.GetAttr<OpAttrType::INT>("y_num_col_dims"), 1);
   ASSERT_EQ(nb_desc1.GetAttrType("y_num_col_dims"), OpDescAPI::AttrType::INT);
 }
 
@@ -278,10 +278,10 @@ TEST(NaiveBufferWrapper, BlockDesc) {
   ASSERT_EQ(out.size(), 1);
   ASSERT_EQ(out[0], "c");
   ASSERT_TRUE(op1_0.HasAttr("x_num_col_dims"));
-  ASSERT_EQ(op1_0.GetAttr<int32_t>("x_num_col_dims"), 0);
+  ASSERT_EQ(op1_0.GetAttr<OpAttrType::INT>("x_num_col_dims"), 0);
   ASSERT_EQ(op1_0.GetAttrType("x_num_col_dims"), OpDescAPI::AttrType::INT);
   ASSERT_TRUE(op1_0.HasAttr("y_num_col_dims"));
-  ASSERT_EQ(op1_0.GetAttr<int32_t>("y_num_col_dims"), 1);
+  ASSERT_EQ(op1_0.GetAttr<OpAttrType::INT>("y_num_col_dims"), 1);
   ASSERT_EQ(op1_0.GetAttrType("y_num_col_dims"), OpDescAPI::AttrType::INT);
 }
 

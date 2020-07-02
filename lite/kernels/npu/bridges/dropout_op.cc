@@ -38,8 +38,8 @@ int DropoutConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto out_name = op_info->Output("Out").front();
 
   auto dropout_implementation =
-      op_info->GetAttr<std::string>("dropout_implementation");
-  auto scale = 1 - op_info->GetAttr<float>("dropout_prob");
+      op_info->GetAttr<OpAttrType::STRING>("dropout_implementation");
+  auto scale = 1 - op_info->GetAttr<OpAttrType::FLOAT>("dropout_prob");
   if (dropout_implementation == "upscale_in_train") {
     scale = 1.f;
   }

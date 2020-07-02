@@ -42,14 +42,14 @@ int ElementwiseConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto out_name = op_info->Output("Out").front();
   auto out = scope->FindMutableTensor(out_name);
   auto out_dims = out->dims();
-  auto axis = op_info->GetAttr<int>("axis");
+  auto axis = op_info->GetAttr<OpAttrType::INT>("axis");
 
   // Act node
   if (op_type == "fusion_elementwise_add_activation" ||
       op_type == "fusion_elementwise_sub_activation" ||
       op_type == "fusion_elementwise_mul_activation" ||
       op_type == "fusion_elementwise_div_activation") {
-    auto act_type = op_info->GetAttr<std::string>("act_type");
+    auto act_type = op_info->GetAttr<OpAttrType::STRING>("act_type");
   }
 
   return REBUILD_WHEN_SHAPE_CHANGED;

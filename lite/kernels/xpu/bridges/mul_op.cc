@@ -40,9 +40,9 @@ int MulConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto out_name = op_info->Output("Out").front();
   auto out = scope->FindMutableTensor(out_name);
   auto out_dims = out->dims();
-  auto x_num_col_dims = op_info->GetAttr<int>("x_num_col_dims");
+  auto x_num_col_dims = op_info->GetAttr<OpAttrType::INT>("x_num_col_dims");
   auto x_matrix_dims = x_dims.Flatten2D(x_num_col_dims);
-  auto y_num_col_dims = op_info->GetAttr<int>("y_num_col_dims");
+  auto y_num_col_dims = op_info->GetAttr<OpAttrType::INT>("y_num_col_dims");
   auto y_matrix_dims = y_dims.Flatten2D(y_num_col_dims);
   CHECK_EQ(x_matrix_dims[1], y_matrix_dims[0]);
 

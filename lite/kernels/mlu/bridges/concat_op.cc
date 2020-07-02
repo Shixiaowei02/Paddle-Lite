@@ -34,7 +34,7 @@ int ConcatConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto out_var_name = op_info->Output("Out").front();
   auto output = scope->FindVar(out_var_name)->GetMutable<Tensor>();
   auto output_dims = output->dims().Vectorize();
-  auto param_axis = op_info->GetAttr<int>("axis");
+  auto param_axis = op_info->GetAttr<OpAttrType::INT>("axis");
 
   std::vector<cnmlTensor_t> input_tensor;
   for (auto x_name : x_var_name) {

@@ -52,7 +52,7 @@ bool SequencePoolConcatOp::AttachImpl(const cpp::OpDesc &opdesc,
   param_.Out =
       scope->FindVar(opdesc.Output("Out").front())->GetMutable<lite::Tensor>();
   CHECK(param_.Out) << "Output(Out) of Sequence Concat Op should not be null.";
-  param_.pool_type = opdesc.GetAttr<std::vector<std::string>>("pooltype");
+  param_.pool_type = opdesc.GetAttr<OpAttrType::STRINGS>("pooltype");
   return true;
 }
 

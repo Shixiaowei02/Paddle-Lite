@@ -204,8 +204,8 @@ void reduce_mean_ref(const std::shared_ptr<operators::ReduceMeanOp> op) {
   auto x_data = x->data<float>();
   auto out = scope->FindMutableTensor("out_ref");
 
-  auto dim = op_info->GetAttr<std::vector<int>>("dim");
-  auto keep_dim = op_info->GetAttr<bool>("keep_dim");
+  auto dim = op_info->GetAttr<OpAttrType::INTS>("dim");
+  auto keep_dim = op_info->GetAttr<OpAttrType::BOOLEAN>("keep_dim");
 
   auto x_rank = x_dims.size();
   if (!dim.empty()) {

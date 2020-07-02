@@ -54,10 +54,10 @@ bool DistributeFpnProposalsOpLite::AttachImpl(const cpp::OpDesc &op_desc,
   auto restore_index = op_desc.Output("RestoreIndex").front();
   param_.restore_index =
       scope->FindVar(restore_index)->GetMutable<lite::Tensor>();
-  param_.min_level = op_desc.GetAttr<int>("min_level");
-  param_.max_level = op_desc.GetAttr<int>("max_level");
-  param_.refer_level = op_desc.GetAttr<int>("refer_level");
-  param_.refer_scale = op_desc.GetAttr<int>("refer_scale");
+  param_.min_level = op_desc.GetAttr<OpAttrType::INT>("min_level");
+  param_.max_level = op_desc.GetAttr<OpAttrType::INT>("max_level");
+  param_.refer_level = op_desc.GetAttr<OpAttrType::INT>("refer_level");
+  param_.refer_scale = op_desc.GetAttr<OpAttrType::INT>("refer_scale");
 
   return true;
 }

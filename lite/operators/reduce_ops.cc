@@ -78,9 +78,9 @@ bool ReduceOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
   param_.output =
       scope->FindVar(opdesc.Output("Out").front())->GetMutable<lite::Tensor>();
 
-  param_.dim = opdesc.GetAttr<std::vector<int>>("dim");
-  param_.reduce_all = opdesc.GetAttr<bool>("reduce_all");
-  param_.keep_dim = opdesc.GetAttr<bool>("keep_dim");
+  param_.dim = opdesc.GetAttr<OpAttrType::INTS>("dim");
+  param_.reduce_all = opdesc.GetAttr<OpAttrType::BOOLEAN>("reduce_all");
+  param_.keep_dim = opdesc.GetAttr<OpAttrType::BOOLEAN>("keep_dim");
   return true;
 }
 

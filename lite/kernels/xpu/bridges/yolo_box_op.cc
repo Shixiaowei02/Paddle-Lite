@@ -40,10 +40,10 @@ int YoloBoxConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto boxes_name = op_info->Output("Boxes").front();
   auto scores_name = op_info->Output("Scores").front();
 
-  auto anchors = op_info->GetAttr<std::vector<int>>("anchors");
-  auto class_num = op_info->GetAttr<int>("class_num");
-  auto conf_thresh = op_info->GetAttr<float>("conf_thresh");
-  auto downsample_ratio = op_info->GetAttr<int>("downsample_ratio");
+  auto anchors = op_info->GetAttr<OpAttrType::INTS>("anchors");
+  auto class_num = op_info->GetAttr<OpAttrType::INT>("class_num");
+  auto conf_thresh = op_info->GetAttr<OpAttrType::FLOAT>("conf_thresh");
+  auto downsample_ratio = op_info->GetAttr<OpAttrType::INT>("downsample_ratio");
 
   // X node
   std::shared_ptr<Node> x_node = nullptr;

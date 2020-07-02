@@ -94,9 +94,9 @@ bool ReduceMeanOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
       &scope->FindVar(opdesc.Input("X").front())->Get<lite::Tensor>());
   param_.Out =
       scope->FindVar(opdesc.Output("Out").front())->GetMutable<lite::Tensor>();
-  param_.dim = opdesc.GetAttr<std::vector<int>>("dim");
+  param_.dim = opdesc.GetAttr<OpAttrType::INTS>("dim");
   if (opdesc.HasAttr("keep_dim")) {
-    param_.keep_dim = opdesc.GetAttr<bool>("keep_dim");
+    param_.keep_dim = opdesc.GetAttr<OpAttrType::BOOLEAN>("keep_dim");
   } else {
     param_.keep_dim = false;
   }

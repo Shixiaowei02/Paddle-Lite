@@ -35,7 +35,8 @@ int SoftmaxConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto x = scope->FindMutableTensor(x_name);
   auto x_dims = x->dims();
   auto out_name = op_info->Output("Out").front();
-  int axis = op_info->HasAttr("axis") ? op_info->GetAttr<int>("axis") : -1;
+  int axis =
+      op_info->HasAttr("axis") ? op_info->GetAttr<OpAttrType::INT>("axis") : -1;
 
   // X node
   std::shared_ptr<Node> x_node = nullptr;

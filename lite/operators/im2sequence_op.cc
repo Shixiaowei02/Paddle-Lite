@@ -62,10 +62,10 @@ bool Im2SequenceOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
   param_.Out =
       scope->FindVar(opdesc.Output("Out").front())->GetMutable<lite::Tensor>();
   CHECK(param_.Out);
-  param_.strides = opdesc.GetAttr<std::vector<int>>("strides");
-  param_.paddings = opdesc.GetAttr<std::vector<int>>("paddings");
-  param_.kernels = opdesc.GetAttr<std::vector<int>>("kernels");
-  param_.out_strides = opdesc.GetAttr<std::vector<int>>("out_stride");
+  param_.strides = opdesc.GetAttr<OpAttrType::INTS>("strides");
+  param_.paddings = opdesc.GetAttr<OpAttrType::INTS>("paddings");
+  param_.kernels = opdesc.GetAttr<OpAttrType::INTS>("kernels");
+  param_.out_strides = opdesc.GetAttr<OpAttrType::INTS>("out_stride");
   return true;
 }
 

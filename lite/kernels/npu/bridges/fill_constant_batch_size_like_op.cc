@@ -41,7 +41,7 @@ int FillConstantBatchSizeLikeConverter(void* ctx,
   auto out = scope->FindTensor(out_name);
   auto out_shape = out->dims().Vectorize();
 
-  auto value = op_info->GetAttr<float>("value");
+  auto value = op_info->GetAttr<OpAttrType::FLOAT>("value");
 
   // dims, value node
   std::vector<int> target_shape{out_shape.begin(), out_shape.end()};

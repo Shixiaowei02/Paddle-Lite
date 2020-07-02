@@ -46,7 +46,7 @@ bool ExpandOpLite::AttachImpl(const cpp::OpDesc& opdesc, lite::Scope* scope) {
   auto Out_name = opdesc.Output("Out").front();
   param_.X = GetVar<lite::Tensor>(scope, X_name);
   param_.Out = GetMutableVar<lite::Tensor>(scope, Out_name);
-  param_.expand_times = opdesc.GetAttr<std::vector<int>>("expand_times");
+  param_.expand_times = opdesc.GetAttr<OpAttrType::INTS>("expand_times");
   return true;
 }
 

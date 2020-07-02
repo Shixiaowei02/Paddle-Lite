@@ -58,7 +58,7 @@ int BatchNormConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   for (size_t i = 0; i < output_dims.size(); i++) {
     i_output_shape_data[i] = static_cast<int>(output_shape_data[i]);
   }
-  auto epsilon = op_info->GetAttr<float>("epsilon");
+  auto epsilon = op_info->GetAttr<OpAttrType::FLOAT>("epsilon");
   auto unique_bn_out_name = lite::subgraph::bm::UniqueName("batch_norm_out");
   auto* scale_data = scale->mutable_data<float>();
   auto* bias_data = bias->mutable_data<float>();

@@ -43,8 +43,8 @@ int LayerNormConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto y_dims = y->dims();
   auto padded_y_shape = CvtShape(y_dims);
 
-  auto epsilon = op_info->GetAttr<float>("epsilon");
-  auto begin_norm_axis = op_info->GetAttr<int>("begin_norm_axis");
+  auto epsilon = op_info->GetAttr<OpAttrType::FLOAT>("epsilon");
+  auto begin_norm_axis = op_info->GetAttr<OpAttrType::INT>("begin_norm_axis");
   if (begin_norm_axis < 0) {
     begin_norm_axis += x_rank;
   }

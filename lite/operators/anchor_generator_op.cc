@@ -50,14 +50,14 @@ bool AnchorGeneratorOpLite::AttachImpl(const cpp::OpDesc &op_desc,
   param_.Input = scope->FindVar(input_name)->GetMutable<lite::Tensor>();
   param_.Anchors = scope->FindVar(anchor_name)->GetMutable<lite::Tensor>();
   param_.Variances = scope->FindVar(variances_name)->GetMutable<lite::Tensor>();
-  param_.anchor_sizes = op_desc.GetAttr<std::vector<float>>("anchor_sizes");
-  param_.aspect_ratios = op_desc.GetAttr<std::vector<float>>("aspect_ratios");
-  param_.stride = op_desc.GetAttr<std::vector<float>>("stride");
+  param_.anchor_sizes = op_desc.GetAttr<OpAttrType::FLOATS>("anchor_sizes");
+  param_.aspect_ratios = op_desc.GetAttr<OpAttrType::FLOATS>("aspect_ratios");
+  param_.stride = op_desc.GetAttr<OpAttrType::FLOATS>("stride");
   if (op_desc.HasAttr("variances")) {
-    param_.variances = op_desc.GetAttr<std::vector<float>>("variances");
+    param_.variances = op_desc.GetAttr<OpAttrType::FLOATS>("variances");
   }
   if (op_desc.HasAttr("offset")) {
-    param_.offset = op_desc.GetAttr<float>("offset");
+    param_.offset = op_desc.GetAttr<OpAttrType::FLOAT>("offset");
   }
 
   return true;

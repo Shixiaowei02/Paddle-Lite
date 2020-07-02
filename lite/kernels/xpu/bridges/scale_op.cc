@@ -35,9 +35,10 @@ int ScaleConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto x = scope->FindMutableTensor(x_name);
   auto x_dims = x->dims();
   auto out_name = op_info->Output("Out").front();
-  float scale = op_info->GetAttr<float>("scale");
-  bool bias_after_scale = op_info->GetAttr<bool>("bias_after_scale");
-  float bias = op_info->GetAttr<float>("bias");
+  float scale = op_info->GetAttr<OpAttrType::FLOAT>("scale");
+  bool bias_after_scale =
+      op_info->GetAttr<OpAttrType::BOOLEAN>("bias_after_scale");
+  float bias = op_info->GetAttr<OpAttrType::FLOAT>("bias");
 
   // X node
   std::shared_ptr<Node> x_node = nullptr;

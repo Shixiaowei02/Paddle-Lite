@@ -52,7 +52,7 @@ bool StackOp::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
     param_.X.emplace_back(scope->FindVar(var)->GetMutable<lite::Tensor>());
   }
   param_.Out = scope->FindVar(Out)->GetMutable<lite::Tensor>();
-  param_.axis = op_desc.GetAttr<int>("axis");
+  param_.axis = op_desc.GetAttr<OpAttrType::INT>("axis");
   return true;
 }
 

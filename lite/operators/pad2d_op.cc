@@ -44,10 +44,10 @@ bool Pad2dOpLite::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
   param_.X = scope->FindVar(op_desc.Input("X").front())->GetMutable<Tensor>();
   param_.Out =
       scope->FindVar(op_desc.Output("Out").front())->GetMutable<Tensor>();
-  param_.mode = op_desc.GetAttr<std::string>("mode");
-  param_.pad_value = op_desc.GetAttr<float>("pad_value");
+  param_.mode = op_desc.GetAttr<OpAttrType::STRING>("mode");
+  param_.pad_value = op_desc.GetAttr<OpAttrType::FLOAT>("pad_value");
   if (op_desc.HasAttr("variable_padding") &&
-      op_desc.GetAttr<bool>("variable_paddings")) {
+      op_desc.GetAttr<OpAttrType::BOOLEAN>("variable_paddings")) {
     auto Paddings =
         scope->FindVar(op_desc.Input("Paddings").front())->GetMutable<Tensor>();
     auto ptr = Paddings->data<int>();
@@ -58,9 +58,9 @@ bool Pad2dOpLite::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
     }
     param_.paddings = {ptr[0], ptr[1], ptr[2], ptr[3]};
   } else {
-    param_.paddings = op_desc.GetAttr<std::vector<int>>("paddings");
+    param_.paddings = op_desc.GetAttr<OpAttrType::INTS>("paddings");
   }
-  param_.data_format = op_desc.GetAttr<std::string>("data_format");
+  param_.data_format = op_desc.GetAttr<OpAttrType::STRING>("data_format");
   return true;
 }
 

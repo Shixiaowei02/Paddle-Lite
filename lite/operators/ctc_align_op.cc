@@ -48,9 +48,10 @@ bool CtcAlignOpLite::AttachImpl(const cpp::OpDesc& op_desc,
   AttachInput(op_desc, scope, "InputLength", true, &param_.input_length);
   AttachOutput(op_desc, scope, "Output", false, &param_.output);
   AttachOutput(op_desc, scope, "OutputLength", true, &param_.output_length);
-  param_.blank = op_desc.GetAttr<int>("blank");
-  param_.merge_repeated = op_desc.GetAttr<bool>("merge_repeated");
-  param_.padding_value = op_desc.GetAttr<int>("padding_value");
+  param_.blank = op_desc.GetAttr<OpAttrType::INT>("blank");
+  param_.merge_repeated =
+      op_desc.GetAttr<OpAttrType::BOOLEAN>("merge_repeated");
+  param_.padding_value = op_desc.GetAttr<OpAttrType::INT>("padding_value");
   return true;
 }
 

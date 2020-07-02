@@ -53,7 +53,7 @@ bool ArgmaxOpLite::AttachImpl(const cpp::OpDesc &op_desc, lite::Scope *scope) {
 
   param_.X = scope->FindVar(x)->GetMutable<lite::Tensor>();
   param_.Out = scope->FindVar(out)->GetMutable<lite::Tensor>();
-  param_.Axis = op_desc.GetAttr<int64_t>("axis");
+  param_.Axis = op_desc.GetAttr<OpAttrType::LONG>("axis");
 
   return true;
 }

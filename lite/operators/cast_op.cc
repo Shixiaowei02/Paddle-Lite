@@ -40,8 +40,8 @@ bool CastOp::AttachImpl(const cpp::OpDesc &opdesc, lite::Scope *scope) {
       scope->FindVar(opdesc.Output("Out").front())->GetMutable<lite::Tensor>();
   CHECK(param_.X);
   CHECK(param_.Out);
-  param_.in_dtype = opdesc.GetAttr<int>("in_dtype");
-  param_.out_dtype = opdesc.GetAttr<int>("out_dtype");
+  param_.in_dtype = opdesc.GetAttr<OpAttrType::INT>("in_dtype");
+  param_.out_dtype = opdesc.GetAttr<OpAttrType::INT>("out_dtype");
   return true;
 }
 

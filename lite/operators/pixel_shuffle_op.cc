@@ -50,7 +50,7 @@ bool PixelShuffleOpLite::AttachImpl(const cpp::OpDesc& opdesc,
   param_.output = scope->FindVar(out)->GetMutable<lite::Tensor>();
 
   if (opdesc.HasAttr("upscale_factor")) {
-    param_.upscale_factor = opdesc.GetAttr<int>("upscale_factor");
+    param_.upscale_factor = opdesc.GetAttr<OpAttrType::INT>("upscale_factor");
   }
 
   return true;

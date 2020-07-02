@@ -36,12 +36,13 @@ void pool_ref(const std::shared_ptr<operators::PoolOpLite> op) {
   const float* src_ptr = x->data<const float>();
   float* dst_ptr = out->mutable_data<float>();
 
-  std::vector<int> ksize = op_info->GetAttr<std::vector<int>>("ksize");
-  std::vector<int> strides = op_info->GetAttr<std::vector<int>>("strides");
-  std::vector<int> paddings = op_info->GetAttr<std::vector<int>>("paddings");
-  bool exclusive = op_info->GetAttr<bool>("exclusive");
-  std::string pooling_type = op_info->GetAttr<std::string>("pooling_type");
-  bool global_pooling = op_info->GetAttr<bool>("global_pooling");
+  std::vector<int> ksize = op_info->GetAttr<OpAttrType::INTS>("ksize");
+  std::vector<int> strides = op_info->GetAttr<OpAttrType::INTS>("strides");
+  std::vector<int> paddings = op_info->GetAttr<OpAttrType::INTS>("paddings");
+  bool exclusive = op_info->GetAttr<OpAttrType::BOOLEAN>("exclusive");
+  std::string pooling_type =
+      op_info->GetAttr<OpAttrType::STRING>("pooling_type");
+  bool global_pooling = op_info->GetAttr<OpAttrType::BOOLEAN>("global_pooling");
 
   int in_n = in_dims[0];
   int in_c = in_dims[1];

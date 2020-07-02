@@ -47,7 +47,7 @@ class FakeDequantizeMaxAbsOpLite : public OpLite {
     param_.in_scale = scope->FindVar(in_scale)->GetMutable<lite::Tensor>();
 
     param_.out = scope->FindVar(out)->GetMutable<lite::Tensor>();
-    param_.max_range = op_desc.GetAttr<float>("max_range");
+    param_.max_range = op_desc.GetAttr<OpAttrType::FLOAT>("max_range");
     return true;
   }
 

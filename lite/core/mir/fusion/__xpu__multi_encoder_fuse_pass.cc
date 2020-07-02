@@ -377,7 +377,7 @@ class XPUSingleEncoderFuser : public FuseBase {
 
     // extra traits to distill
     auto* reshape_op_info = matched.at("q_reshape2")->stmt()->op_info();
-    auto reshape_dim = reshape_op_info->GetAttr<std::vector<int>>("shape");
+    auto reshape_dim = reshape_op_info->GetAttr<OpAttrType::INTS>("shape");
     op_desc.SetAttr<int>("head_num", reshape_dim[2]);
     op_desc.SetAttr<int>("size_per_head", reshape_dim[3]);
     op_desc.SetAttr<std::string>("act_type", act_type_);
@@ -509,13 +509,16 @@ class XPUMultiEncoderFuser {
     op_desc.SetOutput("Output", {out_name});
     op_desc.SetAttr<int>("xpu", 1);
     auto* first_encoder_op_info = multi_encoder_stmt->op_info();
-    op_desc.SetAttr<int>("head_num",
-                         first_encoder_op_info->GetAttr<int>("head_num"));
-    op_desc.SetAttr<int>("size_per_head",
-                         first_encoder_op_info->GetAttr<int>("size_per_head"));
+    op_desc.SetAttr<int>(
+        "head_num",
+        first_encoder_op_info->GetAttr<OpAttrType::INT>("head_num"));
+    op_desc.SetAttr<int>(
+        "size_per_head",
+        first_encoder_op_info->GetAttr<OpAttrType::INT>("size_per_head"));
     op_desc.SetAttr<int>("n_layers", all_encoders.size());
     op_desc.SetAttr<std::string>(
-        "act_type", first_encoder_op_info->GetAttr<std::string>("act_type"));
+        "act_type",
+        first_encoder_op_info->GetAttr<OpAttrType::STRING>("act_type"));
     op_desc.SetAttr<std::string>("precision",
                                  (fc_int31_ids_.empty() ? "int16" : "int31"));
 

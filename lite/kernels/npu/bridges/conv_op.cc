@@ -52,17 +52,18 @@ int ConvConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   CHECK_EQ(filter_dims.size(), 4L);
   CHECK_EQ(output_dims[0], bs);
   CHECK_EQ(output_dims[1], oc);
-  auto strides = op_info->GetAttr<std::vector<int>>("strides");
-  auto paddings = op_info->GetAttr<std::vector<int>>("paddings");
-  auto groups = op_info->GetAttr<int>("groups");
-  auto dilations = op_info->GetAttr<std::vector<int>>("dilations");
-  bool with_act =
-      op_info->HasAttr("with_act") && op_info->GetAttr<bool>("with_act");
+  auto strides = op_info->GetAttr<OpAttrType::INTS>("strides");
+  auto paddings = op_info->GetAttr<OpAttrType::INTS>("paddings");
+  auto groups = op_info->GetAttr<OpAttrType::INT>("groups");
+  auto dilations = op_info->GetAttr<OpAttrType::INTS>("dilations");
+  bool with_act = op_info->HasAttr("with_act") &&
+                  op_info->GetAttr<OpAttrType::BOOLEAN>("with_act");
   std::string act_type =
-      with_act ? op_info->GetAttr<std::string>("act_type") : "";
-  float leaky_relu_alpha = act_type == "leaky_relu"
-                               ? op_info->GetAttr<float>("leaky_relu_alpha")
-                               : 0.f;
+      with_act ? op_info->GetAttr<OpAttrType::STRING>("act_type") : "";
+  float leaky_relu_alpha =
+      act_type == "leaky_relu"
+          ? op_info->GetAttr<OpAttrType::FLOAT>("leaky_relu_alpha")
+          : 0.f;
   CHECK_EQ(strides.size(), 2L);
   CHECK_EQ(dilations.size(), 2L);
 
@@ -85,7 +86,8 @@ int ConvConverter(void* ctx, OpLite* op, KernelBase* kernel) {
 
   std::string padding_algorithm("");
   if (op_info->HasAttr("padding_algorithm")) {
-    padding_algorithm = op_info->GetAttr<std::string>("padding_algorithm");
+    padding_algorithm =
+        op_info->GetAttr<OpAttrType::STRING>("padding_algorithm");
   }
   operators::UpdatePaddingAndDilation(&paddings,
                                       &dilations,

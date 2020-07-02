@@ -64,11 +64,11 @@ bool XPUMultiEncoderOp::AttachImpl(const cpp::OpDesc& op_desc,
     param_.ln_bias.push_back(t);
   }
 
-  param_.n_layers = op_desc.GetAttr<int>("n_layers");
-  param_.head_num = op_desc.GetAttr<int>("head_num");
-  param_.size_per_head = op_desc.GetAttr<int>("size_per_head");
-  param_.act_type = op_desc.GetAttr<std::string>("act_type");
-  param_.precision = op_desc.GetAttr<std::string>("precision");
+  param_.n_layers = op_desc.GetAttr<OpAttrType::INT>("n_layers");
+  param_.head_num = op_desc.GetAttr<OpAttrType::INT>("head_num");
+  param_.size_per_head = op_desc.GetAttr<OpAttrType::INT>("size_per_head");
+  param_.act_type = op_desc.GetAttr<OpAttrType::STRING>("act_type");
+  param_.precision = op_desc.GetAttr<OpAttrType::STRING>("precision");
   return true;
 }
 

@@ -42,7 +42,7 @@ int ActConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto input_tensor = graph->GetNode(x_var_name);
   cnmlBaseOp_t activation_op;
   if (op_type == "leaky_relu") {
-    auto alpha = op_info->GetAttr<float>("alpha");
+    auto alpha = op_info->GetAttr<OpAttrType::FLOAT>("alpha");
     std::vector<int64_t> shape = {1, 1, 1, 1};
     std::string alpha_var_name = string_format("leaky_relu_alpha_%p", op);
     auto alpha_tensor =

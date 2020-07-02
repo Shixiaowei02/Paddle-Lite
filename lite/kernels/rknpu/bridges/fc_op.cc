@@ -43,7 +43,7 @@ int FCConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto out_name = op_info->Output("Out").front();
   auto out_type = kernel->GetOutputDeclType("Out");
   auto output = scope->FindMutableTensor(out_name);
-  int in_num_col_dims = op_info->GetAttr<int>("in_num_col_dims");
+  int in_num_col_dims = op_info->GetAttr<OpAttrType::INT>("in_num_col_dims");
   int m = input_dims.Slice(0, in_num_col_dims).production();
   int k = input_dims.Slice(in_num_col_dims, input_dims.size()).production();
   int n = w_dims[1];
@@ -60,10 +60,10 @@ int FCConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   PrecisionType precision = PRECISION(kFloat);
 
   if (op_info->HasAttr("enable_int8")) {
-    enable_int8 = op_info->GetAttr<bool>("enable_int8");
-    input_scale = op_info->GetAttr<float>("input_scale");
-    bit_length = op_info->GetAttr<int>("bit_length");
-    output_scale = op_info->GetAttr<float>("output_scale");
+    enable_int8 = op_info->GetAttr<OpAttrType::BOOLEAN>("enable_int8");
+    input_scale = op_info->GetAttr<OpAttrType::FLOAT>("input_scale");
+    bit_length = op_info->GetAttr<OpAttrType::INT>("bit_length");
+    output_scale = op_info->GetAttr<OpAttrType::FLOAT>("output_scale");
     if (enable_int8) {
       precision = PRECISION(kInt8);
     }
@@ -86,7 +86,7 @@ int FCConverter(void* ctx, OpLite* op, KernelBase* kernel) {
 
   if (enable_int8) {
     QuantizationInfo filter_qnt;
-    auto weight_scale = op_info->GetAttr<std::vector<float>>("weight_scale");
+    auto weight_scale = op_info->GetAttr<OpAttrType::FLOATS>("weight_scale");
     filter_qnt.enable_int8 = enable_int8;
     filter_qnt.scale = weight_scale;
     filter_qnt.quant_bits = bit_length;
@@ -133,7 +133,7 @@ int FCConverter(void* ctx, OpLite* op, KernelBase* kernel) {
         auto bias_name_qnt = bias_name + "/qnt";
         auto* bias_qnt = scope->NewTensor(bias_name_qnt);
         auto weight_scale =
-            op_info->GetAttr<std::vector<float>>("weight_scale");
+            op_info->GetAttr<OpAttrType::FLOATS>("weight_scale");
 
         bias_qnt->Resize(bias_shape);
         bias_qnt->set_persistable(true);
@@ -176,7 +176,7 @@ int FCConverter(void* ctx, OpLite* op, KernelBase* kernel) {
     bias->set_persistable(true);
 
     if (enable_int8) {
-      auto weight_scale = op_info->GetAttr<std::vector<float>>("weight_scale");
+      auto weight_scale = op_info->GetAttr<OpAttrType::FLOATS>("weight_scale");
       bias->set_precision(PrecisionType::kInt32);
       auto* bias_data = bias->mutable_data<int32_t>();
 

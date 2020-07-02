@@ -44,27 +44,27 @@ int ConvTransposeConverter(void* ctx, OpLite* op, KernelBase* kernel) {
 
   auto output_name = op_info->Output("Output").front();
 
-  auto strides = op_info->GetAttr<std::vector<int>>("strides");
+  auto strides = op_info->GetAttr<OpAttrType::INTS>("strides");
   CHECK_EQ(strides.size(), 2L);
-  auto groups = op_info->GetAttr<int>("groups");
+  auto groups = op_info->GetAttr<OpAttrType::INT>("groups");
   if (groups > 1) {
     LOG(WARNING) << "[NPU] only support groups == 1";
     return FAILED;
   }
 
-  auto fuse_relu =
-      op_info->HasAttr("fuse_relu") && op_info->GetAttr<bool>("fuse_relu");
+  auto fuse_relu = op_info->HasAttr("fuse_relu") &&
+                   op_info->GetAttr<OpAttrType::BOOLEAN>("fuse_relu");
   std::vector<int> output_size;
   if (op_info->HasAttr("output_size")) {
-    output_size = op_info->GetAttr<std::vector<int>>("output_size");
+    output_size = op_info->GetAttr<OpAttrType::INTS>("output_size");
   }
 
-  auto paddings = op_info->GetAttr<std::vector<int>>("paddings");
-  auto dilations = op_info->GetAttr<std::vector<int>>("dilations");
+  auto paddings = op_info->GetAttr<OpAttrType::INTS>("paddings");
+  auto dilations = op_info->GetAttr<OpAttrType::INTS>("dilations");
   CHECK_EQ(dilations.size(), 2L);
   std::string padding_algorithm =
       op_info->HasAttr("padding_algorithm")
-          ? op_info->GetAttr<std::string>("padding_algorithm")
+          ? op_info->GetAttr<OpAttrType::STRING>("padding_algorithm")
           : "";
   if (paddings.size() == 2L) {
     for (size_t i = 0; i < 2L; ++i) {

@@ -66,7 +66,7 @@ bool InstanceNormOp::AttachImpl(const cpp::OpDesc& op_desc,
           ->GetMutable<Tensor>();
   param_.out =
       scope->FindVar(op_desc.Output("Y").front())->GetMutable<Tensor>();
-  param_.epsilon = op_desc.GetAttr<float>("epsilon");
+  param_.epsilon = op_desc.GetAttr<OpAttrType::FLOAT>("epsilon");
   return true;
 }
 

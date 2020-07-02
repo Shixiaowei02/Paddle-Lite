@@ -56,7 +56,7 @@ int TransposeConverter(void* ctx, OpLite* op, KernelBase* kernel) {
        i++) {
     i_output_shape_data[i] = static_cast<int>(output_shape_data[i]);
   }
-  auto axis = op_info->GetAttr<std::vector<int>>("axis");
+  auto axis = op_info->GetAttr<OpAttrType::INTS>("axis");
   CHECK_EQ(axis.size(), x_dims.size());
   add_transpose_layer_v2(graph->GetCompilerHandle(),
                          static_cast<const char*>(x_var_name.c_str()),

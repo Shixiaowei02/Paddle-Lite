@@ -37,8 +37,8 @@ int LayerNormConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto y_name = op_info->Output("Y").front();
   auto y = scope->FindMutableTensor(y_name);
   auto y_dims = y->dims();
-  auto epsilon = op_info->GetAttr<float>("epsilon");
-  auto axis = op_info->GetAttr<int>("begin_norm_axis");
+  auto epsilon = op_info->GetAttr<OpAttrType::FLOAT>("epsilon");
+  auto axis = op_info->GetAttr<OpAttrType::INT>("begin_norm_axis");
   auto x_rank = static_cast<int>(x_dims.size());
   axis = axis < 0 ? (x_rank + axis) : axis;
   bool reshape = axis != (x_rank - 1);  // XPU only support the last dimension

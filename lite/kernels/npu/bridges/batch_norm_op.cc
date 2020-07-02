@@ -43,11 +43,12 @@ int BatchNormConverter(void* ctx, OpLite* op, KernelBase* kernel) {
   auto variance_name = op_info->Input("Variance").front();
   auto variance = scope->FindMutableTensor(variance_name);
   auto y_name = op_info->Output("Y").front();
-  float momentum = op_info->GetAttr<float>("momentum");
-  float epsilon = op_info->GetAttr<float>("epsilon");
+  float momentum = op_info->GetAttr<OpAttrType::FLOAT>("momentum");
+  float epsilon = op_info->GetAttr<OpAttrType::FLOAT>("epsilon");
   int mode = 1;  // bnScale, bnBias tensor dims are 1xCx1x1
-  bool use_global_stats = !op_info->HasAttr("use_global_stats") ||
-                          op_info->GetAttr<bool>("use_global_stats");
+  bool use_global_stats =
+      !op_info->HasAttr("use_global_stats") ||
+      op_info->GetAttr<OpAttrType::BOOLEAN>("use_global_stats");
   if (!use_global_stats) {
     LOG(WARNING) << "[NPU] Only use_global_stats=true is supported by HiAI DDK";
   }
