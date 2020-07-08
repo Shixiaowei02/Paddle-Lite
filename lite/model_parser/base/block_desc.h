@@ -47,11 +47,11 @@ class BlockDescReadAPI {
 
 class BlockDescWriteAPI {
  public:
-  virtual void SetIdx(int32_t idx) { NotImpl(); }
-  virtual void SetParentIdx(int32_t idx) { NotImpl(); }
-  virtual void ClearVars() { NotImpl(); }
-  virtual void ClearOps() { NotImpl(); }
-  virtual void SetForwardBlockIdx(int32_t idx) { NotImpl(); }
+  virtual void SetIdx(int32_t idx) { NotImplemented(); }
+  virtual void SetParentIdx(int32_t idx) { NotImplemented(); }
+  virtual void ClearVars() { NotImplemented(); }
+  virtual void ClearOps() { NotImplemented(); }
+  virtual void SetForwardBlockIdx(int32_t idx) { NotImplemented(); }
 
   template <typename T>
   T* AddVar();
@@ -62,7 +62,7 @@ class BlockDescWriteAPI {
   virtual ~BlockDescWriteAPI() = default;
 
  private:
-  void NotImpl() {
+  void NotImplemented() {
     LOG(FATAL) << "BlockDescWriteAPI is not available in model read-only mode.";
   }
 };

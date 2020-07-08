@@ -62,14 +62,14 @@ class OpDescReadAPI {
 
 class OpDescWriteAPI {
  public:
-  virtual void SetType(const std::string& type) { NotImpl(); }
+  virtual void SetType(const std::string& type) { NotImplemented(); }
   virtual void SetInput(const std::string& param,
                         const std::vector<std::string>& args) {
-    NotImpl();
+    NotImplemented();
   }
   virtual void SetOutput(const std::string& param,
                          const std::vector<std::string>& args) {
-    NotImpl();
+    NotImplemented();
   }
 
   template <typename T>
@@ -78,7 +78,7 @@ class OpDescWriteAPI {
   virtual ~OpDescWriteAPI() = default;
 
  private:
-  void NotImpl() {
+  void NotImplemented() {
     LOG(FATAL) << "OpDescWriteAPI is not available in model read-only mode.";
   }
 };

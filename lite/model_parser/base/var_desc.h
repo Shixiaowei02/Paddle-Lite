@@ -63,14 +63,14 @@ class VarDescReadAPI {
 
 class VarDescWriteAPI {
  public:
-  virtual void SetName(std::string name) { NotImpl(); }
-  virtual void SetType(VarDataType type) { NotImpl(); }
-  virtual void SetPersistable(bool persistable) { NotImpl(); }
-  virtual void SetShape(const std::vector<int64_t>& dims) { NotImpl(); }
+  virtual void SetName(std::string name) { NotImplemented(); }
+  virtual void SetType(VarDataType type) { NotImplemented(); }
+  virtual void SetPersistable(bool persistable) { NotImplemented(); }
+  virtual void SetShape(const std::vector<int64_t>& dims) { NotImplemented(); }
   virtual ~VarDescWriteAPI() = default;
 
  private:
-  void NotImpl() {
+  void NotImplemented() {
     LOG(FATAL) << "VarDescWriteAPI is not available in model read-only mode.";
   }
 };

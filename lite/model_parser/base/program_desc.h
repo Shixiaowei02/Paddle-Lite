@@ -36,8 +36,8 @@ class ProgramDescReadAPI {
 
 class ProgramDescWriteAPI {
  public:
-  virtual void ClearBlocks() { NotImpl(); }
-  virtual void SetVersion(int64_t version) { NotImpl(); }
+  virtual void ClearBlocks() { NotImplemented(); }
+  virtual void SetVersion(int64_t version) { NotImplemented(); }
 
   template <typename T>
   T* AddBlock();
@@ -45,7 +45,7 @@ class ProgramDescWriteAPI {
   virtual ~ProgramDescWriteAPI() = default;
 
  private:
-  void NotImpl() {
+  void NotImplemented() {
     LOG(FATAL)
         << "ProgramDescWriteAPI is not available in model read-only mode.";
   }
