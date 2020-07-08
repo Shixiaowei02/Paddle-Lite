@@ -17,6 +17,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include "lite/utils/cp_logging.h"
 
 namespace paddle {
 namespace lite {
@@ -46,11 +47,11 @@ class BlockDescReadAPI {
 
 class BlockDescWriteAPI {
  public:
-  virtual void SetIdx(int32_t idx) = 0;
-  virtual void SetParentIdx(int32_t idx) = 0;
-  virtual void ClearVars() = 0;
-  virtual void ClearOps() = 0;
-  virtual void SetForwardBlockIdx(int32_t idx) = 0;
+  virtual void SetIdx(int32_t idx) { NotImpl(); }
+  virtual void SetParentIdx(int32_t idx) { NotImpl(); }
+  virtual void ClearVars() { NotImpl(); }
+  virtual void ClearOps() { NotImpl(); }
+  virtual void SetForwardBlockIdx(int32_t idx) { NotImpl(); }
 
   template <typename T>
   T* AddVar();
@@ -59,6 +60,11 @@ class BlockDescWriteAPI {
   T* AddOp();
 
   virtual ~BlockDescWriteAPI() = default;
+
+ private:
+  void NotImpl() {
+    LOG(FATAL) << "BlockDescWriteAPI is not available in model read-only mode.";
+  }
 };
 
 // The reading and writing of the model are one-time and separate.

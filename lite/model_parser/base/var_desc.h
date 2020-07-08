@@ -16,6 +16,7 @@
 
 #include <string>
 #include <vector>
+#include "lite/utils/cp_logging.h"
 
 namespace paddle {
 namespace lite {
@@ -62,11 +63,16 @@ class VarDescReadAPI {
 
 class VarDescWriteAPI {
  public:
-  virtual void SetName(std::string name) = 0;
-  virtual void SetType(VarDataType type) = 0;
-  virtual void SetPersistable(bool persistable) = 0;
-  virtual void SetShape(const std::vector<int64_t>& dims) = 0;
+  virtual void SetName(std::string name) { NotImpl(); }
+  virtual void SetType(VarDataType type) { NotImpl(); }
+  virtual void SetPersistable(bool persistable) { NotImpl(); }
+  virtual void SetShape(const std::vector<int64_t>& dims) { NotImpl(); }
   virtual ~VarDescWriteAPI() = default;
+
+ private:
+  void NotImpl() {
+    LOG(FATAL) << "VarDescWriteAPI is not available in model read-only mode.";
+  }
 };
 
 // The reading and writing of the model are one-time and separate.
