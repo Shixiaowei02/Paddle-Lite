@@ -33,9 +33,6 @@ class BlockDesc : public BlockDescAPI {
   size_t VarsSize() const override { return desc_->vars()->size(); }
 
   template <typename T>
-  T* GetVar(int32_t idx);
-
-  template <typename T>
   T const* GetVar(int32_t idx) const {
     return GetVar<T>(idx);
   }
@@ -45,9 +42,6 @@ class BlockDesc : public BlockDescAPI {
     CHECK(desc_->ops());
     return desc_->ops()->size();
   }
-
-  template <typename T>
-  T* GetOp(int32_t idx);
 
   template <typename T>
   T const* GetOp(int32_t idx) const {
@@ -61,7 +55,7 @@ class BlockDesc : public BlockDescAPI {
   BlockDesc() = delete;
 
  private:
-  proto::BlockDesc* desc_;  // not_own
+  proto::BlockDesc const* desc_;  // not_own
 };
 
 }  // namespace fbs

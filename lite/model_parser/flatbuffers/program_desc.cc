@@ -19,9 +19,10 @@ namespace lite {
 namespace fbs {
 
 template <>
-proto::BlockDesc* ProgramDesc::GetBlock<proto::BlockDesc>(int32_t idx) {
+proto::BlockDesc const* ProgramDesc::GetBlock<proto::BlockDesc>(
+    int32_t idx) const {
   CHECK_LT(idx, BlocksSize()) << "idx >= blocks.size()";
-  return const_cast<proto::BlockDesc*>(desc_->blocks()->Get(idx));
+  return desc_->blocks()->Get(idx);
 }
 
 }  // namespace fbs
