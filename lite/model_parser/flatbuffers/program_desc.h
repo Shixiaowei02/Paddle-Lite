@@ -32,7 +32,6 @@ class ProgramDesc : public ProgramDescAPI {
   }
 
   void Init(std::unique_ptr<const char[]> buf) {
-    std::cout << "2: buf.get" << static_cast<const void*>(buf.get()) << std::endl;
     CHECK(buf.get() != nullptr);
     buf_ = std::move(buf);
     desc_ = proto::GetProgramDesc(buf_.get());

@@ -21,7 +21,6 @@ namespace fbs {
 template <>
 proto::BlockDesc const* ProgramDesc::GetBlock<proto::BlockDesc>(
     int32_t idx) const {
-  std::cout << "Here idx: " << idx << std::endl;
   CHECK_LT(idx, BlocksSize()) << "idx >= blocks.size()";
   return desc_->blocks()->Get(idx);
 }
