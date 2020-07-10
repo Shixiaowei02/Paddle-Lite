@@ -26,7 +26,8 @@ void LoadModel(const std::string& path, ProgramDesc* prog) {
   infile.seekg(0,std::ios::end);
   int length = infile.tellg();
   infile.seekg(0,std::ios::beg);
-  std::unique_ptr<char[]> buf(new char[length]);
+  char* buff = new char[length];
+  std::unique_ptr<char[]> buf(buff);
   infile.read(buf.get(), length);
   infile.close();
   prog->Init(std::move(buf));

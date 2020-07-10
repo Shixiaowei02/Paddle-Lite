@@ -32,7 +32,8 @@ class ProgramDesc : public ProgramDescAPI {
   }
 
   void Init(std::unique_ptr<const char[]> buf) {
-    CHECK(buf_.get() != nullptr);
+    std::cout << "2: buf.get" << static_cast<const void*>(buf.get()) << std::endl;
+    CHECK(buf.get() != nullptr);
     buf_ = std::move(buf);
     desc_ = proto::GetProgramDesc(buf_.get());
   }
@@ -40,9 +41,7 @@ class ProgramDesc : public ProgramDescAPI {
   size_t BlocksSize() const override { return desc_->blocks()->size(); }
 
   template <typename T>
-  T const* GetBlock(int32_t idx) const {
-    return GetBlock<T>(idx);
-  }
+  T const* GetBlock(int32_t idx) const;
 
   bool HasVersion() const override { return desc_->version() != nullptr; }
 
