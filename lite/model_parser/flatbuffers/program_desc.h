@@ -27,9 +27,13 @@ namespace fbs {
 class ProgramDesc : public ProgramDescAPI {
  public:
   ProgramDesc() = default;
-  explicit ProgramDesc(std::unique_ptr<const char[]> buf)
-      : buf_(std::move(buf)) {
+  explicit ProgramDesc(std::unique_ptr<const char[]> buf) {
+    Init();
+  }
+
+  void Init(std::unique_ptr<const char[]> buf) {
     CHECK(buf_.get() != nullptr);
+    buf_.reset(buf);
     desc_ = proto::GetProgramDesc(buf_.get());
   }
 
