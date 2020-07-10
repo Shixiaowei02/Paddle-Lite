@@ -280,14 +280,13 @@ void OpAttrsCppToAny(const cpp::OpDesc &cpp_desc, OpDescType *any_desc) {
   template <>                                                         \
   void TransformProgramDescCppToAny<NT::T>(const cpp::T &cpp_desc,    \
                                            NT::T *any_desc) {         \
-    auto desc = cpp_desc;                                             \
-    if (desc.HasVersion()) {                                          \
-      any_desc->SetVersion(desc.Version());                           \
+    if (cpp_desc.HasVersion()) {                                          \
+      any_desc->SetVersion(cpp_desc.Version());                           \
     }                                                                 \
                                                                       \
     any_desc->ClearBlocks();                                          \
-    for (size_t i = 0; i < desc.BlocksSize(); ++i) {                  \
-      auto *cpp_block_desc = desc.GetBlock<cpp::BlockDesc>(i);        \
+    for (size_t i = 0; i < cpp_desc.BlocksSize(); ++i) {                  \
+      auto *cpp_block_desc = cpp_desc.GetBlock<cpp::BlockDesc>(i);        \
       auto any_block_desc =                                           \
           NT::BlockDesc(any_desc->AddBlock<PNT::proto::BlockDesc>()); \
       TransformBlockDescCppToAny(*cpp_block_desc, &any_block_desc);   \
