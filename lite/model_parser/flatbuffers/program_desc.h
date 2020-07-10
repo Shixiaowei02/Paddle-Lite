@@ -28,12 +28,12 @@ class ProgramDesc : public ProgramDescAPI {
  public:
   ProgramDesc() = default;
   explicit ProgramDesc(std::unique_ptr<const char[]> buf) {
-    Init();
+    Init(std::move(buf));
   }
 
   void Init(std::unique_ptr<const char[]> buf) {
     CHECK(buf_.get() != nullptr);
-    buf_.reset(buf);
+    buf_ = std::move(buf);
     desc_ = proto::GetProgramDesc(buf_.get());
   }
 

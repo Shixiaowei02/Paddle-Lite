@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <utility>
+#include <memory>
 #include "lite/model_parser/flatbuffers/io.h"
 
 namespace paddle {
@@ -25,7 +26,7 @@ void LoadModel(const std::string& path, ProgramDesc* prog) {
   infile.seekg(0,std::ios::end);
   int length = infile.tellg();
   infile.seekg(0,std::ios::beg);
-  std::unique_ptr<const char[]> buf = std::make_unique<char[]>(char[length]);
+  std::unique_ptr<char[]> buf(new char[length]);
   infile.read(buf.get(), length);
   infile.close();
   prog->Init(std::move(buf));

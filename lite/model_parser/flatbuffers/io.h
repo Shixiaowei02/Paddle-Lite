@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <string>
+#include "lite/model_parser/flatbuffers/program_desc.h"
+
 namespace paddle {
 namespace lite {
 namespace fbs {
