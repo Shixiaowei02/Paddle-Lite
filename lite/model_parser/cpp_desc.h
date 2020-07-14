@@ -14,13 +14,13 @@
 
 #pragma once
 
-#include "lite/model_parser/flatbuffers/block_desc.h"
-#include "lite/model_parser/flatbuffers/op_desc.h"
-#include "lite/model_parser/flatbuffers/program_desc.h"
-#include "lite/model_parser/flatbuffers/var_desc.h"
+#include "lite/model_parser/general/block_desc.h"
+#include "lite/model_parser/general/op_desc.h"
+#include "lite/model_parser/general/program_desc.h"
+#include "lite/model_parser/general/var_desc.h"
 
 namespace paddle {
 namespace lite {
-namespace cpp = fbs;
+namespace cpp = general;
 }
 }
