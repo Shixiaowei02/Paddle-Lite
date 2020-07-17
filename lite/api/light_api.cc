@@ -24,15 +24,16 @@ void LightPredictor::Build(const std::string& lite_model_file,
   if (model_from_memory) {
     LoadModelNaiveFromMemory(lite_model_file, scope_.get(), &cpp_program_desc_);
   } else {
-    LoadModelNaiveFromFile(lite_model_file, scope_.get(), &cpp_program_desc_);
+     LoadModelFbsFromFile(lite_model_file, scope_.get(), &cpp_program_desc_);
+    //LoadModelNaiveFromFile(lite_model_file, scope_.get(), &cpp_program_desc_);
   }
 
   // For weight quantization of post training, load the int8/16 weights
   // for optimized model, and dequant it to fp32.
-  DequantizeWeight();
+  DequantizeWeight(cpp_program_desc_);
 
   BuildRuntimeProgram(cpp_program_desc_);
-  PrepareFeedFetch();
+  PrepareFeedFetch(cpp_program_desc_);
 }
 
 void LightPredictor::Build(const std::string& model_dir,
@@ -59,9 +60,9 @@ void LightPredictor::Build(const std::string& model_dir,
       LOG(FATAL) << "Unknown model type";
   }
 
-  DequantizeWeight();
+  DequantizeWeight(cpp_program_desc_);
   BuildRuntimeProgram(cpp_program_desc_);
-  PrepareFeedFetch();
+  PrepareFeedFetch(cpp_program_desc_);
 }
 
 Tensor* LightPredictor::GetInput(size_t offset) {
@@ -108,10 +109,10 @@ std::vector<std::string> LightPredictor::GetOutputNames() {
   return output_names_;
 }
 // append the names of inputs and outputs into input_names_ and output_names_
-void LightPredictor::PrepareFeedFetch() {
-  auto current_block = cpp_program_desc_.GetBlock<cpp::BlockDesc>(0);
-  std::vector<cpp::OpDesc*> feeds;
-  std::vector<cpp::OpDesc*> fetchs;
+void LightPredictor::PrepareFeedFetch(const cpp::ProgramDesc& prog) {
+  auto current_block = prog.GetBlock<cpp::BlockDesc>(0);
+  std::vector<cpp::OpDesc const*> feeds;
+  std::vector<cpp::OpDesc const*> fetchs;
   for (size_t i = 0; i < current_block->OpsSize(); i++) {
     auto op = current_block->GetOp<cpp::OpDesc>(i);
     if (op->Type() == "feed") {
@@ -153,11 +154,11 @@ void LightPredictor::BuildRuntimeProgram(const cpp::ProgramDesc& prog) {
     KernelBase::ParseKernelType(kernel_type, &op_type, &alias, &place);
     auto kernels = op->CreateKernels({place});
     // filter out a kernel
-    auto it = std::find_if(
-        kernels.begin(), kernels.end(), [&](std::unique_ptr<KernelBase>& it) {
-          return it->alias() == alias;
-        });
-    CHECK(it != kernels.end());
+   // auto it = std::find_if(
+   //     kernels.begin(), kernels.end(), [&](std::unique_ptr<KernelBase>& it) {
+   //       return it->alias() == alias;
+   //     });
+    // CHECK(it != kernels.end());
 
 #ifdef LITE_WITH_OPENCL
     if ((*it)->target() == TARGET(kOpenCL)) {
@@ -168,10 +169,10 @@ void LightPredictor::BuildRuntimeProgram(const cpp::ProgramDesc& prog) {
       (*it)->SetContext(ContextScheduler::Global().NewContext((*it)->target()));
     }
 #else
-    (*it)->SetContext(ContextScheduler::Global().NewContext((*it)->target()));
+    //(*it)->SetContext(ContextScheduler::Global().NewContext((*it)->target()));
 #endif
 
-    insts.emplace_back(op, std::move(*it));
+   // insts.emplace_back(op, std::move(*it));
   }
   program_.reset(new RuntimeProgram(std::move(insts)));
 
@@ -179,7 +180,7 @@ void LightPredictor::BuildRuntimeProgram(const cpp::ProgramDesc& prog) {
   program_->set_exec_scope(program.exec_scope());
 }
 
-void LightPredictor::DequantizeWeight() {
+void LightPredictor::DequantizeWeight(const cpp::ProgramDesc& cpp_desc) {
 #define PROCESS_CONV2D_DATA()                                             \
   for (int64_t i = 0; i < ch; ++i) {                                      \
     for (int64_t j = 0; j < offset; ++j) {                                \
@@ -207,8 +208,8 @@ void LightPredictor::DequantizeWeight() {
   };
 
   Tensor tmp_tensor;
-  for (size_t i = 0; i < cpp_program_desc_.BlocksSize(); i++) {
-    auto* block = cpp_program_desc_.GetBlock<cpp::BlockDesc>(i);
+  for (size_t i = 0; i < cpp_desc.BlocksSize(); i++) {
+    auto* block = cpp_desc.GetBlock<cpp::BlockDesc>(i);
     for (size_t k = 0; k < block->OpsSize(); ++k) {
       auto* op_desc = block->GetOp<cpp::OpDesc>(k);
       if (is_weight_quantized_op(op_desc)) {

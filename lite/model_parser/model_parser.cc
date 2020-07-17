@@ -31,6 +31,7 @@
 #include "lite/model_parser/pb/var_desc.h"
 #endif
 #include "lite/utils/io.h"
+#include "lite/model_parser/flatbuffers/io.h"
 
 namespace paddle {
 namespace lite {
@@ -920,6 +921,15 @@ void LoadModelNaiveFromMemory(const std::string &model_buffer,
   LoadCombinedParamsNaive(model_buffer, offset, scope, *cpp_prog, true);
 
   VLOG(4) << "Load model from naive buffer memory successfully";
+}
+
+void LoadModelFbsFromFile(const std::string &filename,
+                            Scope *scope,
+                            cpp::ProgramDesc *cpp_prog) {
+  const std::string prog_file = filename + "/model.fbs";
+  const std::string params_file = filename + "/params.fbs";
+  fbs::LoadModel(prog_file, cpp_prog);
+  LoadCombinedParamsNaive(params_file, 0, scope, *cpp_prog, false);
 }
 
 }  // namespace lite

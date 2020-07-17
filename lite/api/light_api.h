@@ -77,7 +77,7 @@ class LITE_API LightPredictor {
   // get inputnames and get outputnames.
   std::vector<std::string> GetInputNames();
   std::vector<std::string> GetOutputNames();
-  void PrepareFeedFetch();
+  void PrepareFeedFetch(const cpp::ProgramDesc& prog);
 
  private:
   void Build(const std::string& lite_model_file,
@@ -93,7 +93,7 @@ class LITE_API LightPredictor {
 
   void BuildRuntimeProgram(const cpp::ProgramDesc& prog);
 
-  void DequantizeWeight();
+  void DequantizeWeight(const cpp::ProgramDesc& cpp_desc);
 
  private:
   std::shared_ptr<Scope> scope_;

@@ -70,6 +70,7 @@ VectorView<std::string, Flatbuffers> OpDesc::GetAttr<std::vector<std::string>>(
   template <>                                                                \
   typename lite::OpDataTypeTrait<T, Flatbuffers>::RT OpDesc::GetAttr<T>(     \
       const std::string& name) const {                                       \
+    LOG(INFO) << "fbs OpDesc::GetAttr: " << name; \
     const auto& it = desc_->attrs()->LookupByKey(name.c_str());              \
     return typename lite::OpDataTypeTrait<T, Flatbuffers>::RT(it->fb_f__()); \
   }                                                                          \

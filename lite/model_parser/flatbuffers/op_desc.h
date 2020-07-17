@@ -62,7 +62,7 @@ class OpDesc : public OpDescAPI {
   std::vector<std::string> Output(const std::string& param) const override {
     const auto& var = desc_->outputs()->LookupByKey(param.c_str());
     std::vector<std::string> args_vec;
-    if (var->arguments()) {
+    if (var && var->arguments()) {
       args_vec.reserve(var->arguments()->size());
       for (const auto& out : *var->arguments()) {
         args_vec.push_back(out->str());
@@ -111,6 +111,7 @@ class OpDesc : public OpDescAPI {
     if (attrs) {
       attr_names_vec.reserve(attrs->size());
       for (const auto& attr : *attrs) {
+        LOG(INFO) << "attr NAME: " << attr->name()->str();
         attr_names_vec.push_back(attr->name()->str());
       }
     }
@@ -169,8 +170,7 @@ class OpDesc : public OpDescAPI {
   }
 
   bool HasOutput(const std::string& param) const {
-    NotImplemented();
-    return false;
+    return !Output(param).empty();
   }
 
   const std::map<std::string, Any>& attrs() const {

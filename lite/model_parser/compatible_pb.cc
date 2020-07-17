@@ -184,6 +184,7 @@ void OpAttrsCppToAny(const cpp::OpDesc &cpp_desc, OpDescType *any_desc) {
   };
 #undef IMPL_ONE
   for (const auto &attr_name : cpp_desc.AttrNames()) {
+    LOG(INFO) << "attr_name: " << attr_name;
     auto type = cpp_desc.GetAttrType(attr_name);
     set_attr(attr_name, type);
   }
@@ -234,7 +235,7 @@ void OpAttrsCppToAny(const cpp::OpDesc &cpp_desc, OpDescType *any_desc) {
   template <>                                                               \
   void TransformBlockDescCppToAny<NT::T>(const cpp::T &cpp_desc,            \
                                          NT::T *any_desc) {                 \
-    auto desc = cpp_desc;                                                   \
+    const auto& desc = cpp_desc;                                                   \
     any_desc->SetIdx(desc.Idx());                                           \
     any_desc->SetParentIdx(desc.ParentIdx());                               \
     any_desc->SetForwardBlockIdx(desc.ForwardBlockIdx());                   \

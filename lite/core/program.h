@@ -176,7 +176,7 @@ class LITE_API RuntimeProgram {
   explicit RuntimeProgram(std::vector<Instruction>&& insts)
       : instructions_(std::move(insts)) {
     if (instructions_.empty()) {
-      LOG(FATAL) << "no instructions";
+     // LOG(FATAL) << "no instructions";
     }
 #ifdef LITE_WITH_PROFILE
     set_profiler();
