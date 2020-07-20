@@ -24,7 +24,8 @@ void LightPredictor::Build(const std::string& lite_model_file,
   if (model_from_memory) {
     LoadModelNaiveFromMemory(lite_model_file, scope_.get(), &cpp_program_desc_);
   } else {
-    LoadModelNaiveFromFile(lite_model_file, scope_.get(), &cpp_program_desc_);
+    LoadModelFbsFromFile(lite_model_file, scope_.get(), &cpp_program_desc_);
+    // LoadModelNaiveFromFile(lite_model_file, scope_.get(), &cpp_program_desc_);
   }
 
   // For weight quantization of post training, load the int8/16 weights
