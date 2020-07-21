@@ -12,4 +12,4 @@ lite_cc_library(fbs_program_desc SRCS program_desc.cc DEPS fbs_op_desc fbs_var_d
 lite_cc_library(fbs_io SRCS io.cc DEPS fbs_program_desc)
 lite_cc_test(test_vector_view SRCS vector_view_test.cc DEPS fbs_program_desc)
 
-lite_cc_binary(test_fbs_io SRCS io_test.cc DEPS light_api model_parser compatible_pb fbs_io fbs_program_desc var_desc op_desc block_desc program_desc flatbuffers)
+lite_cc_binary(test_fbs_io SRCS io_test.cc DEPS light_api model_parser compatible_pb fbs_io fbs_program_desc  flatbuffers)

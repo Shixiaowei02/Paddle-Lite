@@ -36,6 +36,22 @@
 namespace paddle {
 namespace lite {
 
+class Timer {
+ public:
+  std::chrono::high_resolution_clock::time_point start;
+  std::chrono::high_resolution_clock::time_point startu;
+
+   void tic() { start = std::chrono::high_resolution_clock::now(); }
+  double toc() {
+    startu = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> time_span =
+        std::chrono::duration_cast<std::chrono::duration<double>>(startu -
+                                                                  start);
+    double used_time_ms = static_cast<double>(time_span.count()) * 1000.0;
+    return used_time_ms;
+  }
+};
+
 #ifndef LITE_ON_TINY_PUBLISH
 int SizeOfType(framework::proto::VarType::Type type) {
   using Type = framework::proto::VarType::Type;
@@ -928,8 +944,13 @@ void LoadModelFbsFromFile(const std::string &filename,
                             cpp::ProgramDesc *cpp_prog) {
   const std::string prog_file = filename + "/model.fbs";
   const std::string params_file = filename + "/params.fbs";
+  Timer timer;
+  timer.tic();
   fbs::LoadModel(prog_file, cpp_prog);
+  std::cout << "fbs::LoadModel(prog_file, cpp_prog);  " << timer.toc() << std::endl;
+  timer.tic();
   LoadCombinedParamsNaive(params_file, 0, scope, *cpp_prog, false);
+  std::cout << "LoadCombinedParamsNaive(prog_file, cpp_prog);  " << timer.toc() << std::endl;
 }
 
 }  // namespace lite

@@ -16,24 +16,52 @@
 #include <algorithm>
 #include <map>
 
+class Timer {
+ public:
+  std::chrono::high_resolution_clock::time_point start;
+  std::chrono::high_resolution_clock::time_point startu;
+
+   void tic() { start = std::chrono::high_resolution_clock::now(); }
+  double toc() {
+    startu = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> time_span =
+        std::chrono::duration_cast<std::chrono::duration<double>>(startu -
+                                                                  start);
+    double used_time_ms = static_cast<double>(time_span.count()) * 1000.0;
+    return used_time_ms;
+  }
+};
+
 namespace paddle {
 namespace lite {
 
 void LightPredictor::Build(const std::string& lite_model_file,
                            bool model_from_memory) {
+	std::cout << "===== LoadModelFbsFromFile start!" << std::endl;
+	double time = 0;
+Timer timer;
+timer.tic();
   if (model_from_memory) {
     LoadModelNaiveFromMemory(lite_model_file, scope_.get(), &cpp_program_desc_);
   } else {
     LoadModelFbsFromFile(lite_model_file, scope_.get(), &cpp_program_desc_);
+    time = timer.toc();
+    std::cout << "[Time] " << time << std::endl;
     // LoadModelNaiveFromFile(lite_model_file, scope_.get(), &cpp_program_desc_);
   }
 
   // For weight quantization of post training, load the int8/16 weights
   // for optimized model, and dequant it to fp32.
+	std::cout << "===== DequantizeWeight start!" << std::endl;
   DequantizeWeight();
-
+	std::cout << "===== BuildRuntimeProgram start!" << std::endl;
+	
+  timer.tic();
   BuildRuntimeProgram(cpp_program_desc_);
+  std::cout << "time===== BuildRuntimeProgram(cpp_program_desc_) " << timer.toc() << std::endl;
+  std::cout << "===== PrepareFeedFetch!" << std::endl;
   PrepareFeedFetch();
+  std::cout << "===== End!" << std::endl;
 }
 
 void LightPredictor::Build(const std::string& model_dir,
@@ -137,7 +165,12 @@ void LightPredictor::PrepareFeedFetch() {
 void LightPredictor::BuildRuntimeProgram(const cpp::ProgramDesc& prog) {
   std::vector<Instruction> insts;
   // 1. Create op first
+  Timer timer;
+  timer.tic();
+  double t = 0;
   Program program(prog, scope_, {});
+  t = timer.toc();
+  std::cout << " Program program(prog, scope_, {}); time = " << t << std::endl;
 
 // 2. Create Instructs
 #ifdef LITE_WITH_OPENCL

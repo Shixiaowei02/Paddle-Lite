@@ -15,13 +15,9 @@
 #include "lite/model_parser/flatbuffers/io.h"
 #include "lite/model_parser/model_parser.h"
 #include "lite/model_parser/compatible_pb.h"
-#include "lite/model_parser/pb/program_desc.h"
-#include <google/protobuf/text_format.h>
-#include "flatbuffers/idl.h"
 
 #include "lite/api/paddle_use_kernels.h"
 #include "lite/api/paddle_use_ops.h"
-//#include "lite/api/paddle_use_passes.h"
 
 
 #include "lite/api/light_api.h"
@@ -36,11 +32,13 @@ int main() {
 
   using paddle::lite::VectorView;
   //using namespace paddle::lite::cpp;
+  std::cout << "1" << std::endl;
   std::shared_ptr<paddle::lite::cpp::ProgramDesc> prog(new paddle::lite::cpp::ProgramDesc());
+  std::cout << "2" << std::endl;
   //paddle::lite::cpp::ProgramDesc prog;
-  std::string path("/shixiaowei02/Paddle-Lite-FlatBuf/v5_3_5_gesture/flatbuffers/model.fbs");
-  //std::string path("/shixiaowei02/Paddle-Lite-FlatBuf/framework_test/save_model.bin");
+  std::string path("/data/local/tmp/shixiaowei02/v1_finger/flatbuffers/model.fbs");
   LoadModel(path, prog.get());
+  std::cout << "3" << std::endl;
 
 /*
   std::string schemafile;
@@ -64,7 +62,7 @@ int main() {
   std::cout << pb_str << std::endl;
 */
 
-  paddle::lite::LightPredictor predictor("/shixiaowei02/Paddle-Lite-FlatBuf/v5_3_5_gesture/flatbuffers/", false);
+  paddle::lite::LightPredictor predictor("/data/local/tmp/shixiaowei02/v1_finger/flatbuffers/", false);
   
   return 0;
 }
