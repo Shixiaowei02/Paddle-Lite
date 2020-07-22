@@ -42,3 +42,5 @@ if (LITE_WITH_CUDA AND NOT LITE_ON_TINY_PUBLISH)
         ${naive_wrapper})
     lite_cc_test(test_compatibility SRCS compatibility_test.cc DEPS compatibility leaky_relu_compute_cuda)
 endif()
+
+lite_cc_binary(test_fbs_io SRCS io_test.cc DEPS light_api model_parser compatible_pb fbs_io fbs_program_desc var_desc op_desc block_desc program_desc flatbuffers)
