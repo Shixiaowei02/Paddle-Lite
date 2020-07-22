@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
   }
   const std::string path(argv[1]);
   const int warm_up = (atoi(argv[2]));
-  const int iter = (atoi(argv[2]));
+  const int iter = (atoi(argv[3]));
   for (size_t i = 0; i < warm_up; ++i) {
     paddle::lite::LightPredictor predictor(path, false);
   }
