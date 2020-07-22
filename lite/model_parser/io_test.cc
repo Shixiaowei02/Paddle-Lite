@@ -20,23 +20,24 @@ class Timer {
 };
 
 int main(int argc, char* argv[]) {
-  if (argc != 2) {
-    std::cout << "[FATAL] Usage: ./test_fbs_io {model_path}" << std::endl;
+  if (argc <= 3) {
+    std::cout << "[FATAL] Usage: ./test_fbs_io {model_path} {iter}" << std::endl;
   }
   const std::string path(argv[1]);
+  const int iter = (atoi(argv[2]));
   std::cout << "Model path: " << path << std::endl;
-  {
+  for (size_t i = 0; i < 10; ++i) {
     paddle::lite::LightPredictor predictor(path, false);
   }
   std::cout << "======= Timer start =======" << std::endl;
   double t = 0.f;
   Timer timer;
   timer.tic();
-  for (size_t i = 0; i < 1000; ++i) {
+  for (size_t i = 0; i < iter; ++i) {
     paddle::lite::LightPredictor predictor(path, false);
   }
   t = timer.toc();
-  std::cout << "time = " << t / 1000 << std::endl;
+  std::cout << "time = " << t / iter << std::endl;
 
   paddle::lite::LightPredictor predictor(path, false);
   for (auto& name: predictor.GetInputNames()) {
