@@ -20,13 +20,13 @@ class Timer {
 };
 
 int main(int argc, char* argv[]) {
-  if (argc <= 3) {
-    std::cout << "[FATAL] Usage: ./test_fbs_io {model_path} {iter}" << std::endl;
+  if (argc <= 4) {
+    std::cout << "[FATAL] Usage: ./test_fbs_io {model_path} {warm_up} {iter}" << std::endl;
   }
   const std::string path(argv[1]);
+  const int warm_up = (atoi(argv[2]));
   const int iter = (atoi(argv[2]));
-  std::cout << "Model path: " << path << std::endl;
-  for (size_t i = 0; i < 10; ++i) {
+  for (size_t i = 0; i < warm_up; ++i) {
     paddle::lite::LightPredictor predictor(path, false);
   }
   std::cout << "======= Timer start =======" << std::endl;
