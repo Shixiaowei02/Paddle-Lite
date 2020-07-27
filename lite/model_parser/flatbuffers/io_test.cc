@@ -19,12 +19,15 @@
 #include <google/protobuf/text_format.h>
 #include "flatbuffers/idl.h"
 
+#include <gperftools/profiler.h>
+
 #include "lite/api/paddle_use_kernels.h"
 #include "lite/api/paddle_use_ops.h"
 //#include "lite/api/paddle_use_passes.h"
 
 
 #include "lite/api/light_api.h"
+#include <unistd.h>
 
 namespace paddle {
 namespace lite {
@@ -33,15 +36,15 @@ namespace lite {
 }  // namespace paddle
 
 int main() {
-
+/*
   using paddle::lite::VectorView;
   //using namespace paddle::lite::cpp;
   std::shared_ptr<paddle::lite::cpp::ProgramDesc> prog(new paddle::lite::cpp::ProgramDesc());
   //paddle::lite::cpp::ProgramDesc prog;
-  std::string path("/shixiaowei02/Paddle-Lite-FlatBuf/v5_3_5_gesture/flatbuffers/model.fbs");
+  std::string path("/shixiaowei02/Paddle-Lite-FlatBuf/v1_finger/flatbuffers/model.fbs");
   //std::string path("/shixiaowei02/Paddle-Lite-FlatBuf/framework_test/save_model.bin");
   LoadModel(path, prog.get());
-
+*/
 /*
   std::string schemafile;
   flatbuffers::LoadFile("/shixiaowei02/Paddle-Lite-VectorView/Paddle-Lite/lite/model_parser/flatbuffers/framework.fbs", false, &schemafile);
@@ -64,7 +67,12 @@ int main() {
   std::cout << pb_str << std::endl;
 */
 
-  paddle::lite::LightPredictor predictor("/shixiaowei02/Paddle-Lite-FlatBuf/v5_3_5_gesture/flatbuffers/", false);
+  ProfilerStart("test.prof");
+  for (size_t i = 0; i < 1000; ++i) { 
+    paddle::lite::LightPredictor predictor("/shixiaowei02/Paddle-Lite-FlatBuf/v1_finger/flatbuffers/", false);
+    usleep(100);
+  }
+  ProfilerStop();
   
   return 0;
 }
