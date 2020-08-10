@@ -623,7 +623,7 @@ void SaveModelFbs(const std::string &model_dir,
   fbs::SetCombinedParamsWithScope(exec_scope, unique_var_names, &params_prog);
   fbs::SaveFile(params_path, params_prog.data(), params_prog.buf_size());
 }
-
+#if 0
 void LoadModelFbsFromFile(const std::string &filename,
                           Scope *scope,
                           cpp::ProgramDesc *cpp_prog) {
@@ -640,8 +640,27 @@ void LoadModelFbsFromFile(const std::string &filename,
   fbs::CombinedParamsDesc params(fbs::LoadFile(params_path));
   fbs::SetScopeWithCombinedParams(scope, params);
 }
+#endif
 
 #endif  // LITE_ON_TINY_PUBLISH
+
+void LoadModelFbsFromFile(const std::string &filename,
+                          Scope *scope,
+                          cpp::ProgramDesc *cpp_prog) {
+  CHECK(cpp_prog);
+  CHECK(scope);
+
+  /* 1. Save cpp::ProgramDesc with model.fbs */
+  const std::string prog_path = filename + "/model.fbs";
+  // fbs::ProgramDesc program(fbs::LoadFile(prog_path));
+  // TransformProgramDescAnyToCpp(program, cpp_prog);
+  cpp_prog->Init(fbs::LoadFile(prog_path));
+
+  /* 2. Save scope with params.fbs */
+  const std::string params_path = filename + "/params.fbs";
+  fbs::CombinedParamsDesc params(fbs::LoadFile(params_path));
+  fbs::SetScopeWithCombinedParams(scope, params);
+}
 
 template <typename T>
 void SetTensorDataNaive(T *out, size_t size, const std::vector<T> &src) {
