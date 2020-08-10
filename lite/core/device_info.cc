@@ -1052,28 +1052,28 @@ int DeviceInfo::Setup() {
   }
 #endif
   // output info
-  LOG(INFO) << "ARM multiprocessors name: " << dev_name_;
-  LOG(INFO) << "ARM multiprocessors number: " << core_num_;
+  VLOG(3) << "ARM multiprocessors name: " << dev_name_;
+  VLOG(3) << "ARM multiprocessors number: " << core_num_;
   for (int i = 0; i < core_num_; ++i) {
-    LOG(INFO) << "ARM multiprocessors ID: " << core_ids_[i]
+    VLOG(3) << "ARM multiprocessors ID: " << core_ids_[i]
               << ", max freq: " << max_freqs_[i]
               << ", min freq: " << min_freqs_[i]
               << ", cluster ID: " << cluster_ids_[core_ids_[i]]
               << ", CPU ARCH: A" << static_cast<int>(archs_[i]);
   }
-  LOG(INFO) << "L1 DataCache size is: ";
+  VLOG(3) << "L1 DataCache size is: ";
   for (int i = 0; i < core_num_; ++i) {
-    LOG(INFO) << L1_cache_[i] / 1024 << " KB";
+    VLOG(3) << L1_cache_[i] / 1024 << " KB";
   }
-  LOG(INFO) << "L2 Cache size is: ";
+  VLOG(3) << "L2 Cache size is: ";
   for (int i = 0; i < core_num_; ++i) {
-    LOG(INFO) << L2_cache_[i] / 1024 << " KB";
+    VLOG(3) << L2_cache_[i] / 1024 << " KB";
   }
-  LOG(INFO) << "L3 Cache size is: ";
+  VLOG(3) << "L3 Cache size is: ";
   for (int i = 0; i < core_num_; ++i) {
-    LOG(INFO) << L3_cache_[i] / 1024 << " KB";
+    VLOG(3) << L3_cache_[i] / 1024 << " KB";
   }
-  LOG(INFO) << "Total memory: " << mem_size_ << "KB";
+  VLOG(3) << "Total memory: " << mem_size_ << "KB";
   // set default run mode
   SetRunMode(lite_api::PowerMode::LITE_POWER_NO_BIND,
              1);  // use single thread by default
