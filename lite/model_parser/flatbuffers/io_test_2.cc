@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
     paddle::lite::LightPredictor predictor(path, false);
     t = timer.toc();
     std::cout << "time = " << t << std::endl;
-    usleep(1000);
+    usleep(100000);
   }
 
   paddle::lite::LightPredictor predictor(path, false);

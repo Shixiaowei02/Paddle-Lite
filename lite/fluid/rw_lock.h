@@ -28,20 +28,17 @@ namespace fluid {
 
 #if !defined(_WIN32)
 struct RWLock {
-  RWLock() { pthread_rwlock_init(&lock_, nullptr); }
+  RWLock() { }
 
-  ~RWLock() { pthread_rwlock_destroy(&lock_); }
+  ~RWLock() { }
 
   inline void RDLock() {
-    CHECK_EQ(pthread_rwlock_rdlock(&lock_), 0) << "acquire read lock failed";
   }
 
   inline void WRLock() {
-    CHECK_EQ(pthread_rwlock_wrlock(&lock_), 0) << "acquire write lock failed";
   }
 
   inline void UNLock() {
-    CHECK_EQ(pthread_rwlock_unlock(&lock_), 0) << "unlock failed";
   }
 
  private:
@@ -53,11 +50,11 @@ struct RWLock {
 // In windows, rw_lock seems like a hack. Use empty object and do nothing.
 struct RWLock {
   // FIXME(minqiyang): use mutex here to do fake lock
-  inline void RDLock() { mutex_.lock(); }
+  inline void RDLock() { }
 
-  inline void WRLock() { mutex_.lock(); }
+  inline void WRLock() { }
 
-  inline void UNLock() { mutex_.unlock(); }
+  inline void UNLock() {}
 
  private:
   std::mutex mutex_;
@@ -66,14 +63,14 @@ struct RWLock {
 
 class AutoWRLock {
  public:
-  explicit AutoWRLock(RWLock* rw_lock) : lock_(rw_lock) { Lock(); }
+  explicit AutoWRLock(RWLock* rw_lock) : lock_(rw_lock) {}
 
-  ~AutoWRLock() { UnLock(); }
+  ~AutoWRLock() { }
 
  private:
-  inline void Lock() { lock_->WRLock(); }
+  inline void Lock() {}
 
-  inline void UnLock() { lock_->UNLock(); }
+  inline void UnLock() {}
 
  private:
   RWLock* lock_;
@@ -81,14 +78,14 @@ class AutoWRLock {
 
 class AutoRDLock {
  public:
-  explicit AutoRDLock(RWLock* rw_lock) : lock_(rw_lock) { Lock(); }
+  explicit AutoRDLock(RWLock* rw_lock) : lock_(rw_lock) {}
 
-  ~AutoRDLock() { UnLock(); }
+  ~AutoRDLock() { }
 
  private:
-  inline void Lock() { lock_->RDLock(); }
+  inline void Lock() { }
 
-  inline void UnLock() { lock_->UNLock(); }
+  inline void UnLock() { }
 
  private:
   RWLock* lock_;
