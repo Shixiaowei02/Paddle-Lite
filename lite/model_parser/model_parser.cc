@@ -658,7 +658,7 @@ void LoadModelFbsFromFile(const std::string &filename,
 
   /* 2. Save scope with params.fbs */
   const std::string params_path = filename + "/params.fbs";
-  fbs::CombinedParamsDesc params(fbs::LoadFile(params_path));
+  fbs::CombinedParamsDescView params(fbs::LoadFile(params_path));
   fbs::SetScopeWithCombinedParams(scope, params);
 }
 

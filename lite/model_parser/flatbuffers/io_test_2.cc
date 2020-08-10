@@ -14,6 +14,7 @@
 
 #include <assert.h>
 #include <chrono>  // NOLINT
+#include <unistd.h>
 #include "lite/api/light_api.h"
 #include "lite/api/paddle_use_kernels.h"
 #include "lite/api/paddle_use_ops.h"
@@ -48,12 +49,13 @@ int main(int argc, char* argv[]) {
   std::cout << "======= Timer start =======" << std::endl;
   double t = 0.f;
   Timer timer;
-  timer.tic();
   for (size_t i = 0; i < iter; ++i) {
+    timer.tic();
     paddle::lite::LightPredictor predictor(path, false);
+    t = timer.toc();
+    std::cout << "time = " << t << std::endl;
+    usleep(1000);
   }
-  t = timer.toc();
-  std::cout << "time = " << t / iter << std::endl;
 
   paddle::lite::LightPredictor predictor(path, false);
   for (auto& name : predictor.GetInputNames()) {
