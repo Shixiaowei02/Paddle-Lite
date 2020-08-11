@@ -15,6 +15,7 @@
 #include "lite/api/light_api.h"
 #include <algorithm>
 #include <map>
+#include <gperftools/profiler.h>
 
 namespace paddle {
 namespace lite {
@@ -27,7 +28,12 @@ void LightPredictor::Build(const std::string& lite_model_file,
   } else {
     // LoadModelNaiveFromFile(lite_model_file, scope_.get(),
     // program_desc_.get());
-    LoadModelFbsFromFile(lite_model_file, scope_.get(), program_desc_.get());
+    ProfilerStart("test.prof");
+    for (size_t i = 0; i < 1000; ++i) {
+    cpp::ProgramDesc desc;
+    LoadModelFbsFromFile(lite_model_file, scope_.get(), &desc);
+    }
+    ProfilerStop();
   }
 
   // For weight quantization of post training, load the int8/16 weights

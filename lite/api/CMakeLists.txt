@@ -178,6 +178,7 @@ lite_cc_library(light_api SRCS light_api.cc
         BM_DEPS ${bm_kernels}
         MLU_DEPS ${mlu_kernels}
         HUAWEI_ASCEND_NPU_DEPS ${huawei_ascend_npu_kernels})
+target_link_libraries(light_api profiler)
 
 include(ExternalProject)
 set(LITE_DEMO_INSTALL_DIR "${THIRD_PARTY_PATH}/inference_demo" CACHE STRING
