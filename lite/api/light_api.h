@@ -62,7 +62,22 @@ class LITE_API LightPredictor {
     Build(model_dir, model_buffer, param_buffer, model_type, model_from_memory);
   }
 
-  void Run() { program_->Run(); }
+  void Run() {
+    program_->Run();
+    for (const auto& var_name : scope_->LocalVarNames()) { 
+	   if (var_name == "feed" || var_name == "fetch") continue;
+	   auto* tensor = scope_->FindTensor(var_name);
+	   auto mem_size  = tensor->memory_size();
+	   LOG(INFO) << "weight_name: " << var_name << ", " << mem_size;
+    }
+    LOG(INFO) << "========";
+    for (const auto& var_name : program_->exec_scope()->LocalVarNames()) { 
+	   if (var_name == "feed" || var_name == "fetch") continue;
+	   auto* tensor = program_->exec_scope()->FindTensor(var_name);
+	   auto mem_size  = tensor->memory_size();
+	   LOG(INFO) << "variable_name: " << var_name << ", " << mem_size;
+    }
+  }
 
   // Get offset-th col of feed inputs.
   Tensor* GetInput(size_t offset);
@@ -80,7 +95,9 @@ class LITE_API LightPredictor {
   std::vector<std::string> GetInputNames();
   std::vector<std::string> GetOutputNames();
   void PrepareFeedFetch();
-  Scope* scope() { return scope_.get(); }
+  Scope* scope() {
+    return scope_.get();
+  }
 
  private:
   void Build(const std::string& lite_model_file,

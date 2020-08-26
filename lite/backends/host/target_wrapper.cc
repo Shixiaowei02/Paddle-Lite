@@ -31,8 +31,6 @@ void* TargetWrapper<TARGET(kHost)>::Malloc(size_t size) {
   if (global_mem_map.find(p) != global_mem_map.end()) {
     LOG(FATAL) << "memory map repeated error!";
   }
-  LOG(INFO) << "[New Address] " << p << ", size = " <<  offset + size;
-  global_mem_map[p] = offset + size;
 
   if (!p) {
     return nullptr;
@@ -40,13 +38,15 @@ void* TargetWrapper<TARGET(kHost)>::Malloc(size_t size) {
   void* r = reinterpret_cast<void*>(reinterpret_cast<size_t>(p + offset) &
                                     (~(MALLOC_ALIGN - 1)));
   static_cast<void**>(r)[-1] = p;
+  global_mem_map[r] = offset + size;
+  LOG(INFO) << "[New Address] " << static_cast<void *>(r) << ", size = " <<  offset + size;
   return r;
 }
 void TargetWrapper<TARGET(kHost)>::Free(void* ptr) {
   if (global_mem_map.find(ptr) == global_mem_map.end()) {
-    LOG(FATAL) << "memory map leaked error!";
+    LOG(FATAL) << "memory map leaked error: " << static_cast<void *>(ptr);
   }
-  LOG(INFO) << "[Delete Address] " << ptr << ", size = " <<  global_mem_map[ptr];
+  LOG(INFO) << "[Delete Address] " << static_cast<void *>(ptr) << ", size = " <<  global_mem_map[ptr];
   global_mem_map[ptr] = 0;
 
   if (ptr) {

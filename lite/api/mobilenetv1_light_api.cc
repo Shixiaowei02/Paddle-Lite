@@ -20,8 +20,14 @@
 #include <vector>
 
 #include "lite/api/paddle_place.h"
+#include "lite/api/paddle_api.h"
+#include "lite/api/paddle_use_kernels.h"
+#include "lite/api/paddle_use_ops.h"
+#include "lite/api/paddle_use_passes.h"
+
 
 using namespace paddle::lite_api;  // NOLINT
+
 
 int64_t ShapeProduction(const shape_t& shape) {
   int64_t res = 1;
