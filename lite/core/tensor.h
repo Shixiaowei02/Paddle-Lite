@@ -146,7 +146,9 @@ class TensorLite {
   R *mutable_data() {
     precision_ = lite_api::PrecisionTypeTrait<T>::Type();
     memory_size_ = dims_.production() * sizeof(T);
+    LOG(INFO) << "===== buffer_->ResetLazy() START =====";
     buffer_->ResetLazy(target_, memory_size_);
+    LOG(INFO) << "===== buffer_->ResetLazy() END =====";
     return reinterpret_cast<R *>(static_cast<char *>(buffer_->data()) +
                                  offset_);
   }

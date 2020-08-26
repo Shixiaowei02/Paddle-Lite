@@ -15,15 +15,25 @@
 #include "lite/core/target_wrapper.h"
 #include <cstring>
 #include <memory>
+#include <map>
 
 namespace paddle {
 namespace lite {
+
+std::map<void*, int64_t> global_mem_map;
 
 const int MALLOC_ALIGN = 16;
 
 void* TargetWrapper<TARGET(kHost)>::Malloc(size_t size) {
   size_t offset = sizeof(void*) + MALLOC_ALIGN - 1;
   char* p = static_cast<char*>(malloc(offset + size));
+
+  if (global_mem_map.find(p) != global_mem_map.end()) {
+    LOG(FATAL) << "memory map repeated error!";
+  }
+  LOG(INFO) << "[New Address] " << p << ", size = " <<  offset + size;
+  global_mem_map[p] = offset + size;
+
   if (!p) {
     return nullptr;
   }
@@ -33,6 +43,12 @@ void* TargetWrapper<TARGET(kHost)>::Malloc(size_t size) {
   return r;
 }
 void TargetWrapper<TARGET(kHost)>::Free(void* ptr) {
+  if (global_mem_map.find(ptr) == global_mem_map.end()) {
+    LOG(FATAL) << "memory map leaked error!";
+  }
+  LOG(INFO) << "[Delete Address] " << ptr << ", size = " <<  global_mem_map[ptr];
+  global_mem_map[ptr] = 0;
+
   if (ptr) {
     free(static_cast<void**>(ptr)[-1]);
   }

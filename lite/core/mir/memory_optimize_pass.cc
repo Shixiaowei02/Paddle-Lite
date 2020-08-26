@@ -210,6 +210,11 @@ void MemoryOptimizePass::MakeReusePlan(
 
 void MemoryOptimizePass::PerformReusePlan(
     SSAGraph* graph, const std::map<std::string, std::string>& reuse_table) {
+  LOG(INFO) << "===== Reuse table start. =====";
+  for (const auto& pair: reuse_table) {
+    LOG(INFO) << pair.first << " -> " << pair.second;
+  }
+  LOG(INFO) << "===== Reuse table end. =====";
   int node_append_idx = 0;
   for (auto& op_node : graph->StmtTopologicalOrder()) {
     if (!op_node->IsStmt()) continue;
