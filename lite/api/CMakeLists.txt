@@ -445,6 +445,22 @@ if(NOT IOS)
         X86_DEPS ${x86_kernels}
         CUDA_DEPS ${cuda_kernels}
         HUAWEI_ASCEND_NPU_DEPS ${huawei_ascend_npu_kernels})
+
+    lite_cc_binary(test_mobilenetv1_light_api SRCS mobilenetv1_light_api.cc DEPS paddle_api_full paddle_api_light gflags utils
+	${ops} ${host_kernels}
+	ARM_DEPS ${arm_kernels}
+	CV_DEPS paddle_cv_arm
+	NPU_DEPS ${npu_kernels}
+	XPU_DEPS ${xpu_kernels}
+	MLU_DEPS ${mlu_kernels}
+	APU_DEPS ${apu_kernels}
+	CL_DEPS ${opencl_kernels}
+	BM_DEPS ${bm_kernels}
+	RKNPU_DEPS ${rknpu_kernels}
+	FPGA_DEPS ${fpga_kernels}
+	X86_DEPS ${x86_kernels}
+	CUDA_DEPS ${cuda_kernels}
+	HUAWEI_ASCEND_NPU_DEPS ${huawei_ascend_npu_kernels})
     
     lite_cc_binary(test_model_classify_bin SRCS model_test_classify.cc DEPS paddle_api_full paddle_api_light gflags utils
         ${ops} ${host_kernels}
