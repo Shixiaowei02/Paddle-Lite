@@ -90,6 +90,7 @@ void TensorLite::CopyDataFrom(const TensorLite &other) {
 
 void *TensorLite::mutable_data(size_t memory_size) {
   memory_size_ = memory_size;
+  std::cout << "Tensor ResetLazy: " << this << ",size: " << memory_size_ << std::endl;
   buffer_->ResetLazy(target_, memory_size_);
   return buffer_->data();
 }

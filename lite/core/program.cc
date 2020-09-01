@@ -20,6 +20,7 @@
 #include "lite/operators/conditional_block_op.h"
 #include "lite/operators/subgraph_op.h"
 #include "lite/operators/while_op.h"
+#include "lite/core/memory.h"
 #ifdef LITE_WITH_PRECISION_PROFILE
 #include "lite/core/profile/precision_profiler.h"
 #endif
@@ -273,6 +274,21 @@ void RuntimeProgram::Run() {
 #endif
   int idx = -1;
   auto& insts = instructions_[kRootBlockIdx];
+  double vm_usage_before = -1;
+  double resident_set_before = -1;
+  process_mem_usage(vm_usage_before, resident_set_before);
+  LOG(INFO) << "RuntimeProgram::Run() START!!" << vm_usage_before << ", " << resident_set_before;
+  std::cin.get();
+    auto* tensor_2 = exec_scope_->FindVar("VISface_landmark_10899.batch_norm.output.1.tmp_2")->GetMutable<Tensor>();
+    auto* tensor_3 = exec_scope_->FindVar("VISface_landmark_2202.batch_norm.output.1.tmp_3")->GetMutable<Tensor>();
+    auto* tensor_0 = exec_scope_->FindVar("VISface_landmark_0")->GetMutable<Tensor>();
+
+    tensor_2->Resize(std::vector<int64_t>({4, 57, 16, 16}));
+    tensor_2->mutable_data<float>();
+    tensor_3->Resize(std::vector<int64_t>({4, 57, 16, 16}));
+    tensor_3->mutable_data<float>();
+    tensor_0->Resize(std::vector<int64_t>({4, 169, 16, 16}));
+    tensor_0->mutable_data<float>();
   for (auto& inst : insts) {
     ++idx;
 #ifndef LITE_WITH_FPGA
@@ -290,7 +306,22 @@ void RuntimeProgram::Run() {
       inst.Sync();
     }
 #endif
+    std::string op_type__{inst.op()->DebugString()};
+    std::cout << "=========== [idx " << idx << " Start] (" << op_type__ <<") ===========" << std::endl;
+    for (const auto& in: inst.op()->op_info()->input_names()) {
+	    std::cout << " -- in name: " << in << std::endl;
+    } 
+
+
+    std::cout << "VISface_landmark_10899.batch_norm.output.1.tmp_2: " << tensor_2->dims().repr() << std::endl;
+    std::cout << "VISface_landmark_2202.batch_norm.output.1.tmp_3: " << tensor_3->dims().repr() << std::endl;
+    std::cout << "VISface_landmark_0: " << tensor_0->dims().repr() << std::endl; 
+
     inst.Run();
+    std::cout << "=========== [idx " << idx << " End] (" << op_type__ <<") ===========" << std::endl;
+    std::cout << "VISface_landmark_10899.batch_norm.output.1.tmp_2: " << tensor_2->dims().repr() << std::endl;
+    std::cout << "VISface_landmark_2202.batch_norm.output.1.tmp_3: " << tensor_3->dims().repr() << std::endl;
+    std::cout << "VISface_landmark_0: " << tensor_0->dims().repr() << std::endl; 
 #ifdef LITE_WITH_PRECISION_PROFILE
 #ifndef LITE_WITH_FPGA
     precision_profiler_summary +=
@@ -298,6 +329,9 @@ void RuntimeProgram::Run() {
 #endif
 #endif  // LITE_WITH_PRECISION_PROFILE
   }
+  process_mem_usage(vm_usage_before, resident_set_before);
+  LOG(INFO) << "RuntimeProgram::Run() END!!" << vm_usage_before << ", " << resident_set_before;
+  std::cin.get();
 #ifdef LITE_WITH_PROFILE
   LOG(INFO) << "\n" << profiler_.Summary(profile::Type::kDispatch, false, 1);
 #endif

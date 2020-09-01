@@ -16,6 +16,7 @@
 #include <string>
 #include "lite/api/paddle_place.h"
 #include "lite/core/target_wrapper.h"
+#include "lite/core/mem_usage.h"
 #include "lite/utils/logging.h"
 #include "lite/utils/macros.h"
 
@@ -123,10 +124,26 @@ class Buffer {
   bool own_data() const { return own_data_; }
 
   void ResetLazy(TargetType target, size_t size) {
+//	  if (true) {
+    double vm_usage_before = -1;
+    double vm_usage_after = -1;
+    double resident_set_before = -1;
+    double resident_set_after = -1;
+    double need_more = -1;
     if (target != target_ || space_ < size) {
+      std::cout << "===== START =====" << std::endl;
+      std::cout << "[size] " << size << ", [space_] " << space_ << std::endl;  
+      need_more = size - space_;
+      process_mem_usage(vm_usage_before, resident_set_before);
       CHECK_EQ(own_data_, true) << "Can not reset unowned buffer.";
       Free();
       data_ = TargetMalloc(target, size);
+      process_mem_usage(vm_usage_after, resident_set_after);
+      std::cout << "[need more] " << need_more / 1024.0 << std::endl;
+      std::cout << "[vm] " << vm_usage_after << ", " << vm_usage_before << ", [DIFF] " << vm_usage_after - vm_usage_before << std::endl;
+      std::cout << "[res] " << resident_set_after << ", " <<  resident_set_before << ", [DIFF] " << resident_set_after - resident_set_before << std::endl; 
+      std::cout << "===== END =====" << std::endl;
+      std::cin.get();
       target_ = target;
       space_ = size;
 #ifdef LITE_WITH_OPENCL
