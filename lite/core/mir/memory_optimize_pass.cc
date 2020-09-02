@@ -50,8 +50,9 @@ void MemoryOptimizePass::CollectLifeCycleByDevice(
                                             "concat",
                                             "yolo_box",
                                             "subgraph",
-                                            "feed",
-                                            "fetch"};
+                                            };
+                                            //"feed",
+                                            //"fetch"};
 
   auto insert_invalid_op_nodes_for_specific_target = [&](
       std::set<std::string> op_node_set, TargetType specific_target) {
@@ -82,14 +83,18 @@ void MemoryOptimizePass::CollectLifeCycleByDevice(
     auto op_info = op_node->AsStmt().op_info();
     auto op_type = op_info->Type();
     auto invalid_op_node = invalid_op_nodes.find(op_type);
+    invalid_var_names.insert("feed");
+    invalid_var_names.insert("fetch");
     if (invalid_op_node != invalid_op_nodes.end()) {
       for (auto in_var_node : op_node->inlinks) {
         CHECK(in_var_node->IsArg());
         invalid_var_names.insert(in_var_node->AsArg().name);
+        LOG(INFO) << "invalid_var_names.insert: " << in_var_node->AsArg().name;
       }
       for (auto out_var_node : op_node->outlinks) {
         CHECK(out_var_node->IsArg());
         invalid_var_names.insert(out_var_node->AsArg().name);
+        LOG(INFO) << "invalid_var_names.insert: " << out_var_node->AsArg().name;
       }
       continue;
     }
@@ -123,12 +128,15 @@ void MemoryOptimizePass::CollectLifeCycleByDevice(
   for (auto& node : graph->nodes()) {
     if (node.IsArg() && (node.arg()->type != nullptr) &&
         !node.arg()->type->IsTensor()) {
+      LOG(INFO) << "invalid_var_names.insert: " << node.arg()->name;
       invalid_var_names.insert(node.arg()->name);
     }
   }
 
-  for (auto& op_node : graph->StmtTopologicalOrder()) {
-    if (op_node->IsStmt()) {
+
+ for (auto& op_node : graph->StmtTopologicalOrder()) {
+    if (op_node->IsStmt() && op_node->AsStmt().op_type() == "feed") {
+      LOG(INFO) << "==== Mem Stmt: " << op_node->AsStmt().op_type();
       std::vector<Node*> var_nodes(op_node->inlinks.begin(),
                                    op_node->inlinks.end());
       var_nodes.insert(
@@ -138,21 +146,94 @@ void MemoryOptimizePass::CollectLifeCycleByDevice(
         auto& arg = var_node->AsArg();
         if (arg.is_weight || arg.is_persist) continue;
         std::string var_name = arg.name;
-        if (invalid_var_names.count(var_name)) continue;
+        if (invalid_var_names.count(var_name)) {
+          LOG(INFO) << "invalid var: " << var_name;
+          continue;
+        }
         TargetType target_type = arg.type->target();
         if (is_host(target_type)) target_type = TARGET(kHost);
 
         if (!(*lifecycles)[TargetToStr(target_type)].count(var_name)) {
           (*lifecycles)[TargetToStr(target_type)].emplace(
               var_name, std::make_pair(max_lifecycle_, max_lifecycle_));
+          LOG(INFO) << "[Init] " << var_name << ": " << max_lifecycle_ << " ~ " << max_lifecycle_;
         } else {
           int cur_life =
               (*lifecycles)[TargetToStr(target_type)][var_name].second;
           (*lifecycles)[TargetToStr(target_type)][var_name].second =
               std::max(max_lifecycle_, cur_life);
+          LOG(INFO) << "[New] " << var_name << ": " << max_lifecycle_ << " ~ " << cur_life;
+        }
+      }
+    }
+ }
+max_lifecycle_++;
+  for (auto& op_node : graph->StmtTopologicalOrder()) {
+    if (op_node->IsStmt() && op_node->AsStmt().op_type() != "fetch" && op_node->AsStmt().op_type() != "feed") {
+      LOG(INFO) << "==== Mem Stmt: " << op_node->AsStmt().op_type();
+      std::vector<Node*> var_nodes(op_node->inlinks.begin(),
+                                   op_node->inlinks.end());
+      var_nodes.insert(
+          var_nodes.end(), op_node->outlinks.begin(), op_node->outlinks.end());
+      for (auto* var_node : var_nodes) {
+        CHECK(var_node->IsArg());
+        auto& arg = var_node->AsArg();
+        if (arg.is_weight || arg.is_persist) continue;
+        std::string var_name = arg.name;
+        if (invalid_var_names.count(var_name)) {
+          LOG(INFO) << "invalid var: " << var_name;
+          continue;
+        }
+        TargetType target_type = arg.type->target();
+        if (is_host(target_type)) target_type = TARGET(kHost);
+
+        if (!(*lifecycles)[TargetToStr(target_type)].count(var_name)) {
+          (*lifecycles)[TargetToStr(target_type)].emplace(
+              var_name, std::make_pair(max_lifecycle_, max_lifecycle_));
+          LOG(INFO) << "[Init] " << var_name << ": " << max_lifecycle_ << " ~ " << max_lifecycle_;
+        } else {
+          int cur_life =
+              (*lifecycles)[TargetToStr(target_type)][var_name].second;
+          (*lifecycles)[TargetToStr(target_type)][var_name].second =
+              std::max(max_lifecycle_, cur_life);
+          LOG(INFO) << "[New] " << var_name << ": " << (*lifecycles)[TargetToStr(target_type)][var_name].first << " ~ " << (*lifecycles)[TargetToStr(target_type)][var_name].second;
         }
       }
       ++max_lifecycle_;
+    }
+  }
+  max_lifecycle_++;
+ for (auto& op_node : graph->StmtTopologicalOrder()) {
+    if (op_node->IsStmt() && op_node->AsStmt().op_type() == "fetch") {
+      LOG(INFO) << "==== Mem Stmt: " << op_node->AsStmt().op_type();
+      std::vector<Node*> var_nodes(op_node->inlinks.begin(),
+                                   op_node->inlinks.end());
+      var_nodes.insert(
+          var_nodes.end(), op_node->outlinks.begin(), op_node->outlinks.end());
+      for (auto* var_node : var_nodes) {
+        CHECK(var_node->IsArg());
+        auto& arg = var_node->AsArg();
+        if (arg.is_weight || arg.is_persist) continue;
+        std::string var_name = arg.name;
+        if (invalid_var_names.count(var_name)) {
+          LOG(INFO) << "invalid var: " << var_name;
+          continue;
+        }
+        TargetType target_type = arg.type->target();
+        if (is_host(target_type)) target_type = TARGET(kHost);
+
+        if (!(*lifecycles)[TargetToStr(target_type)].count(var_name)) {
+          (*lifecycles)[TargetToStr(target_type)].emplace(
+              var_name, std::make_pair(max_lifecycle_, max_lifecycle_));
+          LOG(INFO) << "[Init] " << var_name << ": " << max_lifecycle_ << " ~ " << max_lifecycle_;
+        } else {
+          int cur_life =
+              (*lifecycles)[TargetToStr(target_type)][var_name].second;
+          (*lifecycles)[TargetToStr(target_type)][var_name].second =
+              std::max(max_lifecycle_, cur_life);
+          LOG(INFO) << "[New] " << var_name << ": " << max_lifecycle_ << " ~ " << cur_life;
+        }
+      }
     }
   }
   LOG(INFO) << "There are " << (*lifecycles).size() << " types device var.";

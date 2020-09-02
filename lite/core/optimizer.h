@@ -81,7 +81,8 @@ class Optimizer {
 
     if (passes.empty() || passes.size() == 1) {
       std::vector<std::string> passes_local{
-          {"lite_quant_dequant_fuse_pass",         //
+          {
+            "lite_quant_dequant_fuse_pass",         //
            "weight_quantization_preprocess_pass",  //
            "lite_conv_elementwise_fuse_pass",      // conv-elemwise-bn
            "lite_conv_bn_fuse_pass",               //
@@ -166,7 +167,8 @@ class Optimizer {
            "argument_type_display_pass",
            "lite_reshape_fuse_pass",
 
-           "memory_optimize_pass"}};
+           "memory_optimize_pass"
+          }};
 
       if (passes.size() == 1) {
         // multi_stream_analysis_pass must be in the front of
