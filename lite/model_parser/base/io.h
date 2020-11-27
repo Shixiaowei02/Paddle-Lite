@@ -67,9 +67,9 @@ class ByteReader {
   ByteReader() = default;
   virtual void ReadForward(void* dst, size_t size) const = 0;
   virtual std::string ReadForwardToString(size_t size) const;
+  virtual size_t cursor() const = 0;
   virtual size_t length() const = 0;
   virtual bool ReachEnd() const = 0;
-  virtual void* CursorForward(size_t size) const = 0;
 
   template <typename T,
             typename = typename std::enable_if<
@@ -99,6 +99,7 @@ class ByteWriter {
     WriteForward(&elem, sizeof(T));
   }
 
+  virtual size_t cursor() const = 0;
   virtual ~ByteWriter() = default;
 
  private:
@@ -115,6 +116,7 @@ class BinaryFileReader : public ByteReader {
     }
   }
   void ReadForward(void* dst, size_t size) const override;
+  size_t cursor() const override { return cur_; }
   bool ReachEnd() const override { return cur_ >= length_; }
   size_t length() const override { return length_; }
 
@@ -136,6 +138,7 @@ class BinaryFileWriter : public ByteWriter {
     }
   }
   void WriteForward(const void* src, size_t size) const override;
+  size_t cursor() const override { return cur_; }
 
  private:
   FILE* file_{};
@@ -152,6 +155,7 @@ class StringBufferReader : public ByteReader {
   }
   ~StringBufferReader() = default;
   void ReadForward(void* dst, size_t size) const override;
+  size_t cursor() const override { return cur_; }
   bool ReachEnd() const override { return cur_ >= length_; }
   size_t length() const override { return length_; }
 
