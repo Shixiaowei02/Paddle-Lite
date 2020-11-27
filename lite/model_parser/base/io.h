@@ -69,6 +69,7 @@ class ByteReader {
   virtual std::string ReadForwardToString(size_t size) const;
   virtual size_t length() const = 0;
   virtual bool ReachEnd() const = 0;
+  virtual void* CursorForward(size_t size) const = 0;
 
   template <typename T,
             typename = typename std::enable_if<

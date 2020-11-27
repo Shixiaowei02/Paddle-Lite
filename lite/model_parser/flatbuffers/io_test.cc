@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#define LITE_WITH_FLATBUFFERS_DESC 1
+
 #include "lite/model_parser/flatbuffers/io.h"
 #include <gtest/gtest.h>
 #include <functional>
@@ -61,6 +63,10 @@ TEST(CombinedParamsDesc, Scope) {
   fbs::CombinedParamsDesc combined_param;
   std::set<std::string> params_set(params_name.begin(), params_name.end());
   SetCombinedParamsWithScope(scope, params_set, &combined_param);
+
+  auto buffer = combined_param.data();
+  lite::fbs::SaveFile("./params.fbs", buffer);
+
 
   /* --------- Check scope ---------- */
   auto check_params = [&](const CombinedParamsDescReadAPI& desc) {
