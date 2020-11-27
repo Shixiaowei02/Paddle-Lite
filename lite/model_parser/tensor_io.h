@@ -54,7 +54,7 @@ class MetaInfo {};
 class MetaInfoDeserializer {
  public:
   void LoadWithForwardReader(ByteReader* reader) const {
-    int64_t size = reader->ReadForward<int64_t>();
+    int64_t size = reader->ReadScalarForward<int64_t>();
     CHECK_EQ(size, 0);
   }
 };

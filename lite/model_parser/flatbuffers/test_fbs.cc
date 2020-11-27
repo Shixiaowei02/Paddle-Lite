@@ -28,7 +28,7 @@ int main() {
   const std::string path {"/shixiaowei02/flatbuffers_test/params.fbs"};
   std::unique_ptr<paddle::lite::model_parser::ByteReader> reader{ new paddle::lite::model_parser::BinaryFileReader{path}};
 
-  auto offset = reader->ReadForward<flatbuffers::uoffset_t>();
+  auto offset = reader->ReadScalarForward<flatbuffers::uoffset_t>();
 
   std::unique_ptr<char[]> desc {new char[sizeof(CombinedParamsDesc)]};
   reader->ReadForward(desc.get(), sizeof(CombinedParamsDesc));

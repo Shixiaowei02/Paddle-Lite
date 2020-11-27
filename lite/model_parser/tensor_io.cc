@@ -67,22 +67,22 @@ void LoDTensorDeserializer::LoadWithForwardReader(lite::Tensor* tensor,
   CHECK(tensor) << "The input tensor is nullptr.";
   CHECK(reader) << "The input reader is nullptr.";
   CHECK(!reader->ReachEnd()) << "Nothing to read.";
-  uint32_t version = reader->ReadForward<uint32_t>();
+  uint32_t version = reader->ReadScalarForward<uint32_t>();
   switch (version) {
     case 0: {
 #ifndef LITE_ON_TINY_PUBLISH
       // Load the lod-tensor.
-      uint64_t lod_level = reader->ReadForward<uint64_t>();
+      uint64_t lod_level = reader->ReadScalarForward<uint64_t>();
       std::vector<std::vector<uint64_t>> lod(lod_level);
       for (uint64_t i = 0; i < lod_level; ++i) {
-        uint64_t size = reader->ReadForward<uint64_t>();
+        uint64_t size = reader->ReadScalarForward<uint64_t>();
         uint64_t elem_size = size / sizeof(uint64_t);
         lod[i].resize(elem_size);
         reader->ReadForward(lod[i].data(), size);
       }
       tensor::set_lod(tensor, lod);
       // Load the raw tensor.
-      uint32_t inner_version = reader->ReadForward<uint32_t>();
+      uint32_t inner_version = reader->ReadScalarForward<uint32_t>();
       CHECK_EQ(inner_version, 0L)
           << "Tensor inner version should be 0, but get " << inner_version;
       lite::pb::TensorInfoReader tensor_reader(reader, buf_.get());
@@ -114,16 +114,16 @@ void LoDTensorSerializer::SaveWithForwardWriter(const lite::Tensor& tensor,
   switch (version) {
     case 0: {
       // Save the lod-vector.
-      writer->WriteForward<uint32_t>(version);
+      writer->WriteScalarForward<uint32_t>(version);
       const auto& lod = tensor::get_lod(tensor);
-      writer->WriteForward<uint64_t>(lod.size());
+      writer->WriteScalarForward<uint64_t>(lod.size());
       for (const auto& each : lod) {
         const uint64_t size = each.size() * sizeof(each.front());
-        writer->WriteForward<uint64_t>(size);
+        writer->WriteScalarForward<uint64_t>(size);
         writer->WriteForward(each.data(), size);
       }
       // Save the raw tensor.
-      writer->WriteForward<uint32_t>(version);
+      writer->WriteScalarForward<uint32_t>(version);
       lite::pb::TensorInfoWriter tensor_writer(writer, buf_.get());
       tensor::set_allocation(tensor, &tensor_writer);
       writer->WriteForward(tensor::get_allocation(tensor),

@@ -73,8 +73,8 @@ class ByteReader {
 
   template <typename T,
             typename = typename std::enable_if<
-                std::is_trivially_copyable<T>::value>::type>
-  T ReadForward() const {
+                std::is_scalar<T>::value>::type>
+  T ReadScalarForward() const {
     T tmp;
     ReadForward(&tmp, sizeof(T));
     return tmp;
@@ -94,8 +94,8 @@ class ByteWriter {
 
   template <typename T,
             typename = typename std::enable_if<
-                std::is_trivially_copyable<T>::value>::type>
-  void WriteForward(T elem) const {
+                std::is_scalar<T>::value>::type>
+  void WriteScalarForward(T elem) const {
     WriteForward(&elem, sizeof(T));
   }
 
