@@ -63,27 +63,11 @@ void PrintBuffer(const void* pBuff, unsigned int nLen)
 
 using paddle::lite::fbs::proto::CombinedParamsDesc;
 
-class Derived_ : private flatbuffers::Table {
-public:
-  Derived_() = default;
-  void ShowPointers() const {
-    std::cout << "this = " << this << std::endl;
-    std::cout << "base this = " << static_cast<flatbuffers::Table const*>(this) << std::endl;
-  }
-private:
-  uint8_t a[1];
-};
-
-struct MemorySize {
-  static constexpr size_t pdesc_offset() { return 12 - sizeof(flatbuffers::uoffset_t); }
-  static constexpr size_t pdesc() { return sizeof(CombinedParamsDesc); }
-  static constexpr size_t params_poffset() {
-    static_assert(sizeof(flatbuffers::uoffset_t) == sizeof(flatbuffers::Vector<flatbuffers::Offset<paddle::lite::fbs::proto::ParamDesc>>));
-    return CombinedParamsDesc::VT_PARAMS - pdesc(); }
-};
-
 struct alignas(1) Memory {
   void Check() const {
+    static_assert(sizeof(flatbuffers::uoffset_t) == 
+      sizeof(flatbuffers::Vector<flatbuffers::Offset<
+      paddle::lite::fbs::proto::ParamDesc>>));
     CHECK_EQ(offset, 12U);
     CHECK_EQ(params_offset, 4U);
   }
@@ -92,8 +76,11 @@ struct alignas(1) Memory {
     return reinterpret_cast<const CombinedParamsDesc*>(&pdesc);
   }
 
-  const flatbuffers::Vector<flatbuffers::Offset<paddle::lite::fbs::proto::ParamDesc>>* GetParamDescOffsetVec() const {
-    return reinterpret_cast<const flatbuffers::Vector<flatbuffers::Offset<paddle::lite::fbs::proto::ParamDesc>>*>(&params_size);
+  const flatbuffers::Vector<flatbuffers::Offset<
+      paddle::lite::fbs::proto::ParamDesc>>
+      *GetParamDescOffsetVec() const {
+    return reinterpret_cast<const flatbuffers::Vector<
+      flatbuffers::Offset<paddle::lite::fbs::proto::ParamDesc>>*>(&params_size);
   }
 
   const flatbuffers::uoffset_t GetParamsSize() const {
@@ -101,23 +88,15 @@ struct alignas(1) Memory {
   }
 
   flatbuffers::uoffset_t offset; // 4
-  uint8_t pdesc_offset[MemorySize::pdesc_offset()]; // 8
-  uint8_t pdesc[MemorySize::pdesc()]; // 1
-  uint8_t params_poffset[MemorySize::params_poffset()];  // 3
+  uint8_t pdesc_offset[12 - sizeof(flatbuffers::uoffset_t)]; // 8
+  uint8_t pdesc[sizeof(CombinedParamsDesc)]; // 1
+  uint8_t params_poffset[CombinedParamsDesc::VT_PARAMS - sizeof(CombinedParamsDesc)];  // 3
   flatbuffers::uoffset_t params_offset; // 4
   flatbuffers::uoffset_t params_size;
-  char a[368];
 };
 
 
-
 int main() {
-    char ppp[100];
-    Derived_* a = reinterpret_cast<Derived_*>(ppp);
-    a->ShowPointers();
-
-
-
     const std::string path {"/shixiaowei02/flatbuffers_test/params.fbs"};
     flatbuffers::EndianCheck();
 
@@ -126,62 +105,50 @@ int main() {
     reader->ReadForward(&memory, sizeof(Memory));
     memory.Check();
 
-    const flatbuffers::Vector<flatbuffers::Offset<paddle::lite::fbs::proto::ParamDesc>>* vector = memory.GetParamDescOffsetVec();
-    //std::cout << static_cast<const void *>(vector->Get(0)) - static_cast<const void *>(vector->Data()) << std::endl;
-    std::cout << "sizeof!! "<<sizeof(paddle::lite::fbs::proto::ParamDesc) << std::endl;
-    PrintBuffer(reinterpret_cast<const void*>(vector->Get(1)), 10);
-    std::cout << vector->Get(1) << std::endl;
-    std::cout << vector->Get(1)->name() << std::endl;
-    std::cout << vector->Get(1)->name()->c_str() << std::endl;
-    std::cout << vector->Get(1)->variable_as_LoDTensorDesc()->dim()->Get(0) << std::endl;
+    uint64_t cursor = 0;
 
-    uint8_t buf__[150];
-    buf__[0] = 10;
-    std::memcpy(buf__, vector->Get(1), 150);
-    uint8_t debug = buf__[0];
-    std::cout << std::dec << "buf__[0] = " << debug << std::endl;
-    const paddle::lite::fbs::proto::ParamDesc* param =
-      reinterpret_cast<const paddle::lite::fbs::proto::ParamDesc*>(buf__);
-
-    std::cout << "=======" << std::endl;
-    std::cout << param << std::endl;
-    PrintBuffer(reinterpret_cast<const void*>(param), 20);
-    std::cout << param->name() << std::endl;
-    std::cout << param->name()->c_str() << std::endl;
-    std::cout << param->variable_as_LoDTensorDesc()->dim()->Get(0) << std::endl;
-    //std::cout << (void*)vector->Get(2) - vector->Data()<< std::endl;
-
-
-
-    /*
     std::vector<flatbuffers::uoffset_t> params_offsets(memory.params_size + 1);
-    *params_offsets.begin() = reader->length() - reader->cursor();
-    reader->ReadForward(params_offsets.data() + 1, (params_offsets.size() - 1) * sizeof(flatbuffers::uoffset_t));
-
-
-    for (auto& offset: params_offsets) {
-      std::cout << "offset: " << offset << std::endl;
+    params_offsets[0] = reader->length() - reader->cursor();
+    for (size_t i = 0; i < memory.params_size; ++i) {
+      params_offsets[i + 1] = reader->ReadScalarForward<flatbuffers::uoffset_t>() + i * sizeof(flatbuffers::uoffset_t);
+      cursor += sizeof(flatbuffers::uoffset_t);
     }
 
-    std::vector<size_t> forward_sizes(params_offsets.size() - 1);
-    for (size_t i = 0; i < params_offsets.size() - 1; ++i) {
-      forward_sizes[i] = params_offsets[i] - params_offsets[i + 1];
+    for (auto offset : params_offsets) {
+      std::cout << "offset = " << offset << std::endl;
+    }
+    std::cout << "cursor = " << cursor << std::endl;
+    CHECK_EQ(cursor, *params_offsets.rbegin());
+
+   uint8_t buff__2[100];
+   CHECK(buff__2 == buff__2);
+
+    uint8_t buff__[368];
+    reader->ReadForward(buff__, params_offsets[0] - params_offsets[3]);
+    PrintBuffer(buff__, 368);
+
+    std::vector<size_t> offsets{0, 136-12, 244-12};
+    for (size_t i = 0; i < offsets.size(); ++i) {
+      std::cout << "vtable: " << flatbuffers::ReadScalar<flatbuffers::soffset_t>(buff__ + offsets[i]) << std::endl;
+      paddle::lite::fbs::proto::ParamDesc const* param_ = reinterpret_cast<paddle::lite::fbs::proto::ParamDesc const*>(buff__ + offsets[i]);
+      std::cout << "param name: " << param_->name()->c_str() << std::endl;     
     }
 
-    paddle::lite::model_parser::Buffer buffer;
 
+
+/*
     for (int32_t i = forward_sizes.size() - 1; i >=0; --i) {
       std::cout << "forward sizes " << i << " = " << forward_sizes[i] << std::endl;
       buffer.ResetLazy(forward_sizes[i]);
       reader->ReadForward(buffer.data(), forward_sizes[i]);
       paddle::lite::fbs::proto::ParamDesc const* param_ = reinterpret_cast<paddle::lite::fbs::proto::ParamDesc const*>(buffer.data());
-      std::cout << "param variable: " << param_->variable() << std::endl;
+      std::cout << "vtable offser: " << +*reinterpret_cast<const uint8_t*>(buffer.data()) << std::endl;
+      std::cout << "param name: " << param_->name()->c_str() << std::endl;
       // paddle::lite::fbs::ParamDescView param_view(param_);
       // std::cout << param_view.Name() << std::endl;
     }
-    */
 
-
+*/
 
   return 0;
 }
