@@ -19,6 +19,7 @@
 #include "lite/model_parser/flatbuffers/framework_generated.h"
 #include "lite/model_parser/flatbuffers/param_generated.h"
 #include "lite/model_parser/flatbuffers/param_desc.h"
+#include "lite/model_parser/flatbuffers/vector_view.h"
 
 void PrintBuffer(const void* pBuff, unsigned int nLen)
 {
@@ -76,23 +77,11 @@ struct alignas(1) Memory {
     return reinterpret_cast<const CombinedParamsDesc*>(&pdesc);
   }
 
-  const flatbuffers::Vector<flatbuffers::Offset<
-      paddle::lite::fbs::proto::ParamDesc>>
-      *GetParamDescOffsetVec() const {
-    return reinterpret_cast<const flatbuffers::Vector<
-      flatbuffers::Offset<paddle::lite::fbs::proto::ParamDesc>>*>(&params_size);
-  }
-
-  const flatbuffers::uoffset_t GetParamsSize() const {
-    return params_size;
-  }
-
   flatbuffers::uoffset_t offset; // 4
   uint8_t pdesc_offset[12 - sizeof(flatbuffers::uoffset_t)]; // 8
   uint8_t pdesc[sizeof(CombinedParamsDesc)]; // 1
   uint8_t params_poffset[CombinedParamsDesc::VT_PARAMS - sizeof(CombinedParamsDesc)];  // 3
   flatbuffers::uoffset_t params_offset; // 4
-  flatbuffers::uoffset_t params_size;
 };
 
 
@@ -104,7 +93,11 @@ int main() {
     Memory memory;
     reader->ReadForward(&memory, sizeof(Memory));
     memory.Check();
+    paddle::lite::vector_view::StreamIterator<flatbuffers::Vector<
+    flatbuffers::Offset<paddle::lite::fbs::proto::ParamDesc>>> iter(reader.get());
 
+
+/*
     uint64_t cursor = 0;
 
     std::vector<flatbuffers::uoffset_t> params_offsets(memory.params_size + 1);
@@ -133,7 +126,7 @@ int main() {
       paddle::lite::fbs::proto::ParamDesc const* param_ = reinterpret_cast<paddle::lite::fbs::proto::ParamDesc const*>(buff__ + offsets[i]);
       std::cout << "param name: " << param_->name()->c_str() << std::endl;     
     }
-
+*/
 
 
 /*

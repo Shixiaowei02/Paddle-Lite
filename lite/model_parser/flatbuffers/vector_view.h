@@ -18,10 +18,14 @@
 #include <vector>
 #include "flatbuffers/flatbuffers.h"
 #include "lite/model_parser/base/vector_view.h"
+#include "lite/model_parser/base/io.h"
 
 namespace paddle {
 namespace lite {
 namespace vector_view {
+
+template <typename T>
+class StreamIterator;
 
 template <typename T>
 struct ElementTraits<T*,
@@ -39,6 +43,7 @@ struct VectorTraits<T, Flatbuffers> {
   typedef flatbuffers::Vector<typename ElementTraits<T>::element_type>
       vector_type;
   typedef typename vector_type::const_iterator const_iterator;
+  typedef StreamIterator<T> const_stream_iterator;
   typedef typename const_iterator::value_type value_type;
   typedef const typename const_iterator::reference const_reference;
   typedef value_type subscript_return_type;
@@ -94,6 +99,45 @@ struct FBSStrIterator {
 
  private:
   VI iter_;
+};
+
+template <typename T>
+class StreamIterator<flatbuffers::Vector<flatbuffers::Offset<T>>> {
+public:
+explicit StreamIterator(model_parser::ByteReader* reader) : reader_{reader} {
+  outset_ = reader_->cursor();
+  size_ = reader_->ReadScalarForward<flatbuffers::uoffset_t>();
+  VLOG(5) << "The size of stream vector is " << size_;
+  InitRecord();
+}
+~StreamIterator() = default;
+
+void InitRecord() {
+  std::vector<size_t> section_offsets(size_ + 1);
+  section_offsets[0] = reader_->length() - reader_->cursor();
+  for (size_t i = 0; i < size_; ++i) {
+    section_offsets[i + 1] = reader_->ReadScalarForward<flatbuffers::uoffset_t>() + 
+      i * sizeof(flatbuffers::uoffset_t);
+  }
+  CHECK_EQ(bytes_offset() - sizeof(flatbuffers::uoffset_t), *section_offsets.rbegin());
+  for (auto p = section_offsets.rbegin(); p != section_offsets.rend() - 1; ++p) {
+    section_bytes_.push_back(*(p + 1) - *p);
+  }
+  for (const auto& elem: section_bytes_) {
+    std::cout << "elem: " << elem << std::endl;
+  }
+}
+
+private:
+  model_parser::Buffer buffer_;
+  size_t bytes_offset() const {
+    return reader_->cursor() - outset_;
+  }
+  mutable std::array<flatbuffers::soffset_t, 2> vlen_;
+  model_parser::ByteReader* reader_{nullptr};
+  std::vector<size_t> section_bytes_;
+  size_t outset_{0};
+  size_t size_{0};
 };
 
 }  // namespace vector_view

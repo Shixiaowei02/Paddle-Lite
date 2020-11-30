@@ -38,6 +38,7 @@ struct VectorTraits<T, Standard> {
   typedef typename vector_type::const_iterator const_iterator;
   typedef typename vector_type::const_reference const_reference;
   typedef const_reference subscript_return_type;
+  typedef void const_stream_iterator;
 };
 
 }  // namespace vector_view
