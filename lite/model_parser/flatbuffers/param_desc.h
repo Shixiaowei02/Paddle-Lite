@@ -220,6 +220,26 @@ class CombinedParamsDesc : public CombinedParamsDescAPI {
 };
 #endif  // LITE_WITH_FLATBUFFERS_DESC
 
+struct alignas(1) CombinedParamsDescHeader {
+  void Check() const {
+    static_assert(sizeof(flatbuffers::uoffset_t) == 
+      sizeof(flatbuffers::Vector<flatbuffers::Offset<
+      paddle::lite::fbs::proto::ParamDesc>>));
+    CHECK_EQ(offset, 12U);
+    CHECK_EQ(params_offset, 4U);
+  }
+
+  const proto::CombinedParamsDesc* GetCombinedParamsDesc() const {
+    return reinterpret_cast<const proto::CombinedParamsDesc*>(&pdesc);
+  }
+
+  flatbuffers::uoffset_t offset;
+  uint8_t pdesc_offset[12 - sizeof(flatbuffers::uoffset_t)];
+  uint8_t pdesc[sizeof(proto::CombinedParamsDesc)];
+  uint8_t params_poffset[proto::CombinedParamsDesc::VT_PARAMS - sizeof(proto::CombinedParamsDesc)];
+  flatbuffers::uoffset_t params_offset;
+};
+
 }  // namespace fbs
 }  // namespace lite
 }  // namespace paddle

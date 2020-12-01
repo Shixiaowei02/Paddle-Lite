@@ -23,34 +23,13 @@
 
 using paddle::lite::fbs::proto::CombinedParamsDesc;
 
-struct alignas(1) Memory {
-  void Check() const {
-    static_assert(sizeof(flatbuffers::uoffset_t) == 
-      sizeof(flatbuffers::Vector<flatbuffers::Offset<
-      paddle::lite::fbs::proto::ParamDesc>>));
-    CHECK_EQ(offset, 12U);
-    CHECK_EQ(params_offset, 4U);
-  }
-
-  const CombinedParamsDesc* GetCombinedParamsDesc() const {
-    return reinterpret_cast<const CombinedParamsDesc*>(&pdesc);
-  }
-
-  flatbuffers::uoffset_t offset; // 4
-  uint8_t pdesc_offset[12 - sizeof(flatbuffers::uoffset_t)]; // 8
-  uint8_t pdesc[sizeof(CombinedParamsDesc)]; // 1
-  uint8_t params_poffset[CombinedParamsDesc::VT_PARAMS - sizeof(CombinedParamsDesc)];  // 3
-  flatbuffers::uoffset_t params_offset; // 4
-};
-
-
 int main() {
     const std::string path {"/shixiaowei02/flatbuffers_test/params.fbs"};
     flatbuffers::EndianCheck();
 
     std::unique_ptr<paddle::lite::model_parser::ByteReader> reader{ new paddle::lite::model_parser::BinaryFileReader{path}};
-    Memory memory;
-    reader->ReadForward(&memory, sizeof(Memory));
+    paddle::lite::fbs::CombinedParamsDescHeader memory;
+    reader->ReadForward(&memory, sizeof(paddle::lite::fbs::CombinedParamsDescHeader));
     memory.Check();
     paddle::lite::vector_view::StreamIterator<flatbuffers::Vector<
     flatbuffers::Offset<paddle::lite::fbs::proto::ParamDesc>>> iter(reader.get());
@@ -60,8 +39,8 @@ int main() {
     std::cout << iter->name()->c_str() << std::endl;
     ++iter;
     std::cout << iter->name()->c_str() << std::endl;
-
-
+    CHECK(iter == paddle::lite::vector_view::StreamIterator<flatbuffers::Vector<
+    flatbuffers::Offset<paddle::lite::fbs::proto::ParamDesc>>>());
 /*
     uint64_t cursor = 0;
 

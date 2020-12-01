@@ -104,10 +104,10 @@ struct FBSStrIterator {
 
 template <typename T>
 bool operator==(const StreamIterator<T>& lhs, const StreamIterator<T>& rhs) {
-  bool res = false;
+  bool res = true;
   res = res && (lhs.reader_ == rhs.reader_);
   res = res && (lhs.outset_ == rhs.outset_);
-  if (lhs.header_ && rhs.header_) {
+  if (lhs.reader_ && rhs.reader_) {
     res = res && (lhs.bytes_offset() == rhs.bytes_offset());
   }
   return res;
@@ -147,6 +147,8 @@ StreamIterator& operator++() {
       , voffset_.next);
   } else {
     voffset_.next = 0;
+    reader_ = nullptr;
+    outset_ = 0;
   }
   return *this;
 }
