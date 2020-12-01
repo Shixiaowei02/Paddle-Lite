@@ -127,43 +127,38 @@ explicit StreamIterator(model_parser::ByteReader* reader) : reader_{reader} {
 ~StreamIterator() = default;
 
 StreamIterator& operator++() {
-  size_t cursor = 0;
   voffset_.current = voffset_.next;
   CHECK(section_bytes_.size()) << "Nothing to read.";
 
-  size_t vsize = std::abs(voffset_.current);
   size_t data_size = section_bytes_.top();
-
-  data_.ResetLazy(data_size + vsize);
-  if (vsize) {
-    std::memcpy(data_.data(), next_header_.data(), vsize);
-  }
-  std::memcpy(data_.data(), &voffset_.current, sizeof(flatbuffers::soffset_t));
-  reader_->ReadForward(data_.data() + sizeof(flatbuffers::soffset_t), data_size 
+  data_.ResetLazy(data_size + std::abs(voffset_.current));
+  std::memcpy(data_.data(), next_header_.data(), std::abs(voffset_.current));
+  std::memcpy(data_.data() + std::abs(voffset_.current), &voffset_.current, sizeof(flatbuffers::soffset_t));
+  reader_->ReadForward(data_.data() + std::abs(voffset_.current) + sizeof(flatbuffers::soffset_t), data_size 
     - sizeof(flatbuffers::soffset_t));
 
   section_bytes_.pop();
 
   if (section_bytes_.size()) {
     voffset_.next = reader_->ReadScalarForward<flatbuffers::soffset_t>();
-    CHECK_LT(voffset_.next, 0) << "The vtable offset of back elements should be less than 0.";
-    next_header_.ResetLazy(std::abs(voffset_.next));
-    std::memcpy(next_header_.data(), data_.data() + data_size - std::abs(voffset_.next) 
-      , std::abs(voffset_.next));
+    CHECK_GT(voffset_.next, 0) << "The vtable offset of back elements should be greater than 0.";
+    next_header_.ResetLazy(voffset_.next);
+    std::memcpy(next_header_.data(), data_.data() + std::abs(voffset_.current) + data_size - voffset_.next 
+      , voffset_.next);
   } else {
     voffset_.next = 0;
   }
   return *this;
 }
 
-const T& operator*() const {
+const T& operator*() {
   void* p = data_.data() + std::abs(voffset_.current);
   return *reinterpret_cast<const T*>(p);
 }
 
-const T& operator->() const {
+const T* operator->() {
   void* p = data_.data() + std::abs(voffset_.current);
-  return *reinterpret_cast<const T*>(p);
+  return reinterpret_cast<const T*>(p);
 }
 
 template <typename U>
@@ -189,7 +184,9 @@ private:
       section_bytes_.push(*p - *(p + 1));
     }
     voffset_.next = reader_->ReadScalarForward<flatbuffers::soffset_t>();
-    CHECK_GT(voffset_.next, 0) << "The vtable offset of first element should be greater than 0.";
+    CHECK_LT(voffset_.next, 0) << "The vtable offset of first element should be less than 0.";
+    next_header_.ResetLazy(std::abs(voffset_.next));
+    operator++();
   }
   model_parser::Buffer data_;
   model_parser::Buffer next_header_;

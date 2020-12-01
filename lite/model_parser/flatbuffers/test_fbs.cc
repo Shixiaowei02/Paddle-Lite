@@ -21,47 +21,6 @@
 #include "lite/model_parser/flatbuffers/param_desc.h"
 #include "lite/model_parser/flatbuffers/vector_view.h"
 
-void PrintBuffer(const void* pBuff, unsigned int nLen)
-{
-    if (NULL == pBuff || 0 == nLen)
-    {
-        return;
-    }
-
-    const int nBytePerLine = 16;
-    const unsigned char* p = (const unsigned char*)pBuff;
-    char szHex[3*nBytePerLine+1] = {0};
-
-    printf("-----------------begin-------------------\n");
-    for (unsigned int i=0; i<nLen; ++i)
-    {
-        int idx = 3 * (i % nBytePerLine);
-        if (0 == idx)
-        {
-            memset(szHex, 0, sizeof(szHex));
-        }
-#ifdef WIN32
-        sprintf_s(&szHex[idx], 4, "%02x ", p[i]);// buff长度要多传入1个字节
-#else
-        snprintf(&szHex[idx], 4, "%02x ", p[i]); // buff长度要多传入1个字节
-#endif
-        
-        // 以16个字节为一行，进行打印
-        if (0 == ((i+1) % nBytePerLine))
-        {
-            printf("%s\n", szHex);
-        }
-    }
-
-    // 打印最后一行未满16个字节的内容
-    if (0 != (nLen % nBytePerLine))
-    {
-        printf("%s\n", szHex);
-    }
-
-    printf("------------------end-------------------\n");
-}
-
 using paddle::lite::fbs::proto::CombinedParamsDesc;
 
 struct alignas(1) Memory {
@@ -95,6 +54,12 @@ int main() {
     memory.Check();
     paddle::lite::vector_view::StreamIterator<flatbuffers::Vector<
     flatbuffers::Offset<paddle::lite::fbs::proto::ParamDesc>>> iter(reader.get());
+
+    std::cout << iter->name()->c_str() << std::endl;
+    ++iter;
+    std::cout << iter->name()->c_str() << std::endl;
+    ++iter;
+    std::cout << iter->name()->c_str() << std::endl;
 
 
 /*

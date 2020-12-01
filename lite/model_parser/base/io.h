@@ -39,13 +39,13 @@ class Buffer {
     return *this;
   }
 
-  const void* data() const {
+  const uint8_t* data() const {
     CHECK(raw_);
-    return raw_->data();
+    return static_cast<uint8_t*>(raw_->data());
   }
-  void* data() {
+  uint8_t* data() {
     CHECK(raw_);
-    return raw_->data();
+    return static_cast<uint8_t*>(raw_->data());
   }
   size_t capacity() const {
     CHECK(raw_);
