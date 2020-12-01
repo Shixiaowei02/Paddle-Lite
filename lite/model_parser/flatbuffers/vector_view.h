@@ -16,6 +16,7 @@
 
 #include <string>
 #include <vector>
+#include <stack>
 #include "flatbuffers/flatbuffers.h"
 #include "lite/model_parser/base/vector_view.h"
 #include "lite/model_parser/base/io.h"
@@ -102,9 +103,22 @@ struct FBSStrIterator {
 };
 
 template <typename T>
+bool operator==(const StreamIterator<T>& lhs, const StreamIterator<T>& rhs) {
+  bool res = false;
+  res = res && (lhs.reader_ == rhs.reader_);
+  res = res && (lhs.outset_ == rhs.outset_);
+  if (lhs.header_ && rhs.header_) {
+    res = res && (lhs.bytes_offset() == rhs.bytes_offset());
+  }
+  return res;
+}
+
+template <typename T>
 class StreamIterator<flatbuffers::Vector<flatbuffers::Offset<T>>> {
 public:
+StreamIterator() = default;
 explicit StreamIterator(model_parser::ByteReader* reader) : reader_{reader} {
+  CHECK(reader_) << "The reader pointer of stream iterator is nullptr";
   outset_ = reader_->cursor();
   size_ = reader_->ReadScalarForward<flatbuffers::uoffset_t>();
   VLOG(5) << "The size of stream vector is " << size_;
@@ -112,30 +126,76 @@ explicit StreamIterator(model_parser::ByteReader* reader) : reader_{reader} {
 }
 ~StreamIterator() = default;
 
-void InitRecord() {
-  std::vector<size_t> section_offsets(size_ + 1);
-  section_offsets[0] = reader_->length() - reader_->cursor();
-  for (size_t i = 0; i < size_; ++i) {
-    section_offsets[i + 1] = reader_->ReadScalarForward<flatbuffers::uoffset_t>() + 
-      i * sizeof(flatbuffers::uoffset_t);
+StreamIterator& operator++() {
+  size_t cursor = 0;
+  voffset_.current = voffset_.next;
+  CHECK(section_bytes_.size()) << "Nothing to read.";
+
+  size_t vsize = std::abs(voffset_.current);
+  size_t data_size = section_bytes_.top();
+
+  data_.ResetLazy(data_size + vsize);
+  if (vsize) {
+    std::memcpy(data_.data(), next_header_.data(), vsize);
   }
-  CHECK_EQ(bytes_offset() - sizeof(flatbuffers::uoffset_t), *section_offsets.rbegin());
-  for (auto p = section_offsets.rbegin(); p != section_offsets.rend() - 1; ++p) {
-    section_bytes_.push_back(*(p + 1) - *p);
+  std::memcpy(data_.data(), &voffset_.current, sizeof(flatbuffers::soffset_t));
+  reader_->ReadForward(data_.data() + sizeof(flatbuffers::soffset_t), data_size 
+    - sizeof(flatbuffers::soffset_t));
+
+  section_bytes_.pop();
+
+  if (section_bytes_.size()) {
+    voffset_.next = reader_->ReadScalarForward<flatbuffers::soffset_t>();
+    CHECK_LT(voffset_.next, 0) << "The vtable offset of back elements should be less than 0.";
+    next_header_.ResetLazy(std::abs(voffset_.next));
+    std::memcpy(next_header_.data(), data_.data() + data_size - std::abs(voffset_.next) 
+      , std::abs(voffset_.next));
+  } else {
+    voffset_.next = 0;
   }
-  for (const auto& elem: section_bytes_) {
-    std::cout << "elem: " << elem << std::endl;
-  }
+  return *this;
 }
 
-private:
-  model_parser::Buffer buffer_;
+const T& operator*() const {
+  void* p = data_.data() + std::abs(voffset_.current);
+  return *reinterpret_cast<const T*>(p);
+}
+
+const T& operator->() const {
+  void* p = data_.data() + std::abs(voffset_.current);
+  return *reinterpret_cast<const T*>(p);
+}
+
+template <typename U>
+friend bool operator==(const StreamIterator<U>& lhs, const StreamIterator<U>& rhs);
+
+private: 
+  struct VOffset {
+    flatbuffers::soffset_t current;
+    flatbuffers::soffset_t next;
+  };
   size_t bytes_offset() const {
     return reader_->cursor() - outset_;
   }
-  mutable std::array<flatbuffers::soffset_t, 2> vlen_;
+  void InitRecord() {
+    std::vector<size_t> section_offsets(size_ + 1);
+    section_offsets[0] = reader_->length() - reader_->cursor();
+    for (size_t i = 0; i < size_; ++i) {
+      section_offsets[i + 1] = reader_->ReadScalarForward<flatbuffers::uoffset_t>() + 
+        i * sizeof(flatbuffers::uoffset_t);
+    }
+    CHECK_EQ(bytes_offset() - sizeof(flatbuffers::uoffset_t), *section_offsets.rbegin());
+    for (auto p = section_offsets.begin(); p != section_offsets.end() - 1; ++p) {
+      section_bytes_.push(*p - *(p + 1));
+    }
+    voffset_.next = reader_->ReadScalarForward<flatbuffers::soffset_t>();
+    CHECK_GT(voffset_.next, 0) << "The vtable offset of first element should be greater than 0.";
+  }
+  model_parser::Buffer data_;
+  model_parser::Buffer next_header_;
+  VOffset voffset_{0, 0};
   model_parser::ByteReader* reader_{nullptr};
-  std::vector<size_t> section_bytes_;
+  std::stack<size_t> section_bytes_;
   size_t outset_{0};
   size_t size_{0};
 };
