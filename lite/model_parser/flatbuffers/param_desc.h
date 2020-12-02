@@ -25,6 +25,7 @@
 #include "lite/model_parser/flatbuffers/framework_generated.h"
 #include "lite/model_parser/flatbuffers/param_generated.h"
 #include "lite/model_parser/flatbuffers/traits.h"
+#include "lite/model_parser/flatbuffers/vector_view.h"
 
 namespace paddle {
 namespace lite {
@@ -107,6 +108,67 @@ class CombinedParamsDescView : public CombinedParamsDescReadAPI {
   model_parser::Buffer buf_;
   proto::CombinedParamsDesc const* desc_;
 };
+
+struct alignas(1) CombinedParamsDescHeader {
+  void Check() const {
+    static_assert(sizeof(flatbuffers::uoffset_t) == 
+      sizeof(flatbuffers::Vector<flatbuffers::Offset<
+      paddle::lite::fbs::proto::ParamDesc>>));
+    CHECK_EQ(offset, 12U);
+    CHECK_EQ(params_offset, 4U);
+  }
+
+  const proto::CombinedParamsDesc* GetCombinedParamsDesc() const {
+    return reinterpret_cast<const proto::CombinedParamsDesc*>(&pdesc);
+  }
+
+  flatbuffers::uoffset_t offset;
+  uint8_t pdesc_offset[12 - sizeof(flatbuffers::uoffset_t)];
+  uint8_t pdesc[sizeof(proto::CombinedParamsDesc)];
+  uint8_t params_poffset[proto::CombinedParamsDesc::VT_PARAMS - sizeof(proto::CombinedParamsDesc)];
+  flatbuffers::uoffset_t params_offset;
+};
+
+class CombinedParamsDescStreamView : public CombinedParamsDescReadAPI {
+public:
+  CombinedParamsDescStreamView() = default;
+  explicit CombinedParamsDescStreamView(model_parser::ByteReader* reader) : reader_(reader) {
+    CHECK(reader_) << "The reader pointer can not be nullptr.";
+    reader_->ReadForward(&header_, sizeof(paddle::lite::fbs::CombinedParamsDescHeader));
+    header_.Check();
+    start_cur_ = reader_->cursor();
+  }
+
+  const ParamDescReadAPI* GetParamDesc(size_t idx) const override {
+    LITE_MODEL_INTERFACE_NOT_IMPLEMENTED;
+    return nullptr;
+  }
+
+  vector_view::StreamIterator<flatbuffers::Vector<
+    flatbuffers::Offset<fbs::proto::ParamDesc>>> begin() const {
+      CHECK_EQ(reader_->cursor(), start_cur_) << "The stream only supports one sequential iteration.";
+      return std::move(vector_view::StreamIterator<flatbuffers::Vector<
+    flatbuffers::Offset<fbs::proto::ParamDesc>>>(reader_));
+  }
+
+  vector_view::StreamIterator<flatbuffers::Vector<
+    flatbuffers::Offset<fbs::proto::ParamDesc>>> end() const {
+      return std::move(vector_view::StreamIterator<flatbuffers::Vector<
+    flatbuffers::Offset<fbs::proto::ParamDesc>>>());
+  }
+
+ size_t GetParamsSize() const override {
+   LITE_MODEL_INTERFACE_NOT_IMPLEMENTED;
+   return 0;
+ }
+
+private:
+  model_parser::ByteReader* reader_;
+  CombinedParamsDescHeader header_;
+  size_t start_cur_;
+};
+
+
 
 #ifdef LITE_WITH_FLATBUFFERS_DESC
 class ParamDesc : public ParamDescAPI {
@@ -219,26 +281,6 @@ class CombinedParamsDesc : public CombinedParamsDescAPI {
   std::vector<std::unique_ptr<ParamDesc>> params_;
 };
 #endif  // LITE_WITH_FLATBUFFERS_DESC
-
-struct alignas(1) CombinedParamsDescHeader {
-  void Check() const {
-    static_assert(sizeof(flatbuffers::uoffset_t) == 
-      sizeof(flatbuffers::Vector<flatbuffers::Offset<
-      paddle::lite::fbs::proto::ParamDesc>>));
-    CHECK_EQ(offset, 12U);
-    CHECK_EQ(params_offset, 4U);
-  }
-
-  const proto::CombinedParamsDesc* GetCombinedParamsDesc() const {
-    return reinterpret_cast<const proto::CombinedParamsDesc*>(&pdesc);
-  }
-
-  flatbuffers::uoffset_t offset;
-  uint8_t pdesc_offset[12 - sizeof(flatbuffers::uoffset_t)];
-  uint8_t pdesc[sizeof(proto::CombinedParamsDesc)];
-  uint8_t params_poffset[proto::CombinedParamsDesc::VT_PARAMS - sizeof(proto::CombinedParamsDesc)];
-  flatbuffers::uoffset_t params_offset;
-};
 
 }  // namespace fbs
 }  // namespace lite

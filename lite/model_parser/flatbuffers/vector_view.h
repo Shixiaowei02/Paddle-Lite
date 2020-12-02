@@ -114,9 +114,15 @@ bool operator==(const StreamIterator<T>& lhs, const StreamIterator<T>& rhs) {
 }
 
 template <typename T>
+bool operator!=(const StreamIterator<T>& lhs, const StreamIterator<T>& rhs) {
+  return !(lhs == rhs);
+}
+
+template <typename T>
 class StreamIterator<flatbuffers::Vector<flatbuffers::Offset<T>>> {
 public:
 StreamIterator() = default;
+StreamIterator(StreamIterator&&) = default;
 explicit StreamIterator(model_parser::ByteReader* reader) : reader_{reader} {
   CHECK(reader_) << "The reader pointer of stream iterator is nullptr";
   outset_ = reader_->cursor();
@@ -127,9 +133,13 @@ explicit StreamIterator(model_parser::ByteReader* reader) : reader_{reader} {
 ~StreamIterator() = default;
 
 StreamIterator& operator++() {
-  voffset_.current = voffset_.next;
-  CHECK(section_bytes_.size()) << "Nothing to read.";
+  if (!section_bytes_.size()) {
+    reader_ = nullptr;
+    outset_ = 0;
+    return *this;
+  }
 
+  voffset_.current = voffset_.next;
   size_t data_size = section_bytes_.top();
   data_.ResetLazy(data_size + std::abs(voffset_.current));
   std::memcpy(data_.data(), next_header_.data(), std::abs(voffset_.current));
@@ -138,7 +148,6 @@ StreamIterator& operator++() {
     - sizeof(flatbuffers::soffset_t));
 
   section_bytes_.pop();
-
   if (section_bytes_.size()) {
     voffset_.next = reader_->ReadScalarForward<flatbuffers::soffset_t>();
     CHECK_GT(voffset_.next, 0) << "The vtable offset of back elements should be greater than 0.";
@@ -147,8 +156,6 @@ StreamIterator& operator++() {
       , voffset_.next);
   } else {
     voffset_.next = 0;
-    reader_ = nullptr;
-    outset_ = 0;
   }
   return *this;
 }
@@ -165,6 +172,9 @@ const T* operator->() {
 
 template <typename U>
 friend bool operator==(const StreamIterator<U>& lhs, const StreamIterator<U>& rhs);
+
+template <typename U>
+friend bool operator!=(const StreamIterator<U>& lhs, const StreamIterator<U>& rhs);
 
 private: 
   struct VOffset {

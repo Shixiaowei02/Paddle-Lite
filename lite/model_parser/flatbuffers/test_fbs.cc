@@ -28,6 +28,16 @@ int main() {
     flatbuffers::EndianCheck();
 
     std::unique_ptr<paddle::lite::model_parser::ByteReader> reader{ new paddle::lite::model_parser::BinaryFileReader{path}};
+    paddle::lite::fbs::CombinedParamsDescStreamView params_stream(reader.get());
+    for (auto iter = params_stream.begin(); iter != params_stream.end(); ++iter) {
+      std::cout << iter->name()->str() << std::endl;
+      auto a = iter->variable_as<paddle::lite::fbs::proto::ParamDesc_::LoDTensorDesc>();
+      std::cout << *reinterpret_cast<int32_t const*>(a) << std::endl;
+    }
+    CHECK(reader->ReachEnd());
+
+
+/*
     paddle::lite::fbs::CombinedParamsDescHeader memory;
     reader->ReadForward(&memory, sizeof(paddle::lite::fbs::CombinedParamsDescHeader));
     memory.Check();
@@ -41,6 +51,9 @@ int main() {
     std::cout << iter->name()->c_str() << std::endl;
     CHECK(iter == paddle::lite::vector_view::StreamIterator<flatbuffers::Vector<
     flatbuffers::Offset<paddle::lite::fbs::proto::ParamDesc>>>());
+    CHECK(reader->ReachEnd());
+*/
+
 /*
     uint64_t cursor = 0;
 

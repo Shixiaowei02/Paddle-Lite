@@ -38,6 +38,9 @@ void SetCombinedParamsWithScope(const lite::Scope& scope,
                                 const std::set<std::string>& params_name,
                                 CombinedParamsDescWriteAPI* params);
 
+void SetScopeWithCombinedParamsStream(lite::Scope* scope,
+                                const CombinedParamsDescStreamView& params);
+
 }  // namespace fbs
 }  // namespace lite
 }  // namespace paddle

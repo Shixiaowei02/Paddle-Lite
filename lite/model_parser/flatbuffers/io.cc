@@ -94,6 +94,18 @@ void SetScopeWithCombinedParams(lite::Scope* scope,
   }
 }
 
+void SetScopeWithCombinedParamsStream(lite::Scope* scope,
+                                const CombinedParamsDescStreamView& params) {
+  CHECK(scope);
+  for (auto& item : params) {
+    fbs::ParamDescView param(&item);
+    auto* tensor = scope->Var(param.Name())->GetMutable<lite::Tensor>();
+    CHECK(tensor);
+    SetTensorWithParam(tensor, param);
+    tensor->set_persistable(true);
+  }
+}
+
 }  // namespace fbs
 }  // namespace lite
 }  // namespace paddle

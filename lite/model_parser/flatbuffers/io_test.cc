@@ -44,6 +44,7 @@ void set_tensor(paddle::lite::Tensor* tensor,
 
 #ifdef LITE_WITH_FLATBUFFERS_DESC
 TEST(CombinedParamsDesc, Scope) {
+  const std::string path {"params.fbs"};
   /* --------- Save scope ---------- */
   Scope scope;
   std::vector<std::string> params_name({"var_0", "var_1", "var_2"});
@@ -65,33 +66,38 @@ TEST(CombinedParamsDesc, Scope) {
   SetCombinedParamsWithScope(scope, params_set, &combined_param);
 
   auto buffer = combined_param.data();
-  lite::fbs::SaveFile("./params.fbs", buffer);
+  lite::fbs::SaveFile(path, buffer);
 
-
-  /* --------- Check scope ---------- */
-  auto check_params = [&](const CombinedParamsDescReadAPI& desc) {
-    Scope scope_l;
-    SetScopeWithCombinedParams(&scope_l, desc);
+  auto check_scope = [&](const Scope& scope) {
     // variable 0
-    Variable* var_l0 = scope_l.FindVar(params_name[0]);
+    Variable* var_l0 = scope.FindVar(params_name[0]);
     CHECK(var_l0);
     const Tensor& tensor_l0 = var_l0->Get<Tensor>();
     CHECK(TensorCompareWith(*tensor_0, tensor_l0));
     // variable 1
-    Variable* var_l1 = scope_l.FindVar(params_name[1]);
+    Variable* var_l1 = scope.FindVar(params_name[1]);
     CHECK(var_l1);
     const Tensor& tensor_l1 = var_l1->Get<Tensor>();
     CHECK(TensorCompareWith(*tensor_1, tensor_l1));
     // variable 2
-    Variable* var_l2 = scope_l.FindVar(params_name[2]);
+    Variable* var_l2 = scope.FindVar(params_name[2]);
     CHECK(var_l2);
     const Tensor& tensor_l2 = var_l2->Get<Tensor>();
     CHECK(TensorCompareWith(*tensor_2, tensor_l2));
   };
-  check_params(combined_param);
 
-  /* --------- View scope ---------- */
-  check_params(CombinedParamsDescView(combined_param.data()));
+  Scope scope_0;
+  SetScopeWithCombinedParams(&scope_0, combined_param);
+  check_scope(scope_0);
+
+  Scope scope_1;
+  SetScopeWithCombinedParams(&scope_1, CombinedParamsDescView(combined_param.data()));
+  check_scope(scope_1);
+
+  Scope scope_2;
+  paddle::lite::model_parser::BinaryFileReader reader{path};
+  SetScopeWithCombinedParamsStream(&scope_2, CombinedParamsDescStreamView(&reader));
+  check_scope(scope_2);
 }
 #endif  // LITE_WITH_FLATBUFFERS_DESC
 

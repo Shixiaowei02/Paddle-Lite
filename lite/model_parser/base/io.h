@@ -147,11 +147,13 @@ class BinaryFileWriter : public ByteWriter {
 
 class StringBufferReader : public ByteReader {
  public:
-  explicit StringBufferReader(std::string&& buffer)
+  explicit StringBufferReader(std::string&& buffer, size_t offset = 0)
       : str_(std::forward<std::string>(buffer)),
         buf_(buffer.c_str()),
         length_(buffer.size()) {
     CHECK(buf_);
+    CHECK(offset < length_);
+    cur_ = offset;
   }
   ~StringBufferReader() = default;
   void ReadForward(void* dst, size_t size) const override;
