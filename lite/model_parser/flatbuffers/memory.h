@@ -28,21 +28,21 @@ class Buffer {
   Buffer() = default;
   Buffer(const Buffer&) = delete;
 
-  explicit Buffer(size_t size)
-      : raw_{std::unique_ptr<lite::Buffer>{new lite::Buffer}} {
-    ReallocateDownward(size);
-  }
+  explicit Buffer(size_t size) { ReallocateDownward(size); }
 
   void CopyDataFrom(const Buffer& other) {
-    raw_ = std::unique_ptr<lite::Buffer>{new lite::Buffer};
     const auto* other_raw = other.raw();
     CHECK(other_raw);
     raw_->CopyDataFrom(*other_raw, other.size());
   }
 
-  Buffer(Buffer&& other) { raw_ = other.Release(); }
+  Buffer(Buffer&& other) {
+    raw_ = other.Release();
+    size_ = other.size();
+  }
   Buffer& operator=(Buffer&& other) {
     raw_ = other.Release();
+    size_ = other.size();
     return *this;
   }
 
@@ -54,20 +54,23 @@ class Buffer {
     CHECK(raw_);
     return raw_->data();
   }
-  size_t size() const {
+  size_t capacity() const {
     CHECK(raw_);
     return raw_->space();
   }
+  size_t size() const { return size_; }
   void ReallocateDownward(size_t size) {
     CHECK(raw_);
-    return raw_->ResetLazy(TargetType::kHost, size);
+    raw_->ResetLazy(TargetType::kHost, size);
+    size_ = size;
   }
 
   std::unique_ptr<lite::Buffer> Release() { return std::move(raw_); }
   const lite::Buffer* raw() const { return raw_.get(); }
 
  private:
-  std::unique_ptr<lite::Buffer> raw_;
+  std::unique_ptr<lite::Buffer> raw_{new lite::Buffer};
+  size_t size_{0};
 };
 
 }  // namespace fbs

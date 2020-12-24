@@ -85,6 +85,11 @@ class CombinedParamsDescView : public CombinedParamsDescReadAPI {
   }
 
   void InitParams() {
+    flatbuffers::Verifier verifier(static_cast<const uint8_t*>(buf_.data()),
+                                   buf_.size());
+    CHECK(verifier.VerifyBuffer<paddle::lite::fbs::proto::CombinedParamsDesc>(
+        nullptr))
+        << "CombinedParamsDesc verification failed.";
     desc_ = proto::GetCombinedParamsDesc(buf_.data());
     CHECK(desc_);
     CHECK(desc_->params());
