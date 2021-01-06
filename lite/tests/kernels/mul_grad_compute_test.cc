@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/kernels/arm/mul_grad_compute.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include "lite/core/op_registry.h"
 #include "lite/kernels/arm/mul_compute.h"
 #include "lite/tests/utils/fill_data.h"

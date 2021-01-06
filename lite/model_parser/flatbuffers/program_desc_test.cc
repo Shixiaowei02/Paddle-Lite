@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/model_parser/flatbuffers/program_desc.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <string>
 #include "lite/model_parser/flatbuffers/test_helper.h"
 

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <gflags/gflags.h>
+#include "gflags/gflags.h"
 #include "lite/gen_code/gen_code.h"
 #include "lite/model_parser/model_parser.h"
 #include "lite/model_parser/pb/program_desc.h"

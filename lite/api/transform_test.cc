@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <gflags/gflags.h>
+#include "gflags/gflags.h"
 #ifdef PADDLE_WITH_TESTING
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #endif
 #include <string>
 #include <vector>

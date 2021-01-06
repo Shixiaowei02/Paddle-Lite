@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/kernels/cuda/calib_compute.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <algorithm>
 #include <memory>
 #include "lite/core/op_registry.h"

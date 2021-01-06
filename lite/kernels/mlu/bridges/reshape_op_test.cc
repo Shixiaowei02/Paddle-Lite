@@ -14,7 +14,7 @@
 
 #include "lite/operators/reshape_op.h"
 
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 #include <random>
 

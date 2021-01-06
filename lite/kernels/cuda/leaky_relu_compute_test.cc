@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/kernels/cuda/leaky_relu_compute.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <memory>
 #include <utility>
 

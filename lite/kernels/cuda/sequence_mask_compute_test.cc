@@ -14,7 +14,7 @@
 
 #include "lite/kernels/cuda/sequence_mask_compute.h"
 
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 #include <memory>
 #include <random>

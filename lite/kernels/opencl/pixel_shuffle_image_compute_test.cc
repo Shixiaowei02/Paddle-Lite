@@ -13,7 +13,7 @@
 // limitations under the License.
 #include <random>
 
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include "lite/backends/opencl/target_wrapper.h"
 #include "lite/core/op_registry.h"
 #include "lite/core/tensor.h"

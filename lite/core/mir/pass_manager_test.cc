@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/core/mir/pass_manager.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include "lite/core/mir/pass_registry.h"
 
 namespace paddle {

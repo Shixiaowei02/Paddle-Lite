@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/kernels/fpga/fc_compute.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <algorithm>
 #include <iostream>
 #include <memory>

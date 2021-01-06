@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <gflags/gflags.h>
-#include <gtest/gtest.h>
+#include "gflags/gflags.h"
+#include "gtest/gtest.h"
 #include "lite/tests/utils/fill_data.h"
 #include "lite/tests/utils/naive_math_impl.h"
 #ifdef LITE_WITH_ARM

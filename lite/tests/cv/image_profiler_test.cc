@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <gflags/gflags.h>
-#include <gtest/gtest.h>
+#include "gflags/gflags.h"
+#include "gtest/gtest.h"
 #include <math.h>
 #include <random>
 #include "lite/core/context.h"

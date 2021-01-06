@@ -32,7 +32,7 @@
 #include "lite/utils/replace_stl/stream.h"
 #include "lite/utils/string.h"
 #ifndef LITE_WITH_XCODE
-#include <gflags/gflags.h>
+#include "gflags/gflags.h"
 #endif
 namespace paddle {
 namespace lite {

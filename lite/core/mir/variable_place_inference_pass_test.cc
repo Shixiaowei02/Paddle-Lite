@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include "lite/api/paddle_use_passes.h"
 #include "lite/core/optimizer.h"
 #include "lite/core/program_fake_utils.h"

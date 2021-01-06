@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/kernels/cuda/sequence_concat_compute.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <memory>
 #include <utility>
 #include <vector>

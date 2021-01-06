@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/operators/fusion_elementwise_activation_ops.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <string>
 #include <vector>
 #include "lite/core/op_registry.h"

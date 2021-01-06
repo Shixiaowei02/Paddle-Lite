@@ -14,7 +14,7 @@
 
 #include "lite/kernels/cuda/conv_compute.h"
 
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 #include <memory>
 #include <random>

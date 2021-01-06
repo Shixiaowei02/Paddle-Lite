@@ -13,8 +13,8 @@
 // limitations under the License.
 
 #include "lite/api/light_api.h"
-#include <gflags/gflags.h>
-#include <gtest/gtest.h>
+#include "gflags/gflags.h"
+#include "gtest/gtest.h"
 
 DEFINE_string(optimized_model, "", "");
 

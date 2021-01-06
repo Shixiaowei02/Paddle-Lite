@@ -13,8 +13,8 @@
 // limitations under the License.
 
 #include "lite/model_parser/model_parser.h"
-#include <gflags/gflags.h>
-#include <gtest/gtest.h>
+#include "gflags/gflags.h"
+#include "gtest/gtest.h"
 #include "lite/core/scope.h"
 
 DEFINE_string(model_dir, "", "");

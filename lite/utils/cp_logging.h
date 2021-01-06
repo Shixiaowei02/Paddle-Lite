@@ -26,6 +26,6 @@
 #ifndef LITE_WITH_LOG
 #include "lite/utils/logging.h"
 #else
-#include <glog/logging.h>
+#include "glog/logging.h"
 #endif
 #endif

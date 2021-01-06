@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/kernels/cuda/sequence_arithmetic_compute.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <algorithm>
 #include <memory>
 #include <utility>

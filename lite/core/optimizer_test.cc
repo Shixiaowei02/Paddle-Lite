@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/core/optimizer.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <memory>
 #include <utility>
 #include "lite/api/paddle_use_passes.h"

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/model_parser/compatible_pb.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include "lite/model_parser/cpp_desc.h"
 #include "lite/model_parser/flatbuffers/program_desc.h"
 #include "lite/model_parser/flatbuffers/test_helper.h"

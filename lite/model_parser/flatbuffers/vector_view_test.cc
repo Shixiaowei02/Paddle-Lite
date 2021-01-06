@@ -13,8 +13,8 @@
 // limitations under the License.
 
 #include "lite/model_parser/flatbuffers/vector_view.h"
-#include <gflags/gflags.h>
-#include <gtest/gtest.h>
+#include "gflags/gflags.h"
+#include "gtest/gtest.h"
 #include <iostream>
 #include <vector>
 #include "lite/model_parser/flatbuffers/framework_generated.h"

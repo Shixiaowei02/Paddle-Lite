@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/kernels/fpga/softmax_compute.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <limits>
 #include <vector>
 #include "lite/backends/fpga/KD/float16.hpp"

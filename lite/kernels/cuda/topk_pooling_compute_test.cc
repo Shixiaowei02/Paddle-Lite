@@ -14,7 +14,7 @@
 
 #include "lite/kernels/cuda/topk_pooling_compute.h"
 
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 #include <memory>
 #include <random>

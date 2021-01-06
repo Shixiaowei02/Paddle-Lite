@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/operators/slice_op.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <utility>
 #include <vector>
 #include "lite/core/op_lite.h"

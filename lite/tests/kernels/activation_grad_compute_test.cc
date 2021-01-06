@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/kernels/host/activation_grad_compute.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include "lite/core/op_registry.h"
 #include "lite/kernels/arm/activation_compute.h"
 

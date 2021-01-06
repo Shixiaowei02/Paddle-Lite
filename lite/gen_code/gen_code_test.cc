@@ -13,8 +13,8 @@
 // limitations under the License.
 
 #include "lite/gen_code/gen_code.h"
-#include <gflags/gflags.h>
-#include <gtest/gtest.h>
+#include "gflags/gflags.h"
+#include "gtest/gtest.h"
 #include <fstream>
 #include <string>
 #include <utility>

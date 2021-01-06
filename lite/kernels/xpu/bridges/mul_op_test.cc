@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/operators/mul_op.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include "lite/core/op_registry.h"
 #include "lite/kernels/xpu/bridges/registry.h"
 #include "lite/kernels/xpu/bridges/test_helper.h"

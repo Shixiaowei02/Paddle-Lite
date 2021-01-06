@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/kernels/mlu/bridges/tensor.h"
-#include <glog/logging.h>
+#include "glog/logging.h"
 #include <algorithm>
 #include <climits>
 #include <fstream>

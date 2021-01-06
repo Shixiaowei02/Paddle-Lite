@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/operators/squeeze_op.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <memory>
 #include <utility>
 #include <vector>

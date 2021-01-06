@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/operators/layout_op.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include "lite/core/op_lite.h"
 #include "lite/core/op_registry.h"
 #include "lite/core/subgraph_bridge_registry.h"

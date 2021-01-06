@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <gflags/gflags.h>
+#include "gflags/gflags.h"
 #include <memory>  // for unique_ptr
 #include <string>
 #include <vector>

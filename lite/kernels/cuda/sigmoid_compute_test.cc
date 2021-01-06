@@ -14,7 +14,7 @@
 
 #include "lite/kernels/cuda/sigmoid_compute.h"
 
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 #include <cmath>
 #include <memory>

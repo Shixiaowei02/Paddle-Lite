@@ -14,7 +14,7 @@
 
 #include "lite/core/mir/pattern_matcher.h"
 
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 namespace paddle {
 namespace lite {

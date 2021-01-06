@@ -14,7 +14,7 @@
 
 #include "lite/kernels/cuda/fc_compute.h"
 
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <memory>
 #include <string>
 #include <utility>

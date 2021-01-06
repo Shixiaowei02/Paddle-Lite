@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/kernels/fpga/pooling_compute.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <limits>
 #include <string>
 #include <vector>

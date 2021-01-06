@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/kernels/host/where_index_compute.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <limits>
 #include <memory>
 #include <random>

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/operators/argmax_op.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <cmath>
 #include "lite/core/op_registry.h"
 #include "lite/kernels/npu/bridges/registry.h"

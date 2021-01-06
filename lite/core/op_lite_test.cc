@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/core/op_lite.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 namespace paddle {
 namespace lite {

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/operators/concat_op.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <random>
 #include "lite/core/op_lite.h"
 #include "lite/core/op_registry.h"

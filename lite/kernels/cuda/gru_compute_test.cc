@@ -14,7 +14,7 @@
 
 #include "lite/kernels/cuda/gru_compute.h"
 
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 #include <memory>
 #include <string>

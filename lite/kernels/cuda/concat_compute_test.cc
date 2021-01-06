@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/kernels/cuda/concat_compute.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <limits>
 #include <memory>
 #include <string>

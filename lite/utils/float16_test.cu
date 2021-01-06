@@ -11,7 +11,7 @@ limitations under the License. */
 
 #include "lite/utils/float16.h"
 
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <bitset>
 #include <iostream>
 #include <typeindex>

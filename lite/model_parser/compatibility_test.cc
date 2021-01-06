@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/model_parser/compatibility.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include "lite/api/paddle_lite_factory_helper.h"
 
 #include "lite/model_parser/compatible_pb.h"

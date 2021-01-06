@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/model_parser/naive_buffer/naive_buffer.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 namespace paddle {
 namespace lite {

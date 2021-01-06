@@ -24,7 +24,7 @@
 #ifdef LITE_WITH_PROFILE
 #include "lite/core/profile/basic_profiler.h"
 #endif  // LITE_WITH_PROFILE
-#include <gflags/gflags.h>
+#include "gflags/gflags.h"
 
 using paddle::lite::profile::Timer;
 

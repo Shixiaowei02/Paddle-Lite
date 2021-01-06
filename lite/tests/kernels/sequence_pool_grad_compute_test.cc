@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/kernels/arm/sequence_pool_grad_compute.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <algorithm>
 #include <cmath>
 #include "lite/core/op_registry.h"

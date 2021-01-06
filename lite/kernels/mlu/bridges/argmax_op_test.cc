@@ -14,7 +14,7 @@
 
 #include "lite/operators/argmax_op.h"
 
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 #include <cmath>
 #include <iostream>

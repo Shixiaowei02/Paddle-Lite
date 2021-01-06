@@ -13,8 +13,8 @@
 // limitations under the License.
 
 #include "lite/core/mir/subgraph/subgraph_detector.h"
-#include <gflags/gflags.h>
-#include <gtest/gtest.h>
+#include "gflags/gflags.h"
+#include "gtest/gtest.h"
 #include <vector>
 #include "lite/api/paddle_use_ops.h"
 #include "lite/api/paddle_use_passes.h"

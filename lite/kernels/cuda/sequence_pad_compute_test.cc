@@ -14,7 +14,7 @@
 
 #include "lite/kernels/cuda/sequence_pad_compute.h"
 
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 #include <memory>
 #include <random>

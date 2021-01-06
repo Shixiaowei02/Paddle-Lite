@@ -14,7 +14,7 @@
 
 #include "lite/kernels/cuda/assign_value_compute.h"
 
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 #include <functional>
 #include <memory>

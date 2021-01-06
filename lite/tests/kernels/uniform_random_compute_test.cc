@@ -14,8 +14,8 @@
 // #include "lite/kernels/host/uniform_random_compute.h"
 // #include <random>
 #include "lite/kernels/host/uniform_random_compute.h"
-#include <gflags/gflags.h>
-#include <gtest/gtest.h>
+#include "gflags/gflags.h"
+#include "gtest/gtest.h"
 #include "lite/core/context.h"
 #include "lite/core/profile/timer.h"
 #include "lite/operators/op_params.h"

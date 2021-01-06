@@ -13,8 +13,8 @@
 // limitations under the License.
 
 #include "lite/core/mir/fusion/conv_bn_fuse_pass.h"
-#include <gflags/gflags.h>
-#include <gtest/gtest.h>
+#include "gflags/gflags.h"
+#include "gtest/gtest.h"
 #include <vector>
 #include "lite/core/mir/graph_visualize_pass.h"
 #include "lite/core/program.h"

@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <gflags/gflags.h>
+#include "gflags/gflags.h"
 #ifdef PADDLE_WITH_TESTING
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #endif
 // "supported_kernel_op_info.h", "all_kernel_faked.cc" and "kernel_src_map.h"
 // are created automatically during opt's compiling period

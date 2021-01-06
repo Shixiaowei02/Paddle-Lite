@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/kernels/x86/lookup_table_compute.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <cmath>
 #include <string>
 #include <vector>

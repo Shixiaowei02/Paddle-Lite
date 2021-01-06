@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "lite/utils/string.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <string>
 #include "lite/utils/cp_logging.h"
 
