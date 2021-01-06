@@ -144,7 +144,7 @@ void Run(const std::string& model_path,
 
 int main(int argc, char** argv) {
   // Check inputs
-  google::ParseCommandLineFlags(&argc, &argv, true);
+  pdlite_gflags::ParseCommandLineFlags(&argc, &argv, true);
   if (FLAGS_model_dir.empty() ||
       (FLAGS_img_path.empty() && FLAGS_img_txt_path.empty())) {
     std::cerr << "Input error." << std::endl;

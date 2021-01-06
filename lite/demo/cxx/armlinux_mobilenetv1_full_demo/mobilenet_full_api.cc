@@ -90,7 +90,7 @@ void RunModel() {
 }
 
 int main(int argc, char** argv) {
-  google::ParseCommandLineFlags(&argc, &argv, true);
+  pdlite_gflags::ParseCommandLineFlags(&argc, &argv, true);
   if (FLAGS_model_dir == "" || FLAGS_optimized_model_dir == "") {
     std::cerr << "[ERROR] usage: " << argv[0]
               << " --model_dir=<your-model-directory>"

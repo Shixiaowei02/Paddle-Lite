@@ -525,7 +525,7 @@ int main(int argc, char** argv) {
   if (argc < 2) {
     paddle::lite_api::PrintHelpInfo();
   }
-  google::ParseCommandLineFlags(&argc, &argv, false);
+  pdlite_gflags::ParseCommandLineFlags(&argc, &argv, false);
   paddle::lite_api::ParseInputCommand();
   if (FLAGS_model_set_dir == "") {
     paddle::lite_api::CheckIfModelSupported();
