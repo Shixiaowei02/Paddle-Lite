@@ -230,7 +230,7 @@ void Run(const std::vector<std::vector<int64_t>>& input_shapes,
 }  // namespace paddle
 
 int main(int argc, char** argv) {
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
+  ::pdlite_gflags::ParseCommandLineFlags(&argc, &argv, true);
   if (FLAGS_model_dir == "") {
     LOG(INFO) << "usage: "
               << "--model_dir /path/to/your/model";

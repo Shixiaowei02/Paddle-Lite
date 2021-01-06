@@ -15,7 +15,7 @@
 #pragma once
 
 #ifdef PADDLE_WITH_TESTING
-#include <gtest/gtest_prod.h>
+#include "gtest/gtest_prod.h"
 #endif
 
 #include <map>
